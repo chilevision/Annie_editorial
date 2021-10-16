@@ -8,21 +8,26 @@ class Select extends Component
 {
     public $name;
     public $wrapClass;
-    public $label;
+    public $selectClass;
     public $wire;
-    public $inputClass;
+    public $wires = '';
+    public $label;
+    public $options;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $wrapClass, $label, $wire, $inputClass)
+    public function __construct($name, $wrapClass, $selectClass, $wire, $label, $options)
     {
-        $this->name = $name;
-        $this->wrapClass = $wrapClass;
-        $this->label =$label;
-        $this->wire = $wire;
-        $this->inputClass = $inputClass;
+        if ($wire != '') $this->wires = $wire;
+        $this->name         = $name;
+        $this->wrapClass    = $wrapClass;
+        $this->selectClass  = $selectClass;
+        $this->label        = $label;
+        $this->options      = $options;
     }
 
     /**

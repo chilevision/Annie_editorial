@@ -6,24 +6,30 @@ use Illuminate\View\Component;
 
 class Input extends Component
 {
-
+    public $type;
     public $name;
     public $wrapClass;
-    public $label;
-    public $wire;
     public $inputClass;
+    public $wire;
+    public $wires = '';
+    public $label;
+    protected $template;
+
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $wrapClass, $label, $wire, $inputClass)
+    public function __construct($type, $name, $wrapClass, $inputClass, $wire, $label)
     {
-        $this->name = $name;
-        $this->wrapClass = $wrapClass;
-        $this->label =$label;
-        $this->wire = $wire;
-        $this->inputClass = $inputClass;
+        $this->type         = $type;
+        $this->name         = $name;
+        $this->wrapClass    = $wrapClass;
+        $this->inputClass   = $inputClass;
+        $this->label        = $label;
+        
+        if ($wire != '') $this->wires = $wire;
     }
 
     /**
@@ -33,6 +39,12 @@ class Input extends Component
      */
     public function render()
     {
-        return view('components.forms.input');
+        switch($this->type){
+            case('text'): $this->template = 'components.forms.input'; break;
+            case('time'): $this->template = 'components.forms.time'; break;
+            case('checkbox'): $this->template = 'components.forms.checkbox'; break;
+            case('submit'): $this->template = 'components.forms.submit'; break;
+        }
+        return view($this->template);
     }
 }

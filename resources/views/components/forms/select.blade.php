@@ -1,9 +1,18 @@
-<div class="form-group {{ $wrapClass }}">
-    <label for="input{{ $name }}">{{ $label }}</label>
-    <select name="{{ $name }}" @if()wire:model="type" wire:change="typeChange" class="form-control form-control-sm shadow-none {{ $inputClass }}" id="input{{ $name }}">
-        <option value="MIXER" selected>MIXER</option>
-        <option value="VB">VB</option>
-        <option value="PRE">PRE BLOCK</option>
-        <option value="BREAK">BREAK</option>
+<div class="form-group @if($wrapClass != ''){{ $wrapClass }}@endif">
+    <label for="input{{ $name }}"> {{ __($label) }}</label>
+    <select class="form-control form-control-sm shadow-none @if($selectClass != ''){{ $selectClass }}@endif" id="select{{ $name }}" name="{{ $name }}"
+@if (is_array($wires))
+    @foreach ($wires as $wire)
+        wire:{{ $wire['type'] }}="{{ $wire['target'] }}"
+    @endforeach
+@else
+        wire:model="{{ $wires }}"
+@endif
+    >
+@if(is_array($options))
+    @foreach ($options as $option)
+        <option value="{{ $option['value'] }}">{{ $option['title'] }}</option>
+    @endforeach
+@endif
     </select>
 </div>

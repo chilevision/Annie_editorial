@@ -1,6 +1,6 @@
 <div class="form-group @if($wrapClass != ''){{ $wrapClass }}@endif">
     <label for="input{{ $name }}"> {{ __($label) }}</label>
-    <input type="text" class="form-control form-control-sm shadow-none @if($inputClass != ''){{ $inputClass }}@endif" id="input{{ $name }}" name="{{ $name }}" 
+    <input type="time" value="00:00:00" step="1" class="form-control form-control-sm shadow-none @if($inputClass != ''){{ $inputClass }}@endif" id="input{{ $name }}" name="{{ $name }}" 
     @if (is_array($wires))
         @foreach ($wires as $wire)
             wire:{{ $wire['type'] }}="{{ $wire['target'] }}"
