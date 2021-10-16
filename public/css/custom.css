@@ -1,0 +1,37 @@
+.rundown-pre{
+    background-color: #171819;
+    color: blanchedalmond;
+}
+.rundown-break{
+    background-color: #03cdc6;
+    padding: 0px;
+}
+tr.rundown-break-row{
+    display: table-row; line-height: 0.3;
+}
+.tooltip-inner {
+    max-width: 450px!important;
+}
+.rundown-p{
+    margin: 0!important;
+}
+.dropdown-toggle:focus{
+    outline: none;
+}
+.btn-custom{
+    background-color: #009ac5;
+    color: #fff;
+    border-color: #3490dc;
+}
+.btn-custom:hover{
+    color: #fff;
+    background-color: #2fa4cd;
+    border-color: #2176bd;
+}
+.bg-custom{
+    background-color: #49a9d0!important;
+}
+.rundown-row >td{
+    table-layout:fixed;
+    overflow: hidden;
+}
