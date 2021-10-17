@@ -7,13 +7,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
-  // Enable pusher logging - don't include this in production
-  Pusher.logToConsole = true;
-
   var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
 	cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
   });
-
   var channel = pusher.subscribe('rundown');
   channel.bind('{{ $rundown->id }}', function(data) {
 	console.log(data.message);
@@ -23,10 +19,8 @@
 		break;
 	}
   });
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
 </script>
+<script src="{{ asset('js/rundown.js')}}"></script>
 
 @stop
 @section('content')
@@ -74,7 +68,9 @@
 					</tr>						
 				</tbody>
 			</table>
-			@livewire('rundown', ['rundown' => $rundown])
+			<div id="rundown-edit-table-wrap">
+				@livewire('rundown', ['rundown' => $rundown])
+			</div>
 		</div>
 	</div>
 </div>

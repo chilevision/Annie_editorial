@@ -31,7 +31,10 @@ tr.rundown-break-row{
 .bg-custom{
     background-color: #49a9d0!important;
 }
-.rundown-row >td{
-    table-layout:fixed;
-    overflow: hidden;
+
+#rundown-edit-table-wrap{
+    width: 1360px; overflow-x: scroll;
+}
+.overflow-hidden{
+    white-space: nowrap; overflow: hidden; text-overflow:ellipsis; background-color: #03cdc6;
 }

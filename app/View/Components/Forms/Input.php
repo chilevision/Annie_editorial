@@ -8,6 +8,7 @@ class Input extends Component
 {
     public $type;
     public $name;
+    public $value;
     public $wrapClass;
     public $inputClass;
     public $wire;
@@ -21,10 +22,11 @@ class Input extends Component
      *
      * @return void
      */
-    public function __construct($type, $name, $wrapClass, $inputClass, $wire, $label)
+    public function __construct($type, $name, $value, $wrapClass, $inputClass, $wire, $label)
     {
         $this->type         = $type;
         $this->name         = $name;
+        $this->value        = $value;
         $this->wrapClass    = $wrapClass;
         $this->inputClass   = $inputClass;
         $this->label        = $label;

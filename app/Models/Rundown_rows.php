@@ -20,6 +20,7 @@ class Rundown_rows extends Model
         'color',
         'story',
         'talent',
+        'cue',
         'type',
         'source',
         'audio',

@@ -1,17 +1,17 @@
-<table class="table table-striped table-bordered table-sm mt-5">
+<table class="table table-striped table-bordered table-sm mt-5" id="rundown-edit-table">
     <thead class="thead-dark">
         <tr class="rundown-row">
             <th scope="col" style="width: 60px;">{{ __('rundown.page') }}</th>
-            <th scope="col" style="width: 5px; padding: 0;"></th>
+            <th scope="col" style="width: 8px; padding: 0;"></th>
             <th scope="col">{{ __('rundown.story') }}</th>
             <th scope="col" style="width: 60px;">{{ __('rundown.type') }}</th>
             <th scope="col" style="width: 150px;">{{ __('rundown.talent') }}</th>
-            <th scope="col" style="width: 180px;">{{ __('rundown.cue') }}</th>
-            <th scope="col" style="width: 60px;">{{ __('rundown.source') }}</th>
-            <th scope="col" style="width: 100px;">{{ __('rundown.audio') }}</th>
-            <th scope="col" style="width: 60px;">{{ __('rundown.duration') }}</th>
-            <th scope="col" style="width: 60px;">{{ __('rundown.start') }}</th>
-            <th scope="col" style="width: 60px;">{{ __('rundown.stop') }}</th>
+            <th scope="col" style="width: 200px;">{{ __('rundown.cue') }}</th>
+            <th scope="col" style="width: 80px;">{{ __('rundown.source') }}</th>
+            <th scope="col" style="width: 80px;">{{ __('rundown.audio') }}</th>
+            <th scope="col" style="width: 90px;">{{ __('rundown.duration') }}</th>
+            <th scope="col" style="width: 90px;">{{ __('rundown.start') }}</th>
+            <th scope="col" style="width: 90px;">{{ __('rundown.stop') }}</th>
         </tr>
     </thead>
     <tbody id="rundown-body">
@@ -70,10 +70,10 @@
                 </div>
             </td>
             <td style="background: #{{ $row->color }}"></td>
-            <td scope="col">{{ $row->story }}</td>
+            <td scope="col"><div class="overflow-hidden" style="width: 420px">{{ $row->story }}</div></td>
             <td scope="col">{{ $row->type }}</td>
-            <td scope="col">{{ $row->talent }}</td>
-            <td scope="col">{{ $row->cue }}</td>
+            <td scope="col"><div class="overflow-hidden" style="width: 130px">{{ $row->talent }}</div></td>
+            <td scope="col"><div class="overflow-hidden" style="width: 200px">{{ $row->cue }}</div></td>
             <td scope="col">
         @if ($row->type == 'MIXER') 
                 {{ $row->source }} 
