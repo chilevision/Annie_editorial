@@ -18,7 +18,7 @@
 @php 
     $timer = strtotime($rundown->starttime);
     $x = 'A';
-    $y = 1; 
+    $y = 1;
 @endphp
 @foreach ($rundownrows as $row)
     @switch($row->type)
@@ -51,7 +51,6 @@
         <td scope="col" class="rundown-break">{{ date('H:i:s', $timer) }}</td>
         </tr>
         @php 
-            $x++; 
             $y = 1;
         @endphp
         @break

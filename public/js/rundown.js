@@ -5,15 +5,18 @@ $(function () {
 //Sets duration input 
 function setDuration($time){
     if ($time == '') $time = '00:00:00';
-    document.getElementById("inputduration").value = $time;
+    document.getElementById("input-duration").value = $time;
 }
 $( document ).ready(function() {
-    //setDuration('');
+    setDuration('');
     initSortable();
 });
 window.addEventListener('typeHasChanged', event => {
     setDuration(event.detail.newTime);
 });
+window.addEventListener('render', event => {
+    setDuration();
+})
 function initSortable(){
     var el = document.getElementById('rundown-body');
     var sortable = new Sortable(el, {

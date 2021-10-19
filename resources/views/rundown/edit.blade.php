@@ -4,36 +4,26 @@
 	$totalTime = strtotime($rundown->stoptime) - strtotime($rundown->starttime);
 @endphp
 @section('add_scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-<script>
-  var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
-	cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
-  });
-  var channel = pusher.subscribe('rundown');
-  channel.bind('{{ $rundown->id }}', function(data) {
-	console.log(data.message);
-	switch (data.message){
-		case 'render' :
-			Livewire.emit('render');
-		break;
-	}
-  });
-</script>
-<script src="{{ asset('js/Sortable.min.js')}}"></script>
-<script src="{{ asset('js/rundown.js')}}"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+	<script>
+		var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+			cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
+		});
+		var channel = pusher.subscribe('rundown');
+		channel.bind('{{ $rundown->id }}', function(data) {
+			console.log(data.message);
+			switch (data.message){
+				case 'render' :
+					Livewire.emit('render');
+				break;
+			}
+		});
+	</script>
+	<script src="{{ asset('js/Sortable.min.js')}}"></script>
+	<script src="{{ asset('js/rundown.js')}}"></script>
 @stop
 @section('content')
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <div class="container-fluid">
 	
 	<div class="card" style="width: 1400px; overflow-x: scroll; margin: 0 auto;">

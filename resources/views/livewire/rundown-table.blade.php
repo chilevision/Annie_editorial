@@ -4,6 +4,7 @@ $titleOrder = $properties->orderAsc;
 $dateOrder = $properties->orderAsc;
 if ($properties->orderBy == 'title') $titleOrder = !$properties->orderAsc;
 if ($properties->orderBy == 'starttime') $dateOrder = !$properties->orderAsc; 
+$per_page = [10,25,50,100];
 @endphp
 <div>
     <table class="table table-striped table-hover">
@@ -15,30 +16,21 @@ if ($properties->orderBy == 'starttime') $dateOrder = !$properties->orderAsc;
                 <th>{{ __('rundown.lenght') }}</th>
                 <th>{{ __('rundown.manage') }}
                     <select wire:model="perPage" class="float-right">
-                        <option value="10" selected>10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
+@foreach ( $per_page as $value )
+                        <option value="{{ $value }}">{{ $value }}</option>
+@endforeach
                     </select>
                 </th>
             </tr>
         </thead>
         <tbody>
-        @foreach ($rundowns as $rundown)
+    @foreach ($rundowns as $rundown)
     @php $duration = strtotime($rundown->stoptime) - strtotime($rundown->starttime) @endphp
             <tr>
-                <td>
-                    {{$rundown->title}}
-                </td>
-                <td>
-                    {{ date('Y-m-d',strtotime($rundown->starttime)) }}
-                </td>
-                <td>
-                    {{ date('H:i',strtotime($rundown->starttime)) }}
-                </td>
-                <td>
-                    {{ gmdate("H:i", $duration) }}
-                </td>
+                <td>{{$rundown->title}}</td>
+                <td>{{ date('Y-m-d',strtotime($rundown->starttime)) }}</td>
+                <td>{{ date('H:i',strtotime($rundown->starttime)) }}</td>
+                <td>{{ gmdate("H:i", $duration) }}</td>
                 <td width="270px">
                     <form name="delete-rundown-form" onsubmit="return confirm({{ __('rundown.message_warning1') }});" method="POST" action="rundown/{{ $rundown->id }}">
                         @csrf

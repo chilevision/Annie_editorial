@@ -41,9 +41,9 @@ class Input extends Component
     public function render()
     {
         switch ($this->type){
-            case 'time':      $this->template = 'components.forms.time';      break;
-            case 'submit';    $this->template = 'components.forms.submit';    break;
-            default:          $this->template = 'components.forms.input';
+            case 'time':    $this->template = 'components.forms.time';      break;
+            case 'submit';  $this->template = 'components.forms.submit';    break;
+            default:        $this->template = 'components.forms.input';
         }
         return view($this->template);
     }

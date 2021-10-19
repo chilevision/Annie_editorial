@@ -29,10 +29,13 @@ class Rundown extends Component
     }
 
     public function deleteRow($id){
-        $position = $this->rundownrows->where('id', $id)->first()['before_in_table'];
-        $next_row = $this->rundownrows->where('before_in_table', $id)->first()['id'];
-        
-        Rundown_rows::where('id', $next_row)->update(array('before_in_table' => $position));
+        $row_before_this = $this->rundownrows->where('id', $id)->first()['before_in_table'];
+        //if this isn't the last row: find the next row and update it's "before_in_table" value
+        if (!$this->rundownrows->where('before_in_table', '=', $id)->isEmpty()) {
+            $next_row = $this->rundownrows->where('before_in_table', $id)->first()['id'];
+            Rundown_rows::where('id', $next_row)->update(array('before_in_table' => $row_before_this));
+         }
+        //else just delete the last row
         Rundown_rows::findOrFail($id)->delete();
         event(new RundownEvent('render', $this->rundown->id));
     }
