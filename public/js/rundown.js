@@ -4,6 +4,7 @@ $(function () {
 });
 //Sets duration input 
 function setDuration($time){
+    $( "#input-duration" ).attr( "step", "1" );
     if ($time == '') $time = '00:00:00';
     document.getElementById("input-duration").value = $time;
 }
