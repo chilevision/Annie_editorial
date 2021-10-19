@@ -9,6 +9,7 @@ use App\Events\RundownEvent;
 
 class RundownrowForm extends Component
 {
+    public $test;
     public $rundown;
     public $story;
     public $talent;
@@ -58,29 +59,29 @@ class RundownrowForm extends Component
 
     public function submit()
     {
-        $duration = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $this->duration);
-        sscanf($duration, "%d:%d:%d", $hours, $minutes, $seconds);
-        $duration = $hours * 3600 + $minutes * 60 + $seconds;
-        $position = Rundown_rows::where('rundown_id', $this->rundown->id)->count();
-        $color = $this->colors[$position%count($this->colors)];
+        $duration           = to_seconds($this->duration);
+        $rows               = Rundown_rows::where('rundown_id', $this->rundown->id)->get();
+        $before_in_table    = sort_rows($rows)[1];
+        $color              = array_search( $rows->where('id', $before_in_table)->first()->color, $this->colors ) + 1;
+        $color              = $this->colors[$color%count($this->colors)];
         //$this->validate();
 
         // Execution doesn't reach here if validation fails.
 
         Rundown_rows::create([
-            'rundown_id'    => $this->rundown->id,
-            'position'      => $position,
-            'color'         => $color,
-            'story'         => $this->story,
-            'talent'        => $this->talent,
-            'cue'           => $this->cue,
-            'type'          => $this->type,
-            'source'        => $this->source,
-            'audio'         => $this->audio,
-            'duration'      => $duration,
-            'autotrigg'     => $this->autotrigg
+            'rundown_id'        => $this->rundown->id,
+            'before_in_table'   => $before_in_table,
+            'color'             => $color,
+            'story'             => $this->story,
+            'talent'            => $this->talent,
+            'cue'               => $this->cue,
+            'type'              => $this->type,
+            'source'            => $this->source,
+            'audio'             => $this->audio,
+            'duration'          => $duration,
+            'autotrigg'         => $this->autotrigg
         ]);
-        $this->reset(['story', 'talent', 'source', 'audio', 'duration']);
+        $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration']);
         $this->type = 'MIXER';
         $this->autotrigg = 0;
         event(new RundownEvent('render', $this->rundown->id));

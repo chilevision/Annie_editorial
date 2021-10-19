@@ -4,7 +4,7 @@ namespace App\View\Components\Forms;
 
 use Illuminate\View\Component;
 
-class Input extends Component
+class Source extends Component
 {
     public $name;
     public $type;
@@ -27,7 +27,7 @@ class Input extends Component
         $this->name         = $name;
         $this->value        = $value;
         $this->wrapClass    = $wrapClass;
-        $this->inputClass  = $inputClass;
+        $this->selectClass  = $inputClass;
         $this->label        = $label;
 
         if ($wire != '') $this->wires = $wire;
@@ -40,11 +40,6 @@ class Input extends Component
      */
     public function render()
     {
-        switch ($this->type){
-            case 'time':      $this->template = 'components.forms.time';      break;
-            case 'submit';    $this->template = 'components.forms.submit';    break;
-            default:          $this->template = 'components.forms.input';
-        }
-        return view($this->template);
+        return view('components.forms.source');
     }
 }

@@ -27,7 +27,7 @@ class Rundowns extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('rundown_id');
             $table->foreign('rundown_id')->references('id')->on('rundowns')->onDelete('cascade');
-            $table->integer('position');
+            $table->integer('before_in_table')->nullable();
             $table->char('color', 6);
             $table->string('story');
             $table->string('talent')->nullable();

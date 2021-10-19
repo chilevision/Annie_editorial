@@ -16,7 +16,7 @@ class Rundown_rows extends Model
 
     protected $fillable = [
         'rundown_id',
-        'position',
+        'before_in_table',
         'color',
         'story',
         'talent',

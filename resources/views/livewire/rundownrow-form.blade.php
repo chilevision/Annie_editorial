@@ -1,39 +1,38 @@
 <div class="card-body">           
-    <form method="POST" wire:submit.prevent="{{ $formAction }}">
+    <form method="POST" wire:submit.prevent="submit">
         <div class="form-row">
-            <x-Forms.Input type="text" name="story" value="{{ $story }}" wrapClass="col-2" label="rundown.story" wire="story" inputClass=""/>
-            <x-Forms.Select name="story" wrapClass="col-1" label="rundown.type" :wire="[['type' => 'model', 'target' => 'type'], ['type' => 'change', 'target' => 'typeChange']]" selectClass="" :options="$typeOptions"/>
+            <x-Forms.input type="text" name="story" value="" wrapClass="col-2" wire="story" label="rundown.story" inputClass="" />
+            <x-Forms.Select name="type" wrapClass="col-1" selectClass="" :wire="[['type' => 'model', 'target' => 'type'],['type' => 'change', 'target' => 'typeChange']]" label="rundown.type" :options="$typeOptions" />
 @switch($type)
-    @case('MIXER')
-            <x-Forms.Input type="text" name="talent" value="{{ $talent }}" wrapClass="col" label="rundown.talent" wire="talent" inputClass=""/>
-            <x-Forms.Input type="text" name="cue" value="{{ $cue }}" wrapClass="col-2" label="rundown.cue" wire="cue" inputClass=""/>
-            <x-Forms.Select name="source" wrapClass="col" label="rundown.source" wire="source" selectClass="" :options="$sourceOptions"/>
-            <x-Forms.Input type="text" name="audio" value="{{ $audio }}" wrapClass="col" label="rundown.audio" wire="audio" inputClass=""/>
-            <x-Forms.Input type="time" name="duration" value="{{ $audio }}" wrapClass="col" label="rundown.duration" wire="duration" inputClass=""/>
-            <x-Forms.Input type="checkbox" name="autotrigg" value="" wrapClass="col" label="rundown.triggering" wire="" inputClass=""/>
+
+@case('MIXER')
+            <x-Forms.input type="text" name="talent" value="" wrapClass="col" wire="talent" label="rundown.talent" inputClass="" />
+            <x-Forms.input type="text" name="cue" value="" wrapClass="col-2" wire="cue" label="rundown.cue" inputClass="" />
+            <x-Forms.Select name="source" wrapClass="col" selectClass="" wire="source" label="rundown.source" :options="$sourceOptions" />
+            <x-Forms.input type="text" name="audio" value="" wrapClass="col" wire="audio" label="rundown.audio" inputClass="" />
+            <x-Forms.input type="time" name="duration" value="" wrapClass="col" wire="duration" label="rundown.duration" inputClass="" />
+            <x-Forms.input type="checkbox" name="autotrigg" value="" wrapClass="col" wire="autotrigg" label="rundown.triggering" inputClass="" />
     @break
-    @case('VB')
-            <x-Forms.Input type="text" name="talent" value="{{ $talent }}" wrapClass="col" label="rundown.talent" wire="talent" inputClass=""/>
-            <div class="form-group col">
-                <label for="inputSource">{{ __('rundown.source') }}</label>
-                <div class="input-group">
-                    <input type="text" wire:model="source" class="form-control form-control-sm shadow-none" placeholder="mediefil" aria-describedby="source-search">
-                    <div class="input-group-append">
-                        <button class="btn btn-sm btn-dark" type="button" id="source-search"><i class="bi bi-search"></i></button>
-                    </div>
-                </div>
-            </div>
-            <x-Forms.Input type="time" name="duration" value="" wrapClass="col" label="rundown.duration" wire="duration" inputClass=""/>
-            <x-Forms.Input type="checkbox" name="autotrigg" value="" wrapClass="col" label="rundown.triggering" wire="" inputClass=""/>
+
+@case('VB')
+            <x-Forms.input type="text" name="talent" value="" wrapClass="col" wire="talent" label="rundown.talent" inputClass="" />
+            <x-Forms.input type="text" name="cue" value="" wrapClass="col-2" wire="cue" label="rundown.cue" inputClass="" />
+            <x-Forms.source type="text" name="source" value="" wrapClass="col" wire="source" label="rundown.source" inputClass="" />
+            <x-Forms.input type="text" name="audio" value="" wrapClass="col" wire="audio" label="rundown.audio" inputClass="" />
+            <x-Forms.input type="time" name="duration" value="" wrapClass="col" wire="duration" label="rundown.duration" inputClass="" />
+            <x-Forms.input type="checkbox" name="autotrigg" value="" wrapClass="col" wire="autotrigg" label="rundown.triggering" inputClass="" />
     @break
-    @case('PRE')
+
+@case('PRE')
             <input type="hidden" wire:model="duration" value="0" >
     @break
-    @case('BREAK')
-            <x-Forms.Input type="time" name="duration" value="" wrapClass="col" label="rundown.duration" wire="duration" inputClass=""/>
-    @break   
+
+@case('BREAK')
+            <x-Forms.input type="time" name="duration" value="" wrapClass="col" wire="duration" label="rundown.duration" inputClass="" />
+    @break
+            
 @endswitch
-            <x-Forms.Input type="submit" name="submit" value="" wrapClass="col" label="rundown.create" wire="" inputClass="btn-dark btn-sm mt-4 float-right"/>
+            <x-Forms.input type="submit" name="submit" value="" wrapClass="col" wire="" label="rundown.create" inputClass="btn-dark btn-sm mt-4 float-right" />
         </div>
     </form>   
 </div>

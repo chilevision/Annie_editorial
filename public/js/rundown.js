@@ -8,8 +8,19 @@ function setDuration($time){
     document.getElementById("inputduration").value = $time;
 }
 $( document ).ready(function() {
-    setDuration('');
+    //setDuration('');
+    initSortable();
 });
 window.addEventListener('typeHasChanged', event => {
     setDuration(event.detail.newTime);
 });
+function initSortable(){
+    var el = document.getElementById('rundown-body');
+    var sortable = new Sortable(el, {
+        draggable: ".rundown-row",  // Specifies which items inside the element should be draggable
+        // Element dragging ended
+        onEnd: function (/**Event*/evt) {
+            Livewire.emit('orderChanged', evt.oldIndex, evt.newIndex);
+        },
+    });
+}

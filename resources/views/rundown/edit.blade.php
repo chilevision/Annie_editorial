@@ -20,6 +20,7 @@
 	}
   });
 </script>
+<script src="{{ asset('js/Sortable.min.js')}}"></script>
 <script src="{{ asset('js/rundown.js')}}"></script>
 
 @stop

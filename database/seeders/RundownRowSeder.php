@@ -44,17 +44,18 @@ class RundownRowSeder extends Seeder
         foreach ($colors as $key => $value){
             $type = $types[random_int(0,1)];
             ($type == 'MIXER') ? $source = 'CAM'.random_int(1,10) : $source = strtok($storys[$key], ' ');
+            ($key == 0) ? $position = NULL : $position = $key ;
             $array = [
-                'rundown_id' => 36,
-                'position' => $key,
-                'story' => $storys[$key],
-                'color' => $value,
-                'talent' => $names[$key],
-                'cue' => $cues[$key],
-                'type' => $type,
-                'source' => $source,
-                'audio' => $audio[random_int(0,2)],
-                'duration' => random_int(1,180)
+                'rundown_id'        => 36,
+                'before_in_table'   => $position,
+                'story'             => $storys[$key],
+                'color'             => $value,
+                'talent'            => $names[$key],
+                'cue'               => $cues[$key],
+                'type'              => $type,
+                'source'            => $source,
+                'audio'             => $audio[random_int(0,2)],
+                'duration'          => random_int(1,180)
             ];
             Rundown_rows::create( $array );
         }

@@ -1,3 +1,3 @@
-<div class="form-group @if($wrapClass != ''){{ $wrapClass }}@endif">
-    <button type="submit" name="submit" class="btn @if($inputClass != ''){{ $inputClass }}@endif">{{ __($label) }}</button>
+<div class="form-group {{ $wrapClass }}">
+    <button type="{{ $type }}" name="{{ $name }}" class="btn {{ $inputClass }}" id="input-{{ $name }}">{{ __( $label ) }}</button>
 </div>

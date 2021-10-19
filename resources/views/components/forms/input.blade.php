@@ -1,12 +1,4 @@
-<div class="form-group @if($wrapClass != ''){{ $wrapClass }}@endif">
-    <label for="input{{ $name }}"> {{ __($label) }}</label>
-    <input type="text" @if($value != ''){{ $value }}@endif class="form-control form-control-sm shadow-none @if($inputClass != ''){{ $inputClass }}@endif" id="input{{ $name }}" name="{{ $name }}" 
-    @if (is_array($wires))
-        @foreach ($wires as $wire)
-            wire:{{ $wire['type'] }}="{{ $wire['target'] }}"
-        @endforeach
-    @else
-    wire:model="{{ $wires }}"
-    @endif
-    />
+<div class="form-group {{ $wrapClass }}">
+    <label for="input-{{ $name }}">{{ __($label) }}</label>
+    <input type="{{ $type }}" @if ($wires != '') wire:model="{{ $wires }}" @endif class="form-control form-control-sm shadow-none {{ $inputClass }}" id="input-{{ $name }}" />
 </div>
