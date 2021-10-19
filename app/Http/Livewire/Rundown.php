@@ -39,8 +39,11 @@ class Rundown extends Component
         Rundown_rows::findOrFail($id)->delete();
         event(new RundownEvent('render', $this->rundown->id));
     }
-    public function updateOrder($oldIndex, $newIndex)
+    public function updateOrder($old_position, $new_position)
     {
-        dd($this->rundown->id);
+        $moved_row = $this->rundownrows[$old_position];
+        ($new_position-1>0) ? $row_abowe = $this->rundownrows[$new_position-1]['id'] : $row_abowe = NULL;
+        
+        dd($moved_row);
     }
 }

@@ -4,8 +4,8 @@
 	$totalTime = strtotime($rundown->stoptime) - strtotime($rundown->starttime);
 @endphp
 @section('add_scripts')
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+	<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+	<script src="{{ asset('js/pusher.min.js') }}"></script>
 	<script>
 		var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
 			cluster: "{{ env('PUSHER_APP_CLUSTER') }}"

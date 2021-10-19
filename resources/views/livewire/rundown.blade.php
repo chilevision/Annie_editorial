@@ -2,7 +2,7 @@
     <thead class="thead-dark">
         <tr class="rundown-row">
             <th scope="col" style="width: 60px;">{{ __('rundown.page') }}</th>
-            <th scope="col" style="width: 8px; padding: 0;"></th>
+            <th scope="col" style="padding: 0;"></th>
             <th scope="col">{{ __('rundown.story') }}</th>
             <th scope="col" style="width: 60px;">{{ __('rundown.type') }}</th>
             <th scope="col" style="width: 150px;">{{ __('rundown.talent') }}</th>
@@ -25,7 +25,7 @@
     @case('PRE')
         <tr class="rundown-row">
             <td scope="col" class="rundown-pre">PRE</td>
-            <td scope="col" class="rundown-pre"></td>
+            <td scope="col" class="rundown-pre"><i class="bi bi-list-nested"></i></td>
             <td scope="col" class="rundown-pre">{{ $row->story }}</td>
             <td scope="col" class="rundown-pre">{{ $row->type }}</td>
             <td scope="col" class="rundown-pre"></td>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </td>
-            <td style="background: #{{ $row->color }}"></td>
+            <td style="background: #{{ $row->color }}"><a class="text-white"><i class="bi bi-list-nested"></i></a></td>
             <td scope="col"><div class="overflow-hidden" style="width: 420px">{{ $row->story }}</div></td>
             <td scope="col">{{ $row->type }}</td>
             <td scope="col"><div class="overflow-hidden" style="width: 130px">{{ $row->talent }}</div></td>

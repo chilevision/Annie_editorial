@@ -25,6 +25,7 @@ function initSortable(){
         // Element dragging ended
         onEnd: function (/**Event*/evt) {
             Livewire.emit('orderChanged', evt.oldIndex, evt.newIndex);
+            
         },
     });
 }

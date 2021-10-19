@@ -1,5 +1,17 @@
 @extends('layouts.app')
-
+@section('add_scripts')
+<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function copyDate() {
+            var box1 = $('#input-start-date');
+            var box2 = $('#input-stop-date');
+			if ( !box2.val() ) box2.val(box1.val());
+        }
+        $('#input-start-date').on('change', copyDate);
+    });
+</script>
+@endsection
 @section('content')
 <div class="container">
 	<div class="row">
