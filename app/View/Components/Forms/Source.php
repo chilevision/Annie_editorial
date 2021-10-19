@@ -27,7 +27,7 @@ class Source extends Component
         $this->name         = $name;
         $this->value        = $value;
         $this->wrapClass    = $wrapClass;
-        $this->selectClass  = $inputClass;
+        $this->inputClass  = $inputClass;
         $this->label        = $label;
 
         if ($wire != '') $this->wires = $wire;
