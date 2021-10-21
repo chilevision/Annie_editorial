@@ -19,9 +19,14 @@
 				case 'cancel_edit'	: enable_menu(data.message.id);		break;
 			}
 		});
+
+  function confirmExit()
+  {
+    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+  }
+
 	</script>
 	<script src="{{ asset('js/Sortable.min.js')}}"></script>
-	<script src="{{ asset('js/rundown.js')}}"></script>
 @stop
 @section('content')
 <div class="container-fluid">
@@ -62,4 +67,7 @@
 		</div>
 	</div>
 </div>
+@endsection
+@section('footer_scripts')
+<script src="{{ asset('js/rundown.js') }}"></script>
 @endsection

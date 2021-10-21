@@ -120,5 +120,6 @@
         </main>
     </div>
     @livewireScripts
+    @yield('footer_scripts')
 </body>
 </html>

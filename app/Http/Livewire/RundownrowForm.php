@@ -17,7 +17,7 @@ class RundownrowForm extends Component
     public $type = 'MIXER';
     public $source = 'CAM1';
     public $audio;
-    public $duration;
+    public $duration = '00:00:00';
     public $autotrigg = 1;
 
     public $header = 'rundown.new_row';
@@ -52,7 +52,8 @@ class RundownrowForm extends Component
         'email' => 'required|email',
     ];
     protected $listeners = [
-        'editRow' => 'editRow'
+        'editRow'       => 'editRow',
+        'cancel_edit'   => 'cancel_edit',
     ];
 
     public function render()
@@ -117,6 +118,7 @@ class RundownrowForm extends Component
             $this->type_disabled    = 'disabled';
         
             event(new RundownEvent(['type' => 'edit', 'id' => $id], $this->rundown->id));
+            $this->emit('in_edit_mode', true);
         }
     }
 
@@ -140,6 +142,7 @@ class RundownrowForm extends Component
         }
         event(new RundownEvent(['type' => 'cancel_edit', 'id' => $this->rundown_row_id], $this->rundown->id));
         $this->resetForm();
+        $this->emit('in_edit_mode', false);
     }
 
     private function resetForm(){

@@ -12,7 +12,7 @@
                 <x-Forms.input type="text" name="cue" value="{{ $cue }}" wrapClass="col-2" wire="cue" label="rundown.cue" inputClass="form-control-sm" />
                 <x-Forms.Select name="source" wrapClass="col" selectClass="form-control-sm" disabled="" wire="source" label="rundown.source" :options="$sourceOptions" />
                 <x-Forms.input type="text" name="audio" value="{{ $audio }}" wrapClass="col" wire="audio" label="rundown.audio" inputClass="form-control-sm" />
-                <x-Forms.input type="time" name="duration" value="" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" />
+                <x-Forms.time type="time" name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
                 <x-Forms.input type="checkbox" name="autotrigg" value="{{ $autotrigg }}" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
         @break
 
@@ -21,7 +21,7 @@
                 <x-Forms.input type="text" name="cue" value="{{ $cue }}" wrapClass="col-2" wire="cue" label="rundown.cue" inputClass="form-control-sm" />
                 <x-Forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" label="rundown.source" inputClass="form-control-sm" />
                 <x-Forms.input type="text" name="audio" value="{{ $audio }}" wrapClass="col" wire="audio" label="rundown.audio" inputClass="form-control-sm" />
-                <x-Forms.input type="time" name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" />
+                <x-Forms.time type="time" name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
                 <x-Forms.input type="checkbox" name="autotrigg" value="" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
         @break
 
@@ -30,7 +30,7 @@
         @break
 
     @case('BREAK')
-                <x-Forms.input type="time" name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" />
+                <x-Forms.time type="time" name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
         @break
                 
 @endswitch

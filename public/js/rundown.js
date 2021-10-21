@@ -15,25 +15,35 @@ function initSortable(){
 }
 //Sets duration input 
 function setDuration($time){
-    $( "#input-duration" ).attr( "step", "1" );
     if ($time == '') $time = '00:00:00';
     document.getElementById("input-duration").value = $time;
 }
 $( document ).ready(function() {
     setDuration('');
     initSortable();
+    $('body').attr('onbeforeunload', 'return confirmExit()');
 });
 window.addEventListener('typeHasChanged', event => {
     setDuration(event.detail.newTime);
 });
-window.addEventListener('render', event => {
-    setDuration();
-});
-window.onbeforeunload = confirmExit;
+var in_edit_mode = false;
+Livewire.on('in_edit_mode', edit => {
+    if(edit){
+        in_edit_mode = true;
+    }
+    else {
+        in_edit_mode = false;
+    }
+})
 
-function confirmExit(){
+  function confirmExit()
+  {
+    if (in_edit_mode){
+        Livewire.emit('cancel_edit');
+        console.log('I am in edit mode');
+    } 
     return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
-}   
+  }
 
 function disable_menu(id){
     $('#rundown-row-'+id).css({'color': '#cccccc'}).find('.dropdown-menu').find('.delete-row-menu').addClass('disabled');
