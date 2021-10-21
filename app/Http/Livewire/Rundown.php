@@ -12,8 +12,8 @@ class Rundown extends Component
     public $rundownrows;
 
     protected $listeners = [
-        'render' => 'add_rows',
-        'orderChanged' => 'updateOrder'
+        'render'        => 'add_rows',
+        'orderChanged'  => 'updateOrder'
     ];
 
     public function render()
@@ -37,8 +37,9 @@ class Rundown extends Component
          }
         //else just delete the last row
         Rundown_rows::findOrFail($id)->delete();
-        event(new RundownEvent('render', $this->rundown->id));
+        event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
     }
+
     public function updateOrder($old_position, $new_position)
     {
         $moved_row = $this->rundownrows[$old_position];

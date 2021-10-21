@@ -23,7 +23,7 @@
 @foreach ($rundownrows as $row)
     @switch($row->type)
     @case('PRE')
-        <tr class="rundown-row">
+        <tr class="rundown-row" id="rundown-row-{{ $row->id }}">
             <td scope="col" class="rundown-pre">PRE</td>
             <td scope="col" class="rundown-pre"><i class="bi bi-list-nested"></i></td>
             <td scope="col" class="rundown-pre">{{ $row->story }}</td>
@@ -37,7 +37,7 @@
         </tr>
         @break
         @case('BREAK')
-        <tr class="rundown-row rundown-break-row">
+        <tr class="rundown-row rundown-break-row" id="rundown-row-{{ $row->id }}">
             <td scope="col" class="rundown-break">BRK</td>
             <td scope="col" class="rundown-break"></td>
             <td scope="col" class="rundown-break">{{ $row->story }}</td>
@@ -45,7 +45,7 @@
             <td scope="col" class="rundown-break"></td>
             <td scope="col" class="rundown-break">{{ $row->source }}</td>
             <td scope="col" class="rundown-break"></td>
-            <td scope="col" class="rundown-break">{{ date('H:i:s', $row->duration) }}</td>
+            <td scope="col" class="rundown-break">{{ gmdate('H:i:s', $row->duration) }}</td>
             <td scope="col" class="rundown-break">{{ date('H:i:s', $timer) }}</td>
         @php $timer = $timer + $row->duration @endphp
         <td scope="col" class="rundown-break">{{ date('H:i:s', $timer) }}</td>
@@ -56,14 +56,14 @@
         @break
 
         @default
-        <tr data-toggle="collapse" data-target="#rundonwnchild1" class="accordion-toggle rundown-row" data-parent="#rundownaccordion">
+        <tr data-toggle="collapse" data-target="#rundonwnchild1" class="accordion-toggle rundown-row" data-parent="#rundownaccordion" id="rundown-row-{{ $row->id }}" @if($row->locked) style="color: #cccccc" @endif>
             <td scope="col">
                 <div class="dropdown">
                     <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $x.$y }}</a>
-
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
-                        <a class="dropdown-item" href="#" >{{ 'rundown.edit_script' }}</a>
+                        <a class="dropdown-item delete-row-menu @if($row->locked || $row->script_locked) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                        <a class="dropdown-item edit-row-menu @if($row->locked) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
+                        <a class="dropdown-item edit-script-menu @if($row->script_locked) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
                         <a class="dropdown-item" href="#">{{ __('rundown.new_meta') }}</a>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
         @endif
             </td>
             <td scope="col">{{ $row->audio }}</td>
-            <td scope="col">{{ date('H:i:s', $row->duration) }}</td>
+            <td scope="col">{{ gmdate('H:i:s', $row->duration) }}</td>
             <td scope="col">{{ date('H:i:s', $timer) }}</td>
         @php $timer = $timer + $row->duration @endphp
             <td scope="col">{{ date('H:i:s', $timer) }}</td>

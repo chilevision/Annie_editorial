@@ -38,6 +38,8 @@ return [
     'edit_title'    => 'Change title:',
     'edit_start'    => 'Change start date and time:',
     'edit_stop'     => 'Change stop date and time:',
+    'edit_script'   => 'Edit script',
+    'edit_row'      => 'Edit row',
     'cancel'        => 'Cancel',
     'next'          => 'Next',
     'update'        => 'Update',
@@ -49,7 +51,7 @@ return [
     'source'        => 'Source',
     'audio'         => 'Audio',
     'duration'      => 'Duration',
-    'triggering'    => 'Disable triggering',
+    'triggering'    => 'Trigger',
     'create'        => 'Create',
     'delete'        => 'Delete',
 

@@ -9,8 +9,8 @@ use App\Events\RundownEvent;
 
 class RundownrowForm extends Component
 {
-    public $test;
     public $rundown;
+    public $rundown_row_id;
     public $story;
     public $talent;
     public $cue;
@@ -18,8 +18,12 @@ class RundownrowForm extends Component
     public $source = 'CAM1';
     public $audio;
     public $duration;
-    public $autotrigg = 0;
+    public $autotrigg = 1;
+
+    public $header = 'rundown.new_row';
+    public $submit_btn_label = 'rundown.create';
     public $formAction = 'submit';
+    public $type_disabled;
 
     protected $typeOptions = [
         ['value' => 'MIXER', 'title' => 'MIXER'],
@@ -47,6 +51,9 @@ class RundownrowForm extends Component
         'name' => 'required|min:6',
         'email' => 'required|email',
     ];
+    protected $listeners = [
+        'editRow' => 'editRow'
+    ];
 
     public function render()
     {
@@ -68,7 +75,7 @@ class RundownrowForm extends Component
 
         // Execution doesn't reach here if validation fails.
 
-        Rundown_rows::create([
+        $row = Rundown_rows::create([
             'rundown_id'        => $this->rundown->id,
             'before_in_table'   => $before_in_table,
             'color'             => $color,
@@ -81,15 +88,38 @@ class RundownrowForm extends Component
             'duration'          => $duration,
             'autotrigg'         => $this->autotrigg
         ]);
-        $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration']);
-        $this->type = 'MIXER';
-        $this->autotrigg = 0;
-        event(new RundownEvent('render', $this->rundown->id));
+        $this->resetForm();
+        event(new RundownEvent(['type'=> 'render', 'id' => $row->id], $this->rundown->id));
     }
 
     public function update(){
         dd('update');
     }
+
+    public function editRow($id){
+        $row = Rundown_rows::find($id);
+        if($row) {
+            $row->locked = 1;
+            $row->save();
+            $this->rundown_row_id   = $id;
+            $this->story            = $row->story;
+            $this->talent           = $row->talent;
+            $this->cue              = $row->cue;
+            $this->type             = $row->type;
+            $this->source           = $row->source;
+            $this->audio            = $row->audio;
+            $this->duration         = gmdate('H:i:s', $row->duration);
+            $this->autotrigg        = $row->autotrigg;
+
+            $this->header           = 'rundown.edit_row';
+            $this->submit_btn_label = 'rundown.update';
+            $this->formAction       = 'update';
+            $this->type_disabled    = 'disabled';
+        
+            event(new RundownEvent(['type' => 'edit', 'id' => $id], $this->rundown->id));
+        }
+    }
+
     public function typeChange() {
         $this->dispatchBrowserEvent('typeHasChanged', ['newTime' => '']);
         switch($this->type){
@@ -100,5 +130,26 @@ class RundownrowForm extends Component
                 $this->source = '';
             break;
         }
+    }
+
+    public function cancel_edit(){
+        $row = Rundown_rows::find($this->rundown_row_id);
+        if($row) {
+            $row->locked = 0;
+            $row->save();
+        }
+        event(new RundownEvent(['type' => 'cancel_edit', 'id' => $this->rundown_row_id], $this->rundown->id));
+        $this->resetForm();
+    }
+
+    private function resetForm(){
+        $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration']);
+        $this->type             = 'MIXER';
+        $this->autotrigg        = 1;
+        $this->header           = 'rundown.new_row';
+        $this->submit_btn_label = 'rundown.create';
+        $this->formAction       = 'submit';
+        $this->type_disabled    = '';
+        $this->dispatchBrowserEvent('typeHasChanged', ['newTime' => '']);
     }
 }

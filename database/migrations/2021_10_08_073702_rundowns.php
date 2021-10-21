@@ -38,6 +38,8 @@ class Rundowns extends Migration
             $table->integer('duration');
             $table->binary('script')->nullable();
             $table->boolean('autotrigg')->default(1);
+            $table->boolean('locked')->default(0);
+            $table->boolean('script_locked')->default(0);
             $table->timestamps();
         });
 
@@ -51,6 +53,7 @@ class Rundowns extends Migration
             $table->integer('start');
             $table->integer('duration');
             $table->binary('data')->nullable();
+            $table->boolean('locked')->default(0);
             $table->timestamps();
         });
     }

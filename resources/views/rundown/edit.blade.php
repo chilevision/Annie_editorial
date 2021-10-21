@@ -12,11 +12,11 @@
 		});
 		var channel = pusher.subscribe('rundown');
 		channel.bind('{{ $rundown->id }}', function(data) {
-			console.log(data.message);
-			switch (data.message){
-				case 'render' :
-					Livewire.emit('render');
-				break;
+			console.log(data.message.type);
+			switch (data.message.type){
+				case 'render' 		: Livewire.emit('render'); 			break;
+				case 'edit' 		: disable_menu(data.message.id); 	break;
+				case 'cancel_edit'	: enable_menu(data.message.id);		break;
 			}
 		});
 	</script>
@@ -31,10 +31,7 @@
 			<a href="/dashboard/rundown">{{ __('rundown.scripts') }}</a><i class="bi bi-caret-right"></i>{{ __('rundown.edit') }}: <cite title="Source Title"> {{ $rundown->title }} </cite>
 		</div>	
 		<div class="card-body">
-			<div class="card text-white bg-custom mb-3 mt-5">
-				<div class="card-header">{{ __('rundown.new_row') }}</div>
-				@livewire('rundownrow-form', ['rundown' => $rundown])
-			</div>
+			@livewire('rundownrow-form', ['rundown' => $rundown])
 			<table class="table table-bordered table-sm mb-n1 mt-4">
 				<tr>
 					<td class="text-center">
