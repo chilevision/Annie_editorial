@@ -1,8 +1,20 @@
-//Adds tooltip fuctionality to display filename on rundown VB files
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+$( document ).ready(function() {
+    initSortable();
 });
-//Adds row soring functionality to enable user to sort rundown rows.
+
+/*Sets duration value on rundown form duration input
+|
+| param: time = time value as string (h,i,s separated by :)
+*/
+function setDuration(time){
+    if (time == '') time = '00:00:00';
+    document.getElementById("input-duration").value = time;
+}
+
+/*Adds row soring functionality to enable user to sort rundown rows i table.
+|
+|
+*/
 function initSortable(){
     var el = document.getElementById('rundown-body');
     var sortable = new Sortable(el, {
@@ -13,19 +25,25 @@ function initSortable(){
         },
     });
 }
-//Sets duration input 
-function setDuration($time){
-    if ($time == '') $time = '00:00:00';
-    document.getElementById("input-duration").value = $time;
-}
-$( document ).ready(function() {
-    setDuration('');
-    initSortable();
-  //  $('body').attr('onbeforeunload', 'return confirmExit()');
+/*Adds a bootstrap tooltip to display filename on rundown VB files in rundown table
+|
+|
+*/
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
 });
-window.addEventListener('typeHasChanged', event => {
-    setDuration(event.detail.newTime);
-});
+
+
+/* ----------------------------------------------------------*/
+/* ----------------- EVENT LISTNERS -------------------------*/
+/* ----------------------------------------------------------*/
+
+
+/* Listens for if a user enters or exits edit mode and sets a variable in memory
+|
+| var in_edit_mode true/false tells if a user is in edit mode or not
+| param: listens for parameter 'edit' (bool) to set variable
+*/
 var in_edit_mode = false;
 Livewire.on('in_edit_mode', edit => {
     if(edit){
@@ -35,18 +53,22 @@ Livewire.on('in_edit_mode', edit => {
         in_edit_mode = false;
     }
 })
-window.onbeforeunload = function () {
-    Livewire.emit('cancel_edit');
-}
 
-  function confirmExit()
-  {
+/* Listens for if a user exits page
+|
+| If the user is in edit mode: emits to cancel edit before user exits
+*/
+window.onbeforeunload = function () {
     if (in_edit_mode){
         Livewire.emit('cancel_edit');
-    } 
+    }
     return undefined;
-  }
+}
 
+/* Listens for pusher messages to disable or enable the menu on a rundown row. 
+|
+|
+*/
 function disable_menu(id){
     $('#rundown-row-'+id).css({'color': '#cccccc'}).find('.dropdown-menu').find('.delete-row-menu').addClass('disabled');
     $('#rundown-row-'+id).find('.dropdown-menu').find('.edit-row-menu').addClass('disabled');
