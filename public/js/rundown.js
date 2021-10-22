@@ -38,7 +38,15 @@ function initSortable(){
         // Element dragging ended
         onEnd: function (evt) {
             if (evt.oldIndex != evt.newIndex ){
-                Livewire.emit('orderChanged', evt.oldIndex, evt.newIndex);
+                rows = new Array;
+                console.log(evt.newIndex);
+                $('#rundown-body').find('.rundown-row').each(function() {
+                    rows.push( this.id.slice(12) );
+                });
+                moved_row       = rows[evt.newIndex];
+                before_in_table = rows[evt.newIndex-1];
+                after_in_table  = rows[evt.newIndex+1];
+                Livewire.emit('orderChanged', moved_row, before_in_table, after_in_table);
             }
             Livewire.emit('sortingEnded');
         },

@@ -32,13 +32,7 @@ class Rundown extends Component
     }
 
     public function deleteRow($id){
-        $row_before_this = $this->rundownrows->where('id', $id)->first()['before_in_table'];
-        //if this isn't the last row: find the next row and update it's "before_in_table" value
-        if (!$this->rundownrows->where('before_in_table', '=', $id)->isEmpty()) {
-            $next_row = $this->rundownrows->where('before_in_table', $id)->first()['id'];
-            Rundown_rows::where('id', $next_row)->update(array('before_in_table' => $row_before_this));
-         }
-        //else just delete the last row
+        $this->pick_out_row($id);
         Rundown_rows::findOrFail($id)->delete();
         event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
     }
@@ -61,11 +55,21 @@ class Rundown extends Component
         event(new RundownEvent(['type' => 'unlockSorting'], $this->rundown->id));
     }
 
-    public function updateOrder($old_position, $new_position)
-    {
-        $moved_row = $this->rundownrows[$old_position];
-        ($new_position-1>0) ? $row_abowe = $this->rundownrows[$new_position-1]['id'] : $row_abowe = NULL;
-        
-        dd($moved_row);
+    public function updateOrder($moved_row, $before_in_table, $after_in_table)
+    {        
+        $this->pick_out_row($moved_row);
+        Rundown_rows::where('id', $moved_row)->update(['before_in_table' => $before_in_table]);
+        Rundown_rows::where('id', $after_in_table)->update(['before_in_table' => $moved_row]);
+        event(new RundownEvent(['type' => 'render'], $this->rundown->id));
+    }
+
+    private function pick_out_row($id){
+        $row_before_this = $this->rundownrows->where('id', $id)->first()['before_in_table'];
+        //if this isn't the last row: find the next row and update it's "before_in_table" value
+        if (!$this->rundownrows->where('before_in_table', '=', $id)->isEmpty()) {
+            $next_row = $this->rundownrows->where('before_in_table', $id)->first()['id'];
+            Rundown_rows::where('id', $next_row)->update(['before_in_table' => $row_before_this]);
+         }
+         return;
     }
 }
