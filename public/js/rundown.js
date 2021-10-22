@@ -25,6 +25,7 @@ function initSortable(){
         },
     });
 }
+
 /*Adds a bootstrap tooltip to display filename on rundown VB files in rundown table
 |
 |
@@ -39,10 +40,19 @@ $(function () {
 /* ----------------------------------------------------------*/
 
 
+/* Listens for for a new value to set the duration input on form
+|
+| passes new time to setDuration()
+| param: time = time value as string (h,i,s separated by :)
+*/
+window.addEventListener('set_duration_input', time => {
+    setDuration(time.detail.newTime);
+});
+
 /* Listens for if a user enters or exits edit mode and sets a variable in memory
 |
 | var in_edit_mode true/false tells if a user is in edit mode or not
-| param: listens for parameter 'edit' (bool) to set variable
+| param: edit (bool) to set variable
 */
 var in_edit_mode = false;
 Livewire.on('in_edit_mode', edit => {

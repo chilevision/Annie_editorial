@@ -158,7 +158,6 @@ class RundownrowForm extends Component
 
 
     public function typeChange() {
-        $this->dispatchBrowserEvent('typeHasChanged', ['newTime' => '']);
         switch($this->type){
             case 'MIXER':
                 $this->source = 'CAM1';
@@ -177,6 +176,6 @@ class RundownrowForm extends Component
         $this->submit_btn_label = 'rundown.create';
         $this->formAction       = 'submit';
         $this->type_disabled    = '';
-        $this->dispatchBrowserEvent('typeHasChanged', ['newTime' => '']);
+        $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
     }
 }
