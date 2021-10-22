@@ -65,6 +65,10 @@ class RundownrowForm extends Component
         ]);
     }
 
+    /* Function to create a new rundown row.
+    |
+    |
+    */
     public function submit()
     {
         $duration           = to_seconds($this->duration);
@@ -93,10 +97,11 @@ class RundownrowForm extends Component
         event(new RundownEvent(['type'=> 'render', 'id' => $row->id], $this->rundown->id));
     }
 
-    public function update(){
-        dd('update');
-    }
 
+    /* Function to edit a  rundown row.
+    |
+    |
+    */
     public function editRow($id){
         $row = Rundown_rows::find($id);
         if($row) {
@@ -122,16 +127,22 @@ class RundownrowForm extends Component
         }
     }
 
-    public function typeChange() {
-        $this->dispatchBrowserEvent('typeHasChanged', ['newTime' => '']);
-        switch($this->type){
-            case 'MIXER':
-                $this->source = 'CAM1';
-            break;
-            case 'VB': 
-                $this->source = '';
-            break;
+    public function update(){
+        $row = Rundown_rows::find($this->rundown_row_id);
+        if($row){
+            $row->story            = $this->story;
+            $row->talent           = $this->talent;
+            $row->cue              = $this->cue;
+            $row->source           = $this->source;
+            $row->audio            = $this->audio;
+            $row->duration         = to_seconds($this->duration);
+            $row->autotrigg        = $this->autotrigg;
+            $row->locked = 0;
+            $row->save();
         }
+        event(new RundownEvent(['type' => 'row_updated', 'id' => $this->rundown_row_id], $this->rundown->id));
+        $this->resetForm();
+        $this->emit('in_edit_mode', false);
     }
 
     public function cancel_edit(){
@@ -143,6 +154,19 @@ class RundownrowForm extends Component
         event(new RundownEvent(['type' => 'cancel_edit', 'id' => $this->rundown_row_id], $this->rundown->id));
         $this->resetForm();
         $this->emit('in_edit_mode', false);
+    }
+
+
+    public function typeChange() {
+        $this->dispatchBrowserEvent('typeHasChanged', ['newTime' => '']);
+        switch($this->type){
+            case 'MIXER':
+                $this->source = 'CAM1';
+            break;
+            case 'VB': 
+                $this->source = '';
+            break;
+        }
     }
 
     private function resetForm(){

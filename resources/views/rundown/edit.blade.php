@@ -17,6 +17,10 @@
 				case 'render' 		: Livewire.emit('render'); 			break;
 				case 'edit' 		: disable_menu(data.message.id); 	break;
 				case 'cancel_edit'	: enable_menu(data.message.id);		break;
+				case 'row_updated'	: 
+					enable_menu(data.message.id);
+					Livewire.emit('render');
+					break;
 			}
 		});
 

@@ -21,7 +21,7 @@ function setDuration($time){
 $( document ).ready(function() {
     setDuration('');
     initSortable();
-    $('body').attr('onbeforeunload', 'return confirmExit()');
+  //  $('body').attr('onbeforeunload', 'return confirmExit()');
 });
 window.addEventListener('typeHasChanged', event => {
     setDuration(event.detail.newTime);
@@ -35,14 +35,16 @@ Livewire.on('in_edit_mode', edit => {
         in_edit_mode = false;
     }
 })
+window.onbeforeunload = function () {
+    Livewire.emit('cancel_edit');
+}
 
   function confirmExit()
   {
     if (in_edit_mode){
         Livewire.emit('cancel_edit');
-        console.log('I am in edit mode');
     } 
-    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+    return undefined;
   }
 
 function disable_menu(id){
