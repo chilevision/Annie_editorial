@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Rundown_rows;
+use App\Models\Rundowns;
 use App\Events\RundownEvent;
 
 class Rundown extends Component
@@ -12,8 +13,10 @@ class Rundown extends Component
     public $rundownrows;
 
     protected $listeners = [
-        'render'        => 'add_rows',
-        'orderChanged'  => 'updateOrder'
+        'render'            => 'add_rows',
+        'orderChanged'      => 'updateOrder',
+        'sortingStarted'    => 'lockSorting',
+        'sortingEnded'      => 'unlockSorting',
     ];
 
     public function render()
@@ -38,6 +41,24 @@ class Rundown extends Component
         //else just delete the last row
         Rundown_rows::findOrFail($id)->delete();
         event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
+    }
+
+    public function lockSorting($code){
+        $rundown = Rundowns::find($this->rundown->id);
+        if($rundown) {
+            $rundown->sortable = 0;
+            $rundown->save();
+        }
+        event(new RundownEvent(['type' => 'lockSorting', 'code' => $code], $this->rundown->id));
+    }
+
+    public function unlockSorting(){
+        $rundown = Rundowns::find($this->rundown->id);
+        if($rundown) {
+            $rundown->sortable = 1;
+            $rundown->save();
+        }
+        event(new RundownEvent(['type' => 'unlockSorting'], $this->rundown->id));
     }
 
     public function updateOrder($old_position, $new_position)

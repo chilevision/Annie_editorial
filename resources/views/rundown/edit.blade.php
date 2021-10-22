@@ -14,21 +14,17 @@
 		channel.bind('{{ $rundown->id }}', function(data) {
 			console.log(data.message.type);
 			switch (data.message.type){
-				case 'render' 		: Livewire.emit('render'); 			break;
-				case 'edit' 		: disable_menu(data.message.id); 	break;
-				case 'cancel_edit'	: enable_menu(data.message.id);		break;
+				case 'render' 			: Livewire.emit('render'); 				break;
+				case 'edit' 			: disable_menu(data.message.id); 		break;
+				case 'cancel_edit'		: enable_menu(data.message.id);			break;
+				case 'lockSorting'		: disable_sorting(data.message.code);	break;
+				case 'unlockSorting'	: sortable.options.disabled = false;	break;
 				case 'row_updated'	: 
 					enable_menu(data.message.id);
 					Livewire.emit('render');
 					break;
 			}
 		});
-
-  function confirmExit()
-  {
-    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
-  }
-
 	</script>
 	<script src="{{ asset('js/Sortable.min.js')}}"></script>
 @stop
@@ -74,4 +70,7 @@
 @endsection
 @section('footer_scripts')
 <script src="{{ asset('js/rundown.js') }}"></script>
+@if (!$rundown->sortable)
+	<script> $( document ).ready(function() { sortable.options.disabled = true; }); </script>
+@endif
 @endsection

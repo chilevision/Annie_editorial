@@ -1,3 +1,14 @@
+/*                     rundown.js
+|                   Andreas Andersson
+|                   andreas@amedia.nu
+*/
+
+/* ----------------------------------------------------------*/
+/* ---------------------- VARIABLES -------------------------*/
+/* ----------------------------------------------------------*/
+var sortable;
+var code;
+
 $( document ).ready(function() {
     initSortable();
 });
@@ -17,13 +28,35 @@ function setDuration(time){
 */
 function initSortable(){
     var el = document.getElementById('rundown-body');
-    var sortable = new Sortable(el, {
+    sortable = new Sortable(el, {
         draggable: ".rundown-row",  // Specifies which items inside the element should be draggable
+        // Element dragging started
+        onStart: function () {
+            code = makeCode(10)
+            Livewire.emit('sortingStarted', code);
+        },
         // Element dragging ended
         onEnd: function (evt) {
-            Livewire.emit('orderChanged', evt.oldIndex, evt.newIndex); 
+            if (evt.oldIndex != evt.newIndex ){
+                Livewire.emit('orderChanged', evt.oldIndex, evt.newIndex);
+            }
+            Livewire.emit('sortingEnded');
         },
     });
+}
+
+/*Generates a random code 
+|
+| param: lenght value as int = the number of characters in code
+*/
+function makeCode(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
 }
 
 /*Adds a bootstrap tooltip to display filename on rundown VB files in rundown table
@@ -33,6 +66,12 @@ function initSortable(){
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
+
+function disable_sorting(sortingCode){
+    if (sortingCode != code){
+        sortable.options.disabled = true;
+    }
+}
 
 
 /* ----------------------------------------------------------*/
