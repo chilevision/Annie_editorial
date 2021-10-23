@@ -1,18 +1,17 @@
 <?php
 
-namespace App\View\Components\Tables;
+namespace App\View\Components\Table;
 
 use Illuminate\View\Component;
 
-class table extends Component
+class row extends Component
 {
-    public array $headers;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(array $headers)
+    public function __construct()
     {
         //
     }
@@ -24,6 +23,6 @@ class table extends Component
      */
     public function render()
     {
-        return view('components.tables.table');
+        return view('components.table.row');
     }
 }

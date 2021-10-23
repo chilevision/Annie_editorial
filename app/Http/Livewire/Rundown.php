@@ -11,6 +11,8 @@ class Rundown extends Component
 {
     public $rundown;
     public $rundownrows;
+    public $page            = 'A';
+    public $page_number     = 1;
 
     protected $listeners = [
         'render'            => 'add_rows',
@@ -19,10 +21,27 @@ class Rundown extends Component
         'sortingEnded'      => 'unlockSorting',
     ];
 
+    public $cells = [
+        ['style' => 'width: 60px;', 'text' => 'rundown.page'],
+        ['style' => 'padding: 0;', 'text' => ''],
+        ['style' => '', 'text' => 'rundown.story'],
+        ['style' => 'width: 60px;', 'text' => 'rundown.type'],
+        ['style' => 'width: 150px;', 'text' => 'rundown.talent'],
+        ['style' => 'width: 200px;', 'text' => 'rundown.cue'],
+        ['style' => 'width: 80px;', 'text' => 'rundown.source'],
+        ['style' => 'width: 80px;', 'text' => 'rundown.audio'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.duration'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.start'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.stop']
+    ];
+
     public function render()
     {
+        $timer = strtotime($this->rundown->starttime);
+        $this->page            = 'A';
+        $this->page_number     = 1;
         $this->add_rows();
-        return view('livewire.rundown')->with(['rundownrows' => $this->rundownrows, 'rundown' => $this->rundown]);
+        return view('livewire.rundown')->with(['rundownrows' => $this->rundownrows, 'rundown' => $this->rundown, 'timer' => $timer]);
     }
 
     public function add_rows()

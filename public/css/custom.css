@@ -41,3 +41,6 @@ tr.rundown-break-row{
 .rundown-checkbox{
     display: block; background-color: indigo; margin: 5px auto;
 }
+.hiddenRow{
+    padding: 0!important;
+}
