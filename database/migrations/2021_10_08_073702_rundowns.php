@@ -53,7 +53,7 @@ class Rundowns extends Migration
             $table->string('title');
             $table->string('type');
             $table->string('source');
-            $table->integer('start');
+            $table->integer('delay');
             $table->integer('duration');
             $table->binary('data')->nullable();
             $table->boolean('locked')->default(0);

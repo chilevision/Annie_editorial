@@ -18,7 +18,7 @@ class Rundown_meta_rows extends Model
         'title',
         'type',
         'source',
-        'start',
+        'delay',
         'duration',
         'data',
         'locked',
