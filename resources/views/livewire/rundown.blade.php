@@ -90,7 +90,7 @@
                             <td scope="col">{{  $meta_row->type }}</td>
                             <td scope="col">{{  $meta_row->source }}</td>
                             <td scope="col">{{  $meta_row->data }}</td>
-                            <td scope="col">{{  gmdate('H:i:s', $meta_row->start) }}</td>
+                            <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
                             <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                         </tr>
         @php $i++; @endphp

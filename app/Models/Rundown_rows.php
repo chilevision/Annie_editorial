@@ -34,7 +34,7 @@ class Rundown_rows extends Model
 
     public function rundown_meta_rows()
     {
-        return $this->hasMany(Rundown_meta_rows::class);
+        return $this->hasMany(Rundown_meta_rows::class)->orderBy('delay', 'asc');
     }
 
     public function rundowns()
