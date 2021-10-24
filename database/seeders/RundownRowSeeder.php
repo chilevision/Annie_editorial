@@ -4,8 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Rundown_rows;
+use App\Models\Rundown_meta_rows;
 
-class RundownRowSeder extends Seeder
+class RundownRowSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -58,6 +59,44 @@ class RundownRowSeder extends Seeder
                 'duration'          => random_int(1,180)
             ];
             Rundown_rows::create( $array );
+        }
+
+
+        $metaTypes = ['AUDIO', 'GFX', 'KEY', 'BG'];
+        $bgTypes = ['SCREEN', 'MONITOR', 'GREEN-SCREEN'];
+        $i = 0;
+        while ( $i< 50 ){
+            $theType = $metaTypes[random_int(0, count($metaTypes)-1)];
+            switch ($theType){
+                case 'AUDIO' : 
+                    $theTitle = 'AUDIO SCENE SWITCH';
+                    $theSource = 'scene: '.random_int(1, 10);
+                break;
+                case 'GFX' :
+                    $theTitle = $names[random_int(0, count($names)-1)].' LOWER THIRD';
+                    $theSource = 'NEWS_LOWER_THIRD04';
+                break;
+                case 'KEY' :
+                    $theTitle = 'PIP KEY 0'.random_int(1, 8);
+                    $theSource = 'KEY-'.random_int(1, 4);
+                break;
+                case 'BG' :
+                    $theTitle = $bgTypes[random_int(0, count($bgTypes)-1)].' BACKGROUND';
+                    strtok(str_shuffle($storys[random_int(0, count($storys)-1)]), ' ');  
+                    $theSource = 'KEY-'.random_int(1, 4);
+                break;
+            }
+            $metaArray = [
+                'rundown_rows_id'   => random_int(1, count($colors)),
+                'title'             => $theTitle,
+                'type'              => $theType,
+                'source'            => $theSource,
+                'start'             => random_int(0, 179),
+                'duration'          => random_int(1, 999999)
+            ];
+            Rundown_meta_rows::create($metaArray);
+            
+            $i++;
         }
     }
 }

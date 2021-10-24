@@ -42,7 +42,7 @@ class Rundown extends Component
         ['style' => 'width: 100px;', 'text' => 'rundown.type'],
         ['style' => 'width: 80px;', 'text' => 'rundown.source'],
         ['style' => 'width: 400px;', 'text' => 'rundown.data'],
-        ['style' => 'width: 90px;', 'text' => 'rundown.start'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.delay'],
         ['style' => 'width: 90px;', 'text' => 'rundown.duration']
     ];
 

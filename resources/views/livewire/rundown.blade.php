@@ -41,8 +41,8 @@
         <tr class="rundown-row" id="rundown-row-{{ $row->id }}" @if($row->locked) style="color: #cccccc" @endif>
             <td scope="col">
                 <div class="dropdown">
-                    <a class="dropdown-toggle text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-toggle text-dark" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
+                    <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
                         <a class="dropdown-item delete-row-menu @if($row->locked || $row->script_locked) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
                         <a class="dropdown-item edit-row-menu @if($row->locked) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
                         <a class="dropdown-item edit-script-menu @if($row->script_locked) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
@@ -74,20 +74,27 @@
 				<div class="accordian-body collapse meta-container" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
                     <x-Table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
         @php $i = 1; @endphp
-        @forelse ($row->Rundown_meta_rows as $meta_rows )
+        @foreach ($row->Rundown_meta_rows as $meta_row )
                         <tr>
-                            <td>{{ $page.$page_number.'-'.$i }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-dark" href="#" role="button" id="meta-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number.'-'.$i }}</a>
+                                    <div class="dropdown-menu" aria-labelledby="meta-{{ $meta_row->id }}-link">
+                                        <a class="dropdown-item delete-meta-menu" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
+                                        <a class="dropdown-item edit-meta-menu" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
+                                    </div>
+                                </div>
+                            </td>
                             <td scope="col" style="background: #{{ $row->color }}"></td>
-                            <td scope="col">{{ $meta_rows->title }}</td>
-                            <td scope="col">{{  $meta_rows->type }}</td>
-                            <td scope="col">{{  $meta_rows->source }}</td>
-                            <td scope="col">{{  $meta_rows->data }}</td>
-                            <td scope="col">{{  $meta_rows->start }}</td>
-                            <td scope="col">{{  $meta_rows->duration }}</td>
+                            <td scope="col">{{ $meta_row->title }}</td>
+                            <td scope="col">{{  $meta_row->type }}</td>
+                            <td scope="col">{{  $meta_row->source }}</td>
+                            <td scope="col">{{  $meta_row->data }}</td>
+                            <td scope="col">{{  gmdate('H:i:s', $meta_row->start) }}</td>
+                            <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                         </tr>
         @php $i++; @endphp
-        @empty
-        @endforelse
+        @endforeach
                     </x-Table.table>
                 </div>
             </td>
