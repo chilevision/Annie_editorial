@@ -71,37 +71,24 @@
 
         <tr>
             <td colspan="12" class="hiddenRow">
-				<div class="accordian-body collapse" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
-                    <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
-                        </tbody>
-                      </table>
+				<div class="accordian-body collapse meta-container" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
+                    <x-Table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
+        @php $i = 1; @endphp
+        @forelse ($row->Rundown_meta_rows as $meta_rows )
+                        <tr>
+                            <td>{{ $page.$page_number.'-'.$i }}</td>
+                            <td scope="col" style="background: #{{ $row->color }}"></td>
+                            <td scope="col">{{ $meta_rows->title }}</td>
+                            <td scope="col">{{  $meta_rows->type }}</td>
+                            <td scope="col">{{  $meta_rows->source }}</td>
+                            <td scope="col">{{  $meta_rows->data }}</td>
+                            <td scope="col">{{  $meta_rows->start }}</td>
+                            <td scope="col">{{  $meta_rows->duration }}</td>
+                        </tr>
+        @php $i++; @endphp
+        @empty
+        @endforelse
+                    </x-Table.table>
                 </div>
             </td>
         </tr>

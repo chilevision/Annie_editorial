@@ -38,16 +38,18 @@ class Rundowns extends Migration
             $table->string('audio')->nullable();
             $table->integer('duration');
             $table->binary('script')->nullable();
+            $table->binary('cam_notes')->nullable();
             $table->boolean('autotrigg')->default(1);
             $table->boolean('locked')->default(0);
             $table->boolean('script_locked')->default(0);
+            $table->boolean('cam_notes_locked')->default(0);
             $table->timestamps();
         });
 
         Schema::create('rundown_meta_rows', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('row_id');
-            $table->foreign('row_id')->references('id')->on('rundown_rows')->onDelete('cascade');
+            $table->unsignedBigInteger('rundown_rows_id');
+            $table->foreign('rundown_rows_id')->references('id')->on('rundown_rows')->onDelete('cascade');
             $table->string('title');
             $table->string('type');
             $table->string('source');

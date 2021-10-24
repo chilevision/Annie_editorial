@@ -35,6 +35,17 @@ class Rundown extends Component
         ['style' => 'width: 90px;', 'text' => 'rundown.stop']
     ];
 
+    public $meta_cells = [
+        ['style' => 'width: 60px;', 'text' => 'rundown.page'],
+        ['style' => 'padding: 0; width: 10px', 'text' => ''],
+        ['style' => '', 'text' => 'rundown.title'],
+        ['style' => 'width: 100px;', 'text' => 'rundown.type'],
+        ['style' => 'width: 80px;', 'text' => 'rundown.source'],
+        ['style' => 'width: 400px;', 'text' => 'rundown.data'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.start'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.duration']
+    ];
+
     public function render()
     {
         $timer = strtotime($this->rundown->starttime);

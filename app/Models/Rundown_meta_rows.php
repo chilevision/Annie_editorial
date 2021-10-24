@@ -21,5 +21,11 @@ class Rundown_meta_rows extends Model
         'start',
         'duration',
         'data',
+        'locked',
     ];
+
+    public function rundown_rows()
+    {
+        return $this->belongsTo(Rundown_rows::class);
+    }
 }

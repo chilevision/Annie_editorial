@@ -44,3 +44,6 @@ tr.rundown-break-row{
 .hiddenRow{
     padding: 0!important;
 }
+.meta-container{
+    padding-left: 50px;
+}

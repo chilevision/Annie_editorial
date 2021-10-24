@@ -6,14 +6,19 @@ use Illuminate\View\Component;
 
 class row extends Component
 {
+    public $class;
+    public $id;
+    public $cells;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($class, $id, $cells)
     {
-        //
+        $this->class            = $class;
+        $this->id               = $id;
+        $this->cells            = $cells;
     }
 
     /**

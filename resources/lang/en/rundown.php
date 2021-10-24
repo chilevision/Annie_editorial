@@ -54,6 +54,7 @@ return [
     'triggering'    => 'Trigger',
     'create'        => 'Create',
     'delete'        => 'Delete',
+    'data'          => 'Data',
 
     'message_date_updated'  => 'Your scripts date/title has been updated.',
     'message_ccgfile'       => 'Download CasparCG client-file here.',

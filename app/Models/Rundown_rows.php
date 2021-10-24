@@ -26,8 +26,16 @@ class Rundown_rows extends Model
         'audio',
         'duration',
         'script',
-        'autotrigg'
+        'autotrigg',
+        'locked',
+        'script_locked',
+        'cam_notes_locked',
     ];
+
+    public function rundown_meta_rows()
+    {
+        return $this->hasMany(Rundown_meta_rows::class);
+    }
 
     public function rundowns()
     {
