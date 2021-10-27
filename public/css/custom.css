@@ -1,3 +1,9 @@
+#login_img{
+    background-image: url('img/login.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center; 
+}
 .rundown-pre{
     background-color: #171819;
     color: blanchedalmond;
@@ -30,6 +36,7 @@ tr.rundown-break-row{
 }
 .bg-custom{
     background-color: #49a9d0!important;
+    color: #fff;
 }
 
 #rundown-edit-table-wrap{
