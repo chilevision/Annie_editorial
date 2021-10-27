@@ -1,8 +1,4 @@
 @extends('layouts.app')
-@php 
-	$duration = strtotime($rundown->stoptime) - strtotime($rundown->starttime);
-	$totalTime = strtotime($rundown->stoptime) - strtotime($rundown->starttime);
-@endphp
 @section('add_scripts')
 	<script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
 	<script src="{{ asset('js/pusher.min.js') }}"></script>
@@ -45,7 +41,7 @@
 					</td>
 				</tr>
 			</table>
-			<table class="table table-bordered table-sm mt-n1">
+			<table class="table table-bordered table-sm mt-1">
 				<thead>
 					<tr>
 					<th scope="col">{{ __('rundown.air_date') }}</th>
@@ -57,7 +53,7 @@
 					<tr>
 					<td>{{ gmdate('Y-m-d', strtotime($rundown->starttime))}}</td>
 					<td>{{ date('H:i', strtotime($rundown->starttime)).' - '.date('H:i', strtotime($rundown->stoptime)) }}</td>
-					<td>{{ gmdate('H:i', $duration) }}</td>
+					<td>{{ gmdate('H:i', $rundown->duration) }}</td>
 					</tr>						
 				</tbody>
 			</table>

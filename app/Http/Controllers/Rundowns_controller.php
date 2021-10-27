@@ -47,18 +47,22 @@ class Rundowns_controller extends Controller
      */
     public function store(Request $request)
     {
-         $validator = $this->validateTimestamps($request);
+        $validator = $this->validateTimestamps($request);
         if ($validator){ 
             return redirect('dashboard/rundown/create')->withErrors($validator)->withInput();
         }
+        $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
+        $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
+        $duration   = strtotime($stoptime) - strtotime($starttime);
+
         $newrundown = Rundowns::create([
             'user_id'		=> Auth::user()->id,
             'title'         => addslashes($request->input('rundown-title')),
-            'starttime'		=> $request->input('start-date') . ' ' . $request->input('start-time'),
-            'stoptime'		=> $request->input('stop-date') . ' ' . $request->input('stop-time'),
+            'starttime'		=> $starttime,
+            'stoptime'		=> $stoptime,
+            'duration'      => $duration,
         ]);
-        $storedID 	= $newrundown->id;
-        return redirect('dashboard/rundown/'.$storedID.'/edit');
+        return redirect('dashboard/rundown/'.$newrundown->id.'/edit');
     }
 
     /**
@@ -129,10 +133,15 @@ class Rundowns_controller extends Controller
         if ($validator){ 
             return redirect('dashboard/rundown/'.$request->input('id').'/editcal')->withErrors($validator)->withInput();
         }
+        $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
+        $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
+        $duration   = strtotime($stoptime) - strtotime($starttime);
+
         Rundowns::findOrFail($request->input('id'))->update([
             'title'         => $request->input('rundown-title'),
-            'starttime'		=> $request->input('start-date') . ' ' . $request->input('start-time'),
-            'stoptime'		=> $request->input('stop-date') . ' ' . $request->input('stop-time'),
+            'starttime'		=> $starttime,
+            'stoptime'		=> $stoptime,
+            'duration'      => $duration,
         ]);	
         return redirect('dashboard/rundown')->with('status', __('rundown.message_date_updated'));
 	}

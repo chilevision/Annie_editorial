@@ -1,5 +1,5 @@
 <div>
-    <x-Table.table class="table-striped table-bordered table-sm mt-5" id="rundown-edit-table" headClass="thead-dark" headId="" headRowClass="rundown-row" :th="$cells" bodyClass="" bodyId="rundown-body">
+    <x-Table.table class="table-striped table-bordered table-sm mt-1" id="rundown-edit-table" headClass="thead-dark" headId="" headRowClass="rundown-row" :th="$cells" bodyClass="" bodyId="rundown-body">
 @foreach ($rundownrows as $row)
     @switch($row->type)
     @case('PRE')
@@ -17,7 +17,7 @@
         </tr>
         @break
         @case('BREAK')
-        <tr class="rundown-row rundown-break-row" id="rundown-row-{{ $row->id }}">
+        <tr class="rundown-row rundown-break-row sortable-row" id="rundown-row-{{ $row->id }}">
             <td scope="col" class="rundown-break">BRK</td>
             <td scope="col" class="rundown-break"></td>
             <td scope="col" class="rundown-break">{{ $row->story }}</td>
@@ -38,15 +38,16 @@
         @break
 
         @default
-        <tr class="rundown-row" id="rundown-row-{{ $row->id }}" @if($row->locked) style="color: #cccccc" @endif>
+        <tr class="rundown-row sortable-row" id="rundown-row-{{ $row->id }}" @if($row->locked != NULL) style="color: #cccccc" @endif>
             <td scope="col">
                 <div class="dropdown">
                     <a class="dropdown-toggle text-dark" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
                     <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
-                        <a class="dropdown-item delete-row-menu @if($row->locked || $row->script_locked) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
-                        <a class="dropdown-item edit-row-menu @if($row->locked) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
-                        <a class="dropdown-item edit-script-menu @if($row->script_locked) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('rundown.new_meta') }}</a>
+                        <a class="dropdown-item delete-row-menu @if($row->locked != NULL || $row->script_locked != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                        <a class="dropdown-item edit-row-menu @if($row->locked != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
+                        <a class="dropdown-item edit-script-menu @if($row->script_locked != NULL) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
+                        <a class="dropdown-item edit-cam-menu" href="#">{{ __('rundown.edit_camera_notes') }}</a>
+                        <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}')">{{ __('rundown.new_meta') }}</a>
                     </div>
                 </div>
             </td>
@@ -68,8 +69,8 @@
         @php $timer = $timer + $row->duration @endphp
             <td scope="col">{{ date('H:i:s', $timer) }}</td>
         </tr>
-
-        <tr>
+        @if (!$row->Rundown_meta_rows->isEmpty())
+        <tr class="meta-row">
             <td colspan="12" class="hiddenRow">
 				<div class="accordian-body collapse meta-container" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
                     <x-Table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
@@ -99,9 +100,27 @@
                 </div>
             </td>
         </tr>
+    @endif
         @php $page_number++; @endphp
     @endswitch
-        
+    @php 
+        $rundown_timer = $rundown_timer + $row->duration;
+    @endphp 
 @endforeach
     </x-Table.table>
+    @if ($rundown->duration > $rundown_timer)
+    <div class="alert alert-danger text-center" role="alert">
+        {{ __('rundown.under') }} {{ gmdate('H:i:s', $rundown->duration - $rundown_timer) }}
+    </div>
+    @elseif ($rundown->duration < $rundown_timer)
+    <div class="alert alert-danger text-center" role="alert">
+        {{ __('rundown.over') }} {{ gmdate('H:i:s', $rundown_timer - $rundown->duration) }}
+    </div>
+    @else
+    <div class="alert alert-success text-center" role="alert">
+        {{ __('rundown.in_sync') }}
+      </div>
+    @endif
+    
+
 </div>

@@ -91,7 +91,7 @@ class RundownRowSeeder extends Seeder
                 'title'             => $theTitle,
                 'type'              => $theType,
                 'source'            => $theSource,
-                'start'             => random_int(0, 179),
+                'delay'             => random_int(0, 179),
                 'duration'          => random_int(1, 999999)
             ];
             Rundown_meta_rows::create($metaArray);

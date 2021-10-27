@@ -15,20 +15,22 @@ class Source extends Component
     public $wires = '';
     public $label;
     public $template;
+    public $sourceQuery;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type, $name, $value, $wrapClass, $wire, $label, $inputClass)
+    public function __construct($type, $name, $value, $wrapClass, $wire, $label, $inputClass, $sourceQuery)
     {
         $this->type         = $type;
         $this->name         = $name;
         $this->value        = $value;
         $this->wrapClass    = $wrapClass;
-        $this->inputClass  = $inputClass;
+        $this->inputClass   = $inputClass;
         $this->label        = $label;
+        $this->sourceQuery  = $sourceQuery;
 
         if ($wire != '') $this->wires = $wire;
     }

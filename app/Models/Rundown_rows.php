@@ -27,9 +27,12 @@ class Rundown_rows extends Model
         'duration',
         'script',
         'autotrigg',
-        'locked',
-        'script_locked',
-        'cam_notes_locked',
+        'locked_by',
+        'locked_at',
+        'script_locked_by',
+        'script_locked_at',
+        'notes_locked_by',
+        'notes_locked_at',
     ];
 
     public function rundown_meta_rows()

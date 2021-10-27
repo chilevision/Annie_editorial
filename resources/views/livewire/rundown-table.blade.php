@@ -1,10 +1,10 @@
 @php 
-$properties->orderAsc ? $arrow = '<i class="bi bi-arrow-down-circle-fill"></i>' : $arrow = '<i class="bi bi-arrow-up-circle-fill"></i>';
-$titleOrder = $properties->orderAsc;
-$dateOrder = $properties->orderAsc;
-if ($properties->orderBy == 'title') $titleOrder = !$properties->orderAsc;
-if ($properties->orderBy == 'starttime') $dateOrder = !$properties->orderAsc; 
-$per_page = [10,25,50,100];
+    $properties->orderAsc ? $arrow = '<i class="bi bi-arrow-down-circle-fill"></i>' : $arrow = '<i class="bi bi-arrow-up-circle-fill"></i>';
+    $titleOrder = $properties->orderAsc;
+    $dateOrder = $properties->orderAsc;
+    if ($properties->orderBy == 'title') $titleOrder = !$properties->orderAsc;
+    if ($properties->orderBy == 'starttime') $dateOrder = !$properties->orderAsc; 
+    $per_page = [10,25,50,100];
 @endphp
 <div>
     <table class="table table-striped table-hover">
@@ -25,12 +25,11 @@ $per_page = [10,25,50,100];
         </thead>
         <tbody>
     @foreach ($rundowns as $rundown)
-    @php $duration = strtotime($rundown->stoptime) - strtotime($rundown->starttime) @endphp
             <tr>
                 <td>{{$rundown->title}}</td>
                 <td>{{ date('Y-m-d',strtotime($rundown->starttime)) }}</td>
                 <td>{{ date('H:i',strtotime($rundown->starttime)) }}</td>
-                <td>{{ gmdate("H:i", $duration) }}</td>
+                <td>{{ gmdate("H:i", $rundown->duration) }}</td>
                 <td width="270px">
                     <form name="delete-rundown-form" onsubmit="return confirm({{ __('rundown.message_warning1') }});" method="POST" action="rundown/{{ $rundown->id }}">
                         @csrf

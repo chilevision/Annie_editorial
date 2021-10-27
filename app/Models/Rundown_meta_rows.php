@@ -14,14 +14,15 @@ class Rundown_meta_rows extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'row_id',
+        'rundown_rows_id',
         'title',
         'type',
         'source',
         'delay',
         'duration',
         'data',
-        'locked',
+        'locked_by',
+        'locked_at',
     ];
 
     public function rundown_rows()

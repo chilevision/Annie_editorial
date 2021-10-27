@@ -29,24 +29,29 @@ function setDuration(time){
 function initSortable(){
     var el = document.getElementById('rundown-body');
     sortable = new Sortable(el, {
-        draggable: ".rundown-row",  // Specifies which items inside the element should be draggable
+        draggable: ".sortable-row",  // Specifies which items inside the element should be draggable
         // Element dragging started
         onStart: function () {
-            code = makeCode(10)
+            code = makeCode(10);
+            $('.meta-row').remove();
             Livewire.emit('sortingStarted', code);
         },
         // Element dragging ended
         onEnd: function (evt) {
+            console.log(evt.oldIndex +' ' +evt.newIndex);
             if (evt.oldIndex != evt.newIndex ){
                 rows = new Array;
-                console.log(evt.newIndex);
+                console.log('new pos: ' + evt.newIndex + ' old pos: ' +evt.oldIndex);
                 $('#rundown-body').find('.rundown-row').each(function() {
                     rows.push( this.id.slice(12) );
                 });
+                console.log(rows);
                 moved_row       = rows[evt.newIndex];
                 before_in_table = rows[evt.newIndex-1];
                 after_in_table  = rows[evt.newIndex+1];
                 Livewire.emit('orderChanged', moved_row, before_in_table, after_in_table);
+
+                console.log('moved: ' + moved_row + ' before: ' + before_in_table + ' after: ' + after_in_table);
             }
             Livewire.emit('sortingEnded');
         },

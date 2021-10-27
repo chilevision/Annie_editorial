@@ -21,6 +21,7 @@ class Rundowns extends Migration
             $table->boolean('sortable')->default(1);
             $table->timestamp('starttime');
             $table->timestamp('stoptime');
+            $table->integer('duration');
             $table->timestamps();
         });
 
@@ -40,9 +41,12 @@ class Rundowns extends Migration
             $table->binary('script')->nullable();
             $table->binary('cam_notes')->nullable();
             $table->boolean('autotrigg')->default(1);
-            $table->boolean('locked')->default(0);
-            $table->boolean('script_locked')->default(0);
-            $table->boolean('cam_notes_locked')->default(0);
+            $table->string('locked_by')->nullable();
+            $table->timestamp('locked_at')->nullable();
+            $table->string('script_locked_by')->nullable();
+            $table->timestamp('script_locked_at')->nullable();
+            $table->string('notes_locked_by')->nullable();
+            $table->timestamp('notes_locked_at')->nullable();
             $table->timestamps();
         });
 
@@ -56,7 +60,8 @@ class Rundowns extends Migration
             $table->integer('delay');
             $table->integer('duration');
             $table->binary('data')->nullable();
-            $table->boolean('locked')->default(0);
+            $table->string('locked_by')->nullable();
+            $table->timestamp('locked_at')->nullable();
             $table->timestamps();
         });
     }

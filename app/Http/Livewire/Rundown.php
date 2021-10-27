@@ -4,8 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Rundown_rows;
-use App\Models\Rundowns;
 use App\Events\RundownEvent;
+use App\Models\Rundown_meta_rows;
 
 class Rundown extends Component
 {
@@ -13,12 +13,11 @@ class Rundown extends Component
     public $rundownrows;
     public $page            = 'A';
     public $page_number     = 1;
+    public $rundown_timer   = 0;
 
     protected $listeners = [
         'render'            => 'add_rows',
-        'orderChanged'      => 'updateOrder',
-        'sortingStarted'    => 'lockSorting',
-        'sortingEnded'      => 'unlockSorting',
+        'orderChanged'      => 'updateOrder'
     ];
 
     public $cells = [
@@ -66,27 +65,14 @@ class Rundown extends Component
         Rundown_rows::findOrFail($id)->delete();
         event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
     }
-
-    public function lockSorting($code){
-        $rundown = Rundowns::find($this->rundown->id);
-        if($rundown) {
-            $rundown->sortable = 0;
-            $rundown->save();
-        }
-        event(new RundownEvent(['type' => 'lockSorting', 'code' => $code], $this->rundown->id));
-    }
-
-    public function unlockSorting(){
-        $rundown = Rundowns::find($this->rundown->id);
-        if($rundown) {
-            $rundown->sortable = 1;
-            $rundown->save();
-        }
-        event(new RundownEvent(['type' => 'unlockSorting'], $this->rundown->id));
+    
+    public function deleteMeta($id){
+        Rundown_meta_rows::findOrFail($id)->delete();
+        event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
     }
 
     public function updateOrder($moved_row, $before_in_table, $after_in_table)
-    {        
+    {   
         $this->pick_out_row($moved_row);
         Rundown_rows::where('id', $moved_row)->update(['before_in_table' => $before_in_table]);
         Rundown_rows::where('id', $after_in_table)->update(['before_in_table' => $moved_row]);

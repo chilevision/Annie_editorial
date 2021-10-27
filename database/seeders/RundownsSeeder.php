@@ -23,7 +23,8 @@ class RundownsSeeder extends Seeder
                 'user_id' => 1,
                 'title' => $value,
                 'starttime' => date('Y-m-d H:i:s', $starttime),
-                'stoptime' => date('Y-m-d H:i:s', $stoptime),
+                'stoptime'  => date('Y-m-d H:i:s', $stoptime),
+                'duration'  => 1800,
             ]);
         }
     }
