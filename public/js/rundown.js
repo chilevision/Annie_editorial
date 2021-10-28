@@ -139,3 +139,11 @@ function enable_menu(id){
     $('#rundown-row-'+id).css({'color': '#000000'}).find('.dropdown-menu').find('.delete-row-menu').removeClass('disabled');
     $('#rundown-row-'+id).find('.dropdown-menu').find('.edit-row-menu').removeClass('disabled');
 }
+function disable_meta_menu(id){
+    $('#rundown-meta-row-'+id).css({'color': '#cccccc'}).find('.dropdown-menu').find('.delete-meta-menu').addClass('disabled');
+    $('#rundown-meta-row-'+id).find('.dropdown-menu').find('.edit-meta-menu').addClass('disabled');
+}
+function enable_meta_menu(id){
+    $('#rundown-meta-row-'+id).css({'color': '#000000'}).find('.dropdown-menu').find('.delete-meta-menu').removeClass('disabled');
+    $('#rundown-meta-row-'+id).find('.dropdown-menu').find('.edit-meta-menu').removeClass('disabled');
+}

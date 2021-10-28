@@ -37,10 +37,10 @@ class Rundown extends Component
     public $meta_cells = [
         ['style' => 'width: 60px;', 'text' => 'rundown.page'],
         ['style' => 'padding: 0; width: 10px', 'text' => ''],
-        ['style' => '', 'text' => 'rundown.title'],
+        ['style' => 'width: 300px', 'text' => 'rundown.title'],
         ['style' => 'width: 100px;', 'text' => 'rundown.type'],
-        ['style' => 'width: 80px;', 'text' => 'rundown.source'],
-        ['style' => 'width: 400px;', 'text' => 'rundown.data'],
+        ['style' => 'width: 250px;', 'text' => 'rundown.source'],
+        ['style' => '', 'text' => 'rundown.data'],
         ['style' => 'width: 90px;', 'text' => 'rundown.delay'],
         ['style' => 'width: 90px;', 'text' => 'rundown.duration']
     ];

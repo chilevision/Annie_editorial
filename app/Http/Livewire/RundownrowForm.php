@@ -32,6 +32,7 @@ class RundownrowForm extends Component
     public $formAction = 'submit';
     public $type_disabled;
     public $formType = 'standard';
+    public $edit_mode;
 
     protected $typeOptions = [
         ['value' => 'MIXER', 'title' => 'MIXER'],
@@ -91,15 +92,6 @@ class RundownrowForm extends Component
         ]);
     }
 
-    public function createMetaRow($id)
-    {
-        $this->rundown_row_id   = $id;
-        $this->formType         = 'meta';
-        $this->type             = 'GFX';
-        $this->source           = '';
-        $this->formAction       = 'submit_meta';
-    }
-
     /* Function to create a new rundown row.
     |
     |
@@ -137,25 +129,6 @@ class RundownrowForm extends Component
         $this->resetForm();
         event(new RundownEvent(['type'=> 'render', 'id' => $row->id], $this->rundown->id));
     }
-    public function submit_meta()
-    {
-        
-        $duration   = to_seconds($this->duration);
-        $delay      = to_seconds($this->delay);
-        Rundown_meta_rows::create([
-            'rundown_rows_id'   => $this->rundown_row_id,
-            'title'             => $this->story,
-            'type'              => $this->type,
-            'source'            => $this->source,
-            'delay'             => $delay,
-            'duration'          => $duration,
-            'data'              => $this->metaData,        
-        ]);
-        $this->resetForm();
-        event(new RundownEvent(['type'=> 'render', 'id' => $this->rundown_row_id], $this->rundown->id));
-    }
-
-
     /* Function to edit a  rundown row.
     |
     |
@@ -163,7 +136,9 @@ class RundownrowForm extends Component
     public function editRow($id){
         $this->formType = 'standard';
         $row = Rundown_rows::find($id);
-        if($row) {
+        if($row !== NULL) {
+            if ($this->edit_mode == 'row') $this->cancel_edit();
+            if ($this->edit_mode == 'meta') $this->cancel_meta();
             $row->locked_by = Auth::user()->name;
             $row->locked_at = Carbon::now()->toDateTimeString();
             $row->save();
@@ -183,37 +158,14 @@ class RundownrowForm extends Component
             $this->type_disabled    = 'disabled';
         
             event(new RundownEvent(['type' => 'edit', 'id' => $id], $this->rundown->id));
-            $this->emit('in_edit_mode', true);
-        }
-    }
-    public function editMeta($id){
-        $this->formType                 = 'meta';
-        $row = Rundown_meta_rows::find($id);
-        if($row) {
-            $row->locked_by = Auth::user()->name;
-            $row->locked_at = Carbon::now()->toDateTimeString();
-            $row->save();
-            $this->rundown_meta_row_id  = $id;
-            $this->story                = $row->title;
-            $this->type                 = $row->type;
-            $this->source               = $row->source;
-            $this->duration             = gmdate('H:i:s', $row->duration);
-            $this->delay                = gmdate('H:i:s', $row->delay);
-            $this->metaData             = $row->data;
-
-            $this->header           = 'rundown.edit_meta_row';
-            $this->submit_btn_label = 'rundown.update';
-            $this->formAction       = 'update_meta';
-            $this->type_disabled    = 'disabled';
-        
-            event(new RundownEvent(['type' => 'edit', 'id' => $id], $this->rundown->id));
+            $this->edit_mode = 'row';
             $this->emit('in_edit_mode', true);
         }
     }
 
     public function update(){
         $row = Rundown_rows::find($this->rundown_row_id);
-        if($row){
+        if($row !== NULL){
             $row->story            = $this->story;
             $row->talent           = $this->talent;
             $row->cue              = $this->cue;
@@ -227,6 +179,7 @@ class RundownrowForm extends Component
         }
         event(new RundownEvent(['type' => 'row_updated', 'id' => $this->rundown_row_id], $this->rundown->id));
         $this->resetForm();
+        $this->edit_mode = NULL;
         $this->emit('in_edit_mode', false);
     }
 
@@ -239,25 +192,116 @@ class RundownrowForm extends Component
         }
         event(new RundownEvent(['type' => 'cancel_edit', 'id' => $this->rundown_row_id], $this->rundown->id));
         $this->resetForm();
+        $this->edit_mode = NULL;
         $this->emit('in_edit_mode', false);
     }
 
-    public function cancel_meta(){
-        $this->resetForm();
+    /*
+    |
+    |
+    |  Meta row functions
+    |
+    |
+    /* Displays the form to create a new rundown_meta_row model. */
+    public function createMetaRow($id)
+    {
+        $this->rundown_row_id   = $id;
+        $this->formType         = 'meta';
+        $this->type             = 'GFX';
+        $this->source           = '';
+        $this->formAction       = 'submit_meta';
     }
 
+    /* Stores a newly created rundown_meta_row in storage. */
+    public function submit_meta()
+    {  
+        $duration   = to_seconds($this->duration);
+        $delay      = to_seconds($this->delay);
+        Rundown_meta_rows::create([
+            'rundown_rows_id'   => $this->rundown_row_id,
+            'title'             => $this->story,
+            'type'              => $this->type,
+            'source'            => $this->source,
+            'delay'             => $delay,
+            'duration'          => $duration,
+            'data'              => $this->metaData,        
+        ]);
+        $this->resetForm();
+        event(new RundownEvent(['type'=> 'render', 'id' => $this->rundown_row_id], $this->rundown->id));
+    }
 
-    public function typeChange() {
-        switch($this->type){
-            case 'MIXER':
-                $this->source = 'CAM1';
-            break;
-            case 'VB': 
-                $this->source = '';
-            break;
+    /* Displays the form to edit a rundown_meta_row. */
+    public function editMeta($id){
+        
+        $row = Rundown_meta_rows::find($id);
+        if($row !== NULL) {
+            if ($this->edit_mode == 'row') $this->cancel_edit();
+            if ($this->edit_mode == 'meta') $this->cancel_meta();
+            $row->locked_by = Auth::user()->name;
+            $row->locked_at = Carbon::now()->toDateTimeString();
+            $row->save();
+            $this->rundown_meta_row_id  = $id;
+            $this->story                = $row->title;
+            $this->type                 = $row->type;
+            $this->source               = $row->source;
+            $this->duration             = gmdate('H:i:s', $row->duration);
+            $this->delay                = gmdate('H:i:s', $row->delay);
+            $this->metaData             = $row->data;
+
+            $this->formType             = 'meta';
+            $this->header               = 'rundown.edit_meta';
+            $this->submit_btn_label     = 'rundown.update';
+            $this->formAction           = 'update_meta';
+            $this->type_disabled        = 'disabled';
+            $this->edit_mode            = 'meta';
+        
+            event(new RundownEvent(['type' => 'edit_meta', 'id' => $id], $this->rundown->id));
+            $this->emit('in_edit_mode', true);
+            $this->dispatchBrowserEvent('set_duration_input', ['newTime' => $this->duration]);
         }
     }
 
+    /* Updates a rundown_meta_row in DB */ 
+    public function update_meta()
+    {
+        $row = Rundown_meta_rows::find($this->rundown_meta_row_id);
+        if($row !== NULL){
+            $row->title            = $this->story;
+            $row->source           = $this->source;
+            $row->duration         = to_seconds($this->duration);
+            $row->delay            = to_seconds($this->delay);
+            $row->data             = $this->metaData;
+            $row->locked_by = NULL;
+            $row->locked_at = NULL;
+            $row->save();
+        }
+        event(new RundownEvent(['type' => 'row_updated', 'id' => $this->rundown_meta_row_id], $this->rundown->id));
+        $this->resetForm();
+        $this->edit_mode = NULL;
+        $this->emit('in_edit_mode', false); 
+    }
+
+    /* Resets form to default */
+    public function cancel_meta(){
+        $row = Rundown_meta_rows::find($this->rundown_meta_row_id);
+        if($row !== NULL){
+            $row->locked_by = NULL;
+            $row->locked_at = NULL;
+            $row->save();
+        }
+        event(new RundownEvent(['type' => 'cancel_meta_edit', 'id' => $this->rundown_meta_row_id], $this->rundown->id));
+        $this->resetForm();
+        $this->edit_mode = NULL;
+        $this->emit('in_edit_mode', false);
+    }
+
+    /*
+    |
+    |
+    |  Form handlers
+    |
+    |
+    /* Resets form to default */ 
     private function resetForm(){
         $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration', 'rundown_meta_row_id', 'rundown_row_id', 'metaData', 'type_disabled']);
         $this->type                     = 'MIXER';
@@ -271,23 +315,36 @@ class RundownrowForm extends Component
         $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
     }
 
-
-
+    /* Disable sorting functionality in rundown table */
     public function lockSorting($code){
         $rundown = Rundowns::find($this->rundown->id);
-        if($rundown) {
+        if($rundown !== NULL) {
             $rundown->sortable = 0;
             $rundown->save();
         }
         event(new RundownEvent(['type' => 'lockSorting', 'code' => $code], $this->rundown->id));
     }
 
+    /* Enables sorting functionality in rundown table */
     public function unlockSorting(){
         $rundown = Rundowns::find($this->rundown->id);
-        if($rundown) {
+        if($rundown !== NULL) {
             $rundown->sortable = 1;
             $rundown->save();
         }
         event(new RundownEvent(['type' => 'unlockSorting'], $this->rundown->id));
+    }
+
+    /* Sets values in form depending on type selected
+    Triggers when type select is changed */
+    public function typeChange() {
+        switch($this->type){
+            case 'MIXER':
+                $this->source = 'CAM1';
+            break;
+            case 'VB': 
+                $this->source = '';
+            break;
+        }
     }
 }

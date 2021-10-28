@@ -26,12 +26,12 @@
 						@csrf
 						<x-Forms.input type="text" name="rundown-title" value="{{ old('rundown-title') }}" wrapClass="mb-3" wire="" label="rundown.new_title" inputClass="" />
 						<div class="form-row mb-3">
-							<x-Forms.input type="date" name="start-date" value="{{ old('start-date') }}" wrapClass="" wire="" label="rundown.new_start" inputClass="customDatePicker" />
-							<x-Forms.input type="time" name="start-time" value="{{ old('start-time') }}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" />
+							<x-Forms.input type="date" name="start-date" value="{{ old('start-date') }}" wrapClass="" wire="" label="rundown.new_start" inputClass="customDatePicker"/>
+							<x-Forms.time type="time" name="start-time" value="{{ old('start-time') }}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
 						</div>
 						<div class="form-row mb-3">
 							<x-Forms.input type="date" name="stop-date" value="{{ old('stop-date') }}" wrapClass="" wire="" label="rundown.new_stop" inputClass="customDatePicker" />
-							<x-Forms.input type="time" name="stop-time" value="{{ old('stop-time') }}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" />
+							<x-Forms.time type="time" name="stop-time" value="{{ old('stop-time') }}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
 						</div>
 						<div class="form-row">
 							<a href="/dashboard/rundown" class="btn btn-secondary pull-right" role="button">{{ __('rundown.cancel') }}</a>

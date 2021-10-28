@@ -38,14 +38,14 @@
         @break
 
         @default
-        <tr class="rundown-row sortable-row" id="rundown-row-{{ $row->id }}" @if($row->locked != NULL) style="color: #cccccc" @endif>
+        <tr class="rundown-row sortable-row" id="rundown-row-{{ $row->id }}" @if($row->locked_by != NULL) style="color: #cccccc" @endif>
             <td scope="col">
                 <div class="dropdown">
                     <a class="dropdown-toggle text-dark" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
                     <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
-                        <a class="dropdown-item delete-row-menu @if($row->locked != NULL || $row->script_locked != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
-                        <a class="dropdown-item edit-row-menu @if($row->locked != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
-                        <a class="dropdown-item edit-script-menu @if($row->script_locked != NULL) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
+                        <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                        <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
+                        <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
                         <a class="dropdown-item edit-cam-menu" href="#">{{ __('rundown.edit_camera_notes') }}</a>
                         <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}')">{{ __('rundown.new_meta') }}</a>
                     </div>
@@ -76,21 +76,21 @@
                     <x-Table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
         @php $i = 1; @endphp
         @foreach ($row->Rundown_meta_rows as $meta_row )
-                        <tr>
+                        <tr id="rundown-meta-row-{{ $meta_row->id }}" @if($meta_row->locked_by != NULL) style="color: #cccccc" @endif>
                             <td>
                                 <div class="dropdown">
                                     <a class="dropdown-toggle text-dark" href="#" role="button" id="meta-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number.'-'.$i }}</a>
                                     <div class="dropdown-menu" aria-labelledby="meta-{{ $meta_row->id }}-link">
-                                        <a class="dropdown-item delete-meta-menu" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
-                                        <a class="dropdown-item edit-meta-menu" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
+                                        <a class="dropdown-item delete-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
+                                        <a class="dropdown-item edit-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
                                     </div>
                                 </div>
                             </td>
                             <td scope="col" style="background: #{{ $row->color }}"></td>
-                            <td scope="col">{{ $meta_row->title }}</td>
+                            <td scope="col"><div class="overflow-hidden" style="width: 300px">{{ $meta_row->title }}</div></td>
                             <td scope="col">{{  $meta_row->type }}</td>
-                            <td scope="col">{{  $meta_row->source }}</td>
-                            <td scope="col">{{  $meta_row->data }}</td>
+                            <td scope="col"><div class="overflow-hidden" style="width: 250px">{{  $meta_row->source }}</div></td>
+                            <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ $meta_row->data }}</div></td>
                             <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
                             <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                         </tr>
