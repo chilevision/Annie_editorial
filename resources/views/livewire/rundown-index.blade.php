@@ -8,7 +8,7 @@
 @endphp
 <div>
     <table class="table table-striped table-hover">
-        <thead class="thead-dark">
+        <thead class="thead-custom">
             <tr>
                 <th><a href="#" wire:click="changeOrder('title', '{{ $titleOrder }}')" class="text-light">{{ __('rundown.title') }} @if ($properties->orderBy == 'title') {!! $arrow !!} @endif</a></th>
                 <th><a href="#" wire:click="changeOrder('starttime', '{{ $dateOrder }}')" class="text-light">{{ __('rundown.date') }} @if ($properties->orderBy == 'starttime') {!! $arrow !!} @endif</a></th>
@@ -52,6 +52,6 @@
             </tr>
         </tbody>
     </table>
-    <p class="text-center text-white bg-dark"><i class="bi bi-pencil"></i> = {{ __('rundown.edit') }} <i class="bi bi-box-arrow-right ml-4"></i> = {{ __('rundown.run') }} <i class="bi bi-save ml-4"></i> = {{ __('rundown.save') }} <i class="bi bi-printer ml-4"></i> = {{ __('rundown.print') }} <i class="bi bi-trash ml-4"></i> = {{ __('rundown.erase') }}</p>
+    <p class="text-center text-white bg-dark"><i class="bi bi-pencil"></i> = {{ __('rundown.edit') }} <i class="bi bi-box-arrow-right ml-4"></i> = {{ __('rundown.run') }} <i class="bi bi-save ml-4"></i> = {{ __('rundown.save') }} <i class="bi bi-printer ml-4"></i> = {{ __('rundown.print') }} <i class="bi bi-trash ml-4"></i> = {{ __('rundown.delete') }}</p>
     <div class="d-flex justify-content-center">{!! $rundowns->links() !!}</div>
 </div>

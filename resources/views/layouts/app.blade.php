@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 @yield('add_scripts')
 
     <!-- Fonts -->
@@ -42,7 +42,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                @if (Auth::user())
+@if (Auth::user())
                         <li class="nav-item active">
                             <a class="nav-link" href="/">{{ __('app.home') }} <span class="sr-only">(current)</span></a>
                         </li>
@@ -52,22 +52,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/dashboard/templates">{{ __('app.templates') }}</a>
                         </li>
-                @if (Auth::user()->admin)
+    @if (Auth::user()->admin)
                         <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ __('app.admin') }}
-                          </a>
-                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {{-- <a class="dropdown-item" href="/dashboard/settings/hardware">Hårdvaruinställningar</a> --}}
-                            <a class="dropdown-item" href="/dashboard/settings/roles">Roller</a>
-                            <a class="dropdown-item" href="/dashboard/settings/users">Användare</a>
-                            <a class="dropdown-item" href="/dashboard/settings/videohub">Videohubinställningar</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Information</a>
-                          </div>
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="nav-link" href="/dashboard/settings">{{ __('app.settings') }}</a>
+                                <a class="nav-link" href="/dashboard/settings/users">{{ __('app.users') }}</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="nav-link" href="/dashboard/videohub">{{ __('app.videohub') }}</a>
+                            </div>
                         </li>
-                @endif
-                @endif
+    @endif
+@endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -120,6 +116,7 @@
 	@endif
 	</div>
 @endif
+            @if (isset($slot)){{ $slot }}@endif
             @yield('content')
         </main>
     </div>

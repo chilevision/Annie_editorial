@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Rundown_rows;
 use App\Models\Rundowns;
+use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Events\RundownEvent;
@@ -67,7 +68,6 @@ class RundownrowForm extends Component
         ['value' => 'KEY3', 'title' => 'KEY3'],
         ['value' => 'KEY4', 'title' => 'KEY4'],
     ];
-    protected $colors = ['930000', 'e05500', 'da8f00', '897800', '39000d', '004334', '003a48', '007792', '47295e'];
     protected $rules = [
         'name' => 'required|min:6',
         'email' => 'required|email',
@@ -100,14 +100,15 @@ class RundownrowForm extends Component
     {
         $duration = to_seconds($this->duration);
         $rows = Rundown_rows::where('rundown_id', $this->rundown->id)->get();
+        $colors = unserialize(Settings::where('id', 1)->first()->colors);
         if ($rows->isEmpty()){
             $before_in_table = NULL;
-            $color = $this->colors[1];
+            $color = $colors[0];
         }
         else {
             $before_in_table    = sort_rows($rows)[1];
-            $color              = array_search( $rows->where('id', $before_in_table)->first()->color, $this->colors ) + 1;
-            $color              = $this->colors[$color%count($this->colors)];
+            $color              = array_search( $rows->where('id', $before_in_table)->first()->color, $colors ) + 1;
+            $color              = $colors[$color%count($colors)];
         }
         //$this->validate();
 

@@ -1,6 +1,6 @@
 <div class="form-group @if($wrapClass != ''){{ $wrapClass }}@endif">
     <label for="input{{ $name }}"> {{ __($label) }}</label>
-    <select class="form-control shadow-none @if($selectClass != ''){{ $selectClass }}@endif" {{ $disabled }} id="select{{ $name }}" name="{{ $name }}"
+    <select class="form-control shadow-none @if($selectClass != ''){{ $selectClass }}@endif" {{ $disabled }} name="{{ $name }}" id="select{{ $name }}" name="{{ $name }}"
 @if (is_array($wires))
     @foreach ($wires as $wire)
         wire:{{ $wire['type'] }}="{{ $wire['target'] }}"

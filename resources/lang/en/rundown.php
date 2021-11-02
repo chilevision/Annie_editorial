@@ -16,7 +16,7 @@ return [
     'run'                   => 'Run',
     'save'                  => 'Save file',
     'print'                 => 'Print script',
-    'erase'                 => 'Erase',
+    'delete'                 => 'Delete',
 
     'title'                 => 'Title',
     'date'                  => 'Date',

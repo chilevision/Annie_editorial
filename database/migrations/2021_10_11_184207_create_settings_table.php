@@ -15,6 +15,7 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->integer('max_rundown_lenght')->nullable();
             $table->string('videoserver_ip', 45)->nullable();
             $table->smallInteger('videoserver_port')->unsigned()->nullable();
@@ -22,6 +23,10 @@ class CreateSettingsTable extends Migration
             $table->smallInteger('templateserver_port')->unsigned()->nullable();
             $table->string('pusher_channel')->nullable();
             $table->string('logo_path')->nullable();
+            $table->binary('colors')->nullable();
+            $table->binary('mixer_inputs')->nullable();
+            $table->binary('mixer_keys')->nullable();
+            $table->boolean('cas')->default(0);
             $table->timestamps();
         });
     }

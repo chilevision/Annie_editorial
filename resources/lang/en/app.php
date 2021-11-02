@@ -14,5 +14,8 @@ return [
     'scripts'       => 'Scripts',
     'templates'     => 'Templates',
     'admin'         => 'Admin',
+    'settings'      => 'Settings',
+    'users'         => 'Users',
+    'videohub'      => 'Video router',
 
 ];

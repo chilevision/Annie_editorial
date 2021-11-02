@@ -15,7 +15,7 @@ class RundownRowSeeder extends Seeder
      */
     public function run()
     {
-        $colors = ['930000', 'e05500', 'da8f00', '897800', '39000d', '004334', '003a48', '007792', '47295e'];
+        $colors = ['930000', '47295e', 'e05400', '007792', '718815', 'da8f00', '003a48', '5c220a', '054334', '870058'];
         $storys = [ 
             'How Will Falun Be In The Future.', 
             '5 Stereotypes About Falun That Aren\'t Always True.', 
@@ -26,8 +26,9 @@ class RundownRowSeeder extends Seeder
             'Understanding The Background Of Falun.',
             '7 Things You Should Know About Falun.',
             'Seven Clarifications On Falun.',
+            'On more'
         ];
-        $names = ['Brayden Bowler', 'Konrad Melendez', 'Maksim Wagstaff', 'Marion Woodward', 'Nansi Lawson', 'Shahid Squires', 'Oliwier Austin', 'Tania Ayala', 'Jaspal Prosser'];
+        $names = ['Brayden Bowler', 'Konrad Melendez', 'Maksim Wagstaff', 'Marion Woodward', 'Nansi Lawson', 'Shahid Squires', 'Oliwier Austin', 'Tania Ayala', 'Jaspal Prosser', 'Carl Garcia'];
         $cues = [
             'It\'ll be a big occasion.',
             'That would be a really big surprise, wouldn\'t it?',
@@ -38,6 +39,7 @@ class RundownRowSeeder extends Seeder
             'We have a big job ahead of us.',
             'It\'s not a big dark secret.',
             'The Earth is spherical.',
+            'Colors are magical',
         ];
         $types = ['MIXER', 'VB'];
         $audio = ['LIVE', 'TAPE', 'TAPE+LIVE'];

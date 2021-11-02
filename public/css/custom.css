@@ -39,6 +39,11 @@ tr.rundown-break-row{
     background-color: #49a9d0!important;
     color: #fff;
 }
+.table .thead-custom th {
+    color: #fff;
+    background-color: #49a9d0!important;
+    border-color: #2176bd;
+  }
 
 #rundown-edit-table-wrap{
     width: 1360px; overflow-x: scroll;
@@ -58,3 +63,21 @@ tr.rundown-break-row{
 .rundown-form-buttons{
     margin-top: 5px;
 }
+.form-unit{
+    margin: 40px 0 0 -20px;
+}
+.list-group-item.active{
+    background-color: #009ac5!important;
+    color: #fff!important;
+    border-color: #3490dc!important;
+}
+#mixer-inputs,
+#mixer-keys
+{
+    min-height: 100px;
+}
+.mix-col{
+    padding: 5px 0 0 0!important;
+}
+#mixer-inputs{ margin-right: 60px; position: relative; right: 20px; }
+#mixer-keys{ padding-left: 15px;}

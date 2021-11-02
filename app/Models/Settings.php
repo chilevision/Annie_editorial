@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPSTORM_META\map;
+
 class Settings extends Model
 {
     use HasFactory;
@@ -14,6 +16,7 @@ class Settings extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'name',
         'max_rundown_lenght',
         'videoserver_ip',
         'videoserver_port',
@@ -21,5 +24,9 @@ class Settings extends Model
         'templateserver_port',
         'pusher_channel',
         'logo_path',
+        'colors',
+        'mixer_inputs',
+        'mixer_keys',
+        'cas',
     ];
 }

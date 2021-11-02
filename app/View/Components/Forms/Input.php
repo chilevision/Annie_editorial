@@ -44,6 +44,7 @@ class Input extends Component
             case 'time':    $this->template = 'components.forms.time';      break;
             case 'submit':  $this->template = 'components.forms.submit';    break;
             case 'button':  $this->template = 'components.forms.button';    break;
+            case 'file':    $this->template = 'components.forms.file';      break;
             default:        $this->template = 'components.forms.input';
         }
         return view($this->template);

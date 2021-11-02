@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use stdClass;
 
-class RundownTable extends Component
+class RundownIndex extends Component
 {
     use WithPagination;
 
@@ -23,7 +23,7 @@ class RundownTable extends Component
         $properties->orderAsc = $this->orderAsc;
         $properties->perPage = $this->perPage;
 
-        return view('livewire.rundown-table', [
+        return view('livewire.rundown-index', [
             'rundowns' => Rundowns::where('user_id', Auth::user()->id)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->simplePaginate($this->perPage),
             'properties' => $properties,
         ]);

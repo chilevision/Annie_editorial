@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\User;
+use App\Models\User;
+use App\Models\Settings;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 class Users_controller extends Controller
@@ -48,8 +50,11 @@ class Users_controller extends Controller
 	        'admin' 	=> $request->input('admin'),
 		]);
         if ($request->input('first') !== null){
+            if (!Settings::exists()) {
+                Artisan::call('db:seed --class=SettingsSeeder');
+            }
             Auth::loginUsingId($user->id);
-            return redirect('/dashboard');
+            return redirect('/dashboard/settings');
         } 
 		return redirect('dashboard/settings/users')->with('status','Användaren: "'.$_POST['name'].'" har skapats');
     }

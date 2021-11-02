@@ -31,3 +31,10 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/rundown/{id}/editcal', [App\Http\Controllers\Rundowns_controller::class, 'edit_calendar']);
 	Route::post('/rundown/updatecal', [App\Http\Controllers\Rundowns_controller::class, 'update_calendar']);
 });
+
+//Routes for administrator users: 
+Route::group(['prefix' => 'dashboard/settings', 'middleware' => 'is_admin'], function () {
+	Route::get('/', [App\Http\Controllers\Settings_controller::class, 'index'])->name('settings');
+	Route::put('/update', [App\Http\Controllers\Settings_controller::class, 'update'])->name('settings.update');
+	Route::get('/users', App\Http\Livewire\Users::class);
+});
