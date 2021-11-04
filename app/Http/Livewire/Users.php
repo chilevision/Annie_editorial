@@ -18,7 +18,7 @@ class Users extends Component
         ['style' => 'width: 90px;', 'text' => 'rundown.delay'],
         ['style' => 'width: 90px;', 'text' => 'rundown.duration']
     ];
-    public $sso         = 1;
+    public $sso         = 0;
     public $perPage     = 10;
     public $orderBy     = 'name';
     public $orderAsc    = true;

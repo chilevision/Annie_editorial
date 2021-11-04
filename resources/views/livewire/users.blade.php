@@ -22,6 +22,7 @@
                         <x-Forms.input type="text" name="sso_validation" value="" wrapClass="col" wire="" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
                         <x-Forms.input type="text" name="sso_version" value="" wrapClass="col" wire="" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
                         <x-Forms.input type="text" name="sso_logout" value="" wrapClass="col" wire="" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
+                        <x-Forms.input type="submit" name="submit" value="" wrapClass="rundown-form-buttons" wire="" label="{{ __('settings.submit') }}" inputClass="btn-dark btn-sm mt-4 float-right" />
                     </div>
                 </div>
             </div>
