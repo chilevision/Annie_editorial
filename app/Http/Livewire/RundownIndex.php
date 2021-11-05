@@ -12,26 +12,24 @@ class RundownIndex extends Component
 {
     use WithPagination;
 
+    public $per_page    = [10,25,50,100];
     public $perPage     = 10;
     public $orderBy     = 'title';
     public $orderAsc    = true;
+    public $arrow       = '<i class="bi bi-arrow-down-circle-fill"></i>';
 
     public function render()
     {
-        $properties = new stdClass();
-        $properties->orderBy = $this->orderBy;
-        $properties->orderAsc = $this->orderAsc;
-        $properties->perPage = $this->perPage;
-
         return view('livewire.rundown-index', [
-            'rundowns' => Rundowns::where('user_id', Auth::user()->id)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->simplePaginate($this->perPage),
-            'properties' => $properties,
+            'rundowns' => Rundowns::where('user_id', Auth::user()->id)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->simplePaginate($this->perPage)
         ]);
     }
 
-    public function changeOrder($newOrderBy, $order){
-        if ($order == '') $order = false;
-        $this->orderBy = $newOrderBy;
-        $this->orderAsc = $order;
+    public function changeOrder($newOrderBy)
+    {
+        if ($newOrderBy == $this->orderBy) $this->orderAsc = !$this->orderAsc;
+        else $this->orderAsc = true;
+        $this->orderBy  = $newOrderBy;
+        $this->orderAsc ? $this->arrow = '<i class="bi bi-arrow-down-circle-fill"></i>' : $this->arrow = '<i class="bi bi-arrow-up-circle-fill"></i>';
     }
 }

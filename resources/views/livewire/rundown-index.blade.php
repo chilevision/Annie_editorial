@@ -1,17 +1,9 @@
-@php 
-    $properties->orderAsc ? $arrow = '<i class="bi bi-arrow-down-circle-fill"></i>' : $arrow = '<i class="bi bi-arrow-up-circle-fill"></i>';
-    $titleOrder = $properties->orderAsc;
-    $dateOrder = $properties->orderAsc;
-    if ($properties->orderBy == 'title') $titleOrder = !$properties->orderAsc;
-    if ($properties->orderBy == 'starttime') $dateOrder = !$properties->orderAsc; 
-    $per_page = [10,25,50,100];
-@endphp
 <div>
     <table class="table table-striped table-hover">
         <thead class="thead-custom">
             <tr>
-                <th><a href="#" wire:click="changeOrder('title', '{{ $titleOrder }}')" class="text-light">{{ __('rundown.title') }} @if ($properties->orderBy == 'title') {!! $arrow !!} @endif</a></th>
-                <th><a href="#" wire:click="changeOrder('starttime', '{{ $dateOrder }}')" class="text-light">{{ __('rundown.date') }} @if ($properties->orderBy == 'starttime') {!! $arrow !!} @endif</a></th>
+                <th><a href="#" wire:click="changeOrder('title')" class="text-light">{{ __('rundown.title') }}@if ($orderBy == 'title') {!! $arrow !!} @endif</a></th>
+                <th><a href="#" wire:click="changeOrder('starttime')" class="text-light">{{ __('rundown.air_date') }}@if ($orderBy == 'starttime') {!! $arrow !!} @endif</a></th>
                 <th>{{ __('rundown.start') }}</th>
                 <th>{{ __('rundown.lenght') }}</th>
                 <th>{{ __('rundown.manage') }}

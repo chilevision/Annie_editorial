@@ -27,6 +27,6 @@ class Settings extends Model
         'colors',
         'mixer_inputs',
         'mixer_keys',
-        'cas',
+        'sso',
     ];
 }

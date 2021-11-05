@@ -26,7 +26,7 @@ class CreateSettingsTable extends Migration
             $table->binary('colors')->nullable();
             $table->binary('mixer_inputs')->nullable();
             $table->binary('mixer_keys')->nullable();
-            $table->boolean('cas')->default(0);
+            $table->boolean('sso')->default(0);
             $table->timestamps();
         });
     }

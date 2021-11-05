@@ -1,6 +1,3 @@
-@php 
-    $per_page = [10,25,50,100];
-@endphp
 <div class="container light-style flex-grow-1 container-p-y">
 	<div class="card">
 		<div class="card-header">
@@ -15,14 +12,15 @@
                     <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
                     </div>
                 </div>
-            
                 <div id="sso-settings" class="collapse @if($sso){{ 'show' }}@endif" aria-labelledby="headingOne" data-parent="#sso-box">
                     <div class="card-body">
-                        <x-Forms.input type="text" name="sso_hostname" value="" wrapClass="col" wire="" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
-                        <x-Forms.input type="text" name="sso_validation" value="" wrapClass="col" wire="" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
-                        <x-Forms.input type="text" name="sso_version" value="" wrapClass="col" wire="" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
-                        <x-Forms.input type="text" name="sso_logout" value="" wrapClass="col" wire="" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
-                        <x-Forms.input type="submit" name="submit" value="" wrapClass="rundown-form-buttons" wire="" label="{{ __('settings.submit') }}" inputClass="btn-dark btn-sm mt-4 float-right" />
+                        <form wire:submit.prevent="saveSso">
+                            <x-Forms.input type="text" name="sso_hostname" value="" wrapClass="col" wire="sso_host" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
+                            <x-Forms.input type="text" name="sso_validation" value="" wrapClass="col" wire="sso_validation" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
+                            <x-Forms.input type="text" name="sso_version" value="" wrapClass="col" wire="sso_version" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
+                            <x-Forms.input type="text" name="sso_logout" value="" wrapClass="col" wire="sso_logout" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
+                            <x-Forms.input type="submit" name="submit" value="" wrapClass="" wire="" label="{{ __('settings.submit') }}" inputClass="btn-dark btn-sm mt-4" />
+                        </form>
                     </div>
                 </div>
             </div>
@@ -33,10 +31,11 @@
             <table class="table table-striped table-hover">
                 <thead class="thead-custom">
                     <tr>
-                        <th>{{ __('settings.id') }}</th>
-                        <th>{{ __('settings.name') }}</th>
-                        <th>{{ __('settings.email') }}</th>
-                        <th>{{ __('settings.created') }}</th>
+                        <th><a href="#" wire:click="changeOrder('id')" class="text-light">{{ __('settings.id') }}@if ($orderBy == 'id') {!! $arrow !!} @endif</a></th>
+                        <th><a href="#" wire:click="changeOrder('name')" class="text-light">{{ __('settings.name') }}@if ($orderBy == 'name') {!! $arrow !!} @endif</a></th>
+                        <th><a href="#" wire:click="changeOrder('email')" class="text-light">{{ __('settings.email') }}@if ($orderBy == 'email') {!! $arrow !!} @endif</a></th>
+                        <th><a href="#" wire:click="changeOrder('created_at')" class="text-light">{{ __('settings.created') }}@if ($orderBy == 'created_at') {!! $arrow !!} @endif</a></th>
+                        <th><a href="#" wire:click="changeOrder('admin')" class="text-light">{{ __('settings.admin') }}@if ($orderBy == 'admin') {!! $arrow !!} @endif</a></th>
                         <th>{{ __('rundown.manage') }}
                             <select wire:model="perPage" class="float-right">
         @foreach ( $per_page as $value )
@@ -53,6 +52,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ gmdate('Y-m-d', strtotime($user->created_at)) }}</td>
+                        <td>{{ $user->admin }}</td>
                         <td width="150px">
                             <form name="delete-user-form" onsubmit="return confirm({{ __('settings.message_warning1') }});" method="POST" action="settings/{{ $user->id }}">
                                 @csrf
