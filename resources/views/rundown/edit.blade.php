@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('add_scripts')
-	{{-- <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script> --}}
 	<script src="{{ asset('js/pusher.min.js') }}"></script>
 	<script>
 		var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {

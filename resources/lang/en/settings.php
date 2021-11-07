@@ -27,6 +27,7 @@ return [
     'gfxserverip'       => 'Graphics server IP:',
     'gfxserverport'     => 'Graphics server port:',
     'create-user'       => 'New user',
+    'create'            => 'Create',
     'id'                => 'ID',
     'name'              => 'Username',
     'email'             => 'E-mail',

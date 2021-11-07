@@ -116,7 +116,6 @@
 	@endif
 	</div>
 @endif
-            @if (isset($slot)){{ $slot }}@endif
             @yield('content')
         </main>
     </div>

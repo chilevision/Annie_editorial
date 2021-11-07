@@ -36,5 +36,5 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 Route::group(['prefix' => 'dashboard/settings', 'middleware' => 'is_admin'], function () {
 	Route::get('/', [App\Http\Controllers\Settings_controller::class, 'index'])->name('settings');
 	Route::put('/update', [App\Http\Controllers\Settings_controller::class, 'update'])->name('settings.update');
-	Route::get('/users', App\Http\Livewire\Users::class);
+	Route::view('/users', 'settings.users');
 });
