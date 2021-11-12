@@ -81,3 +81,13 @@ tr.rundown-break-row{
 }
 #mixer-inputs{ margin-right: 60px; position: relative; right: 20px; }
 #mixer-keys{ padding-left: 15px;}
+
+#sso-box{
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+}
+#sso-box.saved{
+    background-color: #91ffaf;
+}

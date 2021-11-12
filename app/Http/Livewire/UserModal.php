@@ -18,10 +18,13 @@ class Usermodal extends Component
     public $password;
     public $password_confirmation;
     public $admin;
+    public $userId;
     
     public $header      = 'settings.create-user';
     public $submit_btn  = 'settings.create';
     public $form_action = 'createUser';
+
+    protected $listeners = ['editUser' => 'editUser'];
     
 
     public function render()
@@ -38,16 +41,59 @@ class Usermodal extends Component
             'password'  => Hash::make($validatedData['password']),
             'admin'     => $this->admin
         ]);
-        $this->reset('name', 'email', 'password', 'password_confirmation', 'admin');
-        $this->emit('refresh_users');
+        $this->resetModal();
+    }
+
+    public function updateUser()
+    {
+        if ($this->userId != ''){
+            $rules = [
+                'name'      => 'required|string|max:255|unique:users,name,'.$this->userId,
+                'email'     => 'required|string|email|max:255|unique:users,email,'.$this->userId,
+            ];
+            $this->validate($rules);
+            if ($this->password !=''){
+                $rules = ['password' => 'confirmed|min:6'];
+                $this->validate($rules);
+                User::where('id', $this->userId)->update([
+                    'name'      => $this->name,
+                    'email'     => $this->email,
+                    'password'  => Hash::make($this->password),
+                    'admin'     => $this->admin
+                ]);
+            }
+            else{
+                User::where('id', $this->userId)->update([
+                    'name'      => $this->name,
+                    'email'     => $this->email,
+                    'admin'     => $this->admin
+                ]);
+            }
+        }
+        $this->resetModal();
     }
 
     public function resetModal()
     {
-        $this->reset('name', 'email', 'password', 'password_confirmation', 'admin');
-    }
-    public function testa()
-    {
+        $this->reset('userId', 'name', 'email', 'password', 'password_confirmation', 'admin');
+        $this->header      = 'settings.create-user';
+        $this->submit_btn  = 'settings.create';
+        $this->form_action = 'createUser';
+        $this->resetErrorBag();
+        $this->resetValidation();
         $this->emit('refresh_users');
+    }
+
+    public function editUser($id)
+    {
+        $user = User::where('id', $id)->first();
+        $this->userId       = $id;
+        $this->name         = $user->name;
+        $this->email        = $user->email;
+        $this->admin        = $user->admin;
+
+        $this->header       = 'settings.edit-user';
+        $this->submit_btn   = 'settings.update';
+        $this->form_action  = 'updateUser';
     }
 }

@@ -28,5 +28,6 @@ class Settings extends Model
         'mixer_inputs',
         'mixer_keys',
         'sso',
+        'user_ttl',
     ];
 }

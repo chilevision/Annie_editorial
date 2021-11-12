@@ -27,6 +27,7 @@ return [
     'gfxserverip'       => 'Graphics server IP:',
     'gfxserverport'     => 'Graphics server port:',
     'create-user'       => 'New user',
+    'edit-user'         => 'Edit user',
     'create'            => 'Create',
     'id'                => 'ID',
     'name'              => 'Username',
@@ -37,11 +38,14 @@ return [
     'admin'             => 'Admin',
     'submit'            => 'Save changes',
     'cancel'            => 'Cancel',
+    'update'            => 'Update',
     
     'enable-sso'        => 'Enable CAS/SSO',
     'sso-host'          => 'CAS/SSO hostname:',
     'sso-validation'    => 'CAS/SSO validation URL:',
     'sso-version'       => 'CAS/SSO version:',
     'sso-logout'        => 'CAS/SSO logout URL:',
+
+    'message_warning1'  => 'Are you sure you want to delete user: ',
     
 ];

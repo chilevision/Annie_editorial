@@ -98,6 +98,10 @@ class RundownrowForm extends Component
     */
     public function submit()
     {
+        $rules = [
+            'story'      => 'required',
+        ];
+        $this->validate($rules);
         $duration = to_seconds($this->duration);
         $rows = Rundown_rows::where('rundown_id', $this->rundown->id)->get();
         $colors = unserialize(Settings::where('id', 1)->first()->colors);

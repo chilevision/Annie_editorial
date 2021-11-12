@@ -18,6 +18,7 @@ class Rundowns extends Model
         'title',
         'starttime',
         'stoptime',
+        'duration',
     ];
 
     public function rundown_rows()

@@ -1,4 +1,8 @@
 <div class="form-group {{ $wrapClass }}">
     <label for="input-{{ $name }}">{{ __($label) }}</label>
-    <input type="{{ $type }}" value="{{ $value }}" name="{{ $name }}" wire:model="{{ $wires }}" class="form-control shadow-none {{ $inputClass }}" id="input-{{ $name }}" step="{{ $step }}" />
+@if ($snappy != '')
+    <input type="time" value="{{ $value }}" name="{{ $name }}" wire:model="{{ $wires }}" class="form-control shadow-none {{ $inputClass }}" id="input-{{ $name }}" step="{{ $step }}" />
+@else
+    <input type="time" value="{{ $value }}" name="{{ $name }}" wire:model="{{ $wires }}" class="form-control shadow-none {{ $inputClass }}" id="input-{{ $name }}" step="{{ $step }}" />
+@endif
 </div>

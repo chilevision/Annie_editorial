@@ -21,7 +21,7 @@ class Select extends Component
      *
      * @return void
      */
-    public function __construct($name, $wrapClass, $selectClass, $disabled, $wire, $label, $options)
+    public function __construct($name, $wrapClass = '', $selectClass = '', $disabled = '', $wire, $label, $options)
     {
         if ($wire != '') $this->wires = $wire;
         $this->name         = $name;

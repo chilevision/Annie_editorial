@@ -38,4 +38,7 @@ class Users extends Component
         $this->orderBy  = $newOrderBy;
         $this->orderAsc ? $this->arrow = '<i class="bi bi-arrow-down-circle-fill"></i>' : $this->arrow = '<i class="bi bi-arrow-up-circle-fill"></i>';
     }
+    public function editUser($id){
+        $this->emit('editUser', $id);
+    }
 }

@@ -5,19 +5,23 @@
         <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
         </div>
     </div>
-    <div id="sso-settings" class="collapse @if($sso){{ 'show' }}@endif" aria-labelledby="headingOne" data-parent="#sso-box">
-        <div class="card-body">
-            <form wire:submit.prevent="saveSso">
+    <form wire:submit.prevent="saveSso">
+        <div id="sso-settings" class="collapse @if($sso){{ 'show' }}@endif" aria-labelledby="headingOne" data-parent="#sso-box">
+            <div class="card-body">
                 <div class="row">
-                    <x-Forms.input type="text" name="sso_hostname" value="" wrapClass="col" wire="sso_host" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
-                    <x-Forms.input type="text" name="sso_validation" value="" wrapClass="col" wire="sso_validation" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
+                    <x-Forms.input type="text" name="sso_hostname" wrapClass="col" wire="sso_host" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
+                    <x-Forms.input type="text" name="sso_validation" wrapClass="col" wire="sso_validation" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
                 </div>
                 <div class="row">
-                    <x-Forms.input type="text" name="sso_version" value="" wrapClass="col" wire="sso_version" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
-                    <x-Forms.input type="text" name="sso_logout" value="" wrapClass="col" wire="sso_logout" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
+                    <x-Forms.input type="text" name="sso_version" wrapClass="col" wire="sso_version" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
+                    <x-Forms.input type="text" name="sso_logout" wrapClass="col" wire="sso_logout" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
                 </div>
-                <x-Forms.input type="submit" name="submit" value="" wrapClass="row" wire="" label="{{ __('settings.submit') }}" inputClass="btn-dark btn-sm mt-4" />
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="form-row">
+            <x-Forms.select name="ttl" wrapClass="col-auto" selectClass="form-control" wire="ttl" label="Remove inactive users after:" :options="$ttlOptions" />
+        </div>
+        <x-Forms.input type="submit" name="submit" wrapClass="form-row" label="{{ __('settings.submit') }}" inputClass="btn-dark btn-sm mt-4" />
+    </form>
+    
 </div>

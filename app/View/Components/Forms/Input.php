@@ -15,20 +15,22 @@ class Input extends Component
     public $wires = '';
     public $label;
     public $template;
+    public $snappy;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type, $name, $value, $wrapClass, $wire, $label, $inputClass)
+    public function __construct($type, $name, $value = '', $wrapClass = '', $wire = '', $label, $inputClass = '', $snappy = '')
     {
         $this->type         = $type;
         $this->name         = $name;
         $this->value        = $value;
         $this->wrapClass    = $wrapClass;
-        $this->inputClass  = $inputClass;
+        $this->inputClass   = $inputClass;
         $this->label        = $label;
+        $this->snappy       = $snappy;
 
         if ($wire != '') $this->wires = $wire;
     }
@@ -41,7 +43,6 @@ class Input extends Component
     public function render()
     {
         switch ($this->type){
-            case 'time':    $this->template = 'components.forms.time';      break;
             case 'submit':  $this->template = 'components.forms.submit';    break;
             case 'button':  $this->template = 'components.forms.button';    break;
             case 'file':    $this->template = 'components.forms.file';      break;

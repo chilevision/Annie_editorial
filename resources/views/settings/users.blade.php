@@ -25,5 +25,11 @@
     Livewire.on('refresh_users', data => {
     $('#userModal').modal('hide');
 });
+    Livewire.on('settings_saved', data => {
+        $('#sso-box').addClass('saved');
+        setTimeout(function () { 
+            $('#sso-box').removeClass('saved');
+        }, 2000);
+    });
 </script>
 @endsection

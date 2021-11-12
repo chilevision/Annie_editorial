@@ -28,11 +28,11 @@
                 <td>{{ gmdate('Y-m-d', strtotime($user->created_at)) }}</td>
                 <td>{{ $user->admin }}</td>
                 <td width="150px">
-                    <form name="delete-user-form" onsubmit="return confirm({{ __('settings.message_warning1') }});" method="POST" action="settings/{{ $user->id }}">
+                    <form name="delete-user-form" onSubmit="if(!confirm('{{ __('settings.message_warning1') }}{{ $user->name }}')){return false;}" method="POST" action="users/{{ $user->id }}">
                         @csrf
                         @method('DELETE')
                         <div class="btn-group btn-group float-right">
-                            <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#staticBackdrop"><i class="bi bi-pencil"></i></button>
+                            <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#userModal" wire:click="editUser('{{ $user->id }}')"><i class="bi bi-pencil"></i></button>
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </div>
                     </form>
