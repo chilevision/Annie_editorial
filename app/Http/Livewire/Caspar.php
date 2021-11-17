@@ -40,7 +40,9 @@ class Caspar extends Component
         } 
         else {
             if ($this->content_type == 'templates') {
-
+                $files = Templatefiles::when($this->search, function($query, $search){
+                    return $query->where('name', 'LIKE', "%$search%");
+                })->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->perPage);
             }
             else {
                 $files = Mediafiles::whereIn('type', $this->type)->when($this->search, function($query, $search){

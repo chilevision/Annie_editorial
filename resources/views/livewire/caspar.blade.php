@@ -16,7 +16,8 @@
             <ul><li>{{ __($caspar_error) }}</li></ul>
           </div>
 @endif
-            <div class="row">
+          <div class="container">
+            <div class="row justify-content-between">
               <div class="form-group col-1">
                 <select class="form-control" wire:model="perPage" class="float-right">
 @foreach ( $per_page as $value )
@@ -24,14 +25,15 @@
 @endforeach
                 </select>
               </div>
-              <div class="col"></div>
-              <div class="input-group mb-3 col-3 float-right">
+    
+              <div class="input-group mb-3 col-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
                 </div>
                 <input type="text" class="form-control" wire:model.debounce.700ms="search" placeholder="Rundown" aria-label="Rundown" aria-describedby="basic-addon1">
               </div>
             </div>
+          </div>
 
           <table class="table table-sm table-striped" id="caspar-content-table">
 @if ($content_type == 'media' && $files)
