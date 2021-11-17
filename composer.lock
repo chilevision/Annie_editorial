@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df372791f07086a05ca378ca32764fd9",
+    "content-hash": "340e4b61070ddc322e7cd1719f55f5fc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -121,6 +121,46 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "cosmonova-rnd/caspar-cg",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CosmonovaRnD/CasparCG.git",
+                "reference": "9f72f6643407974a375b53967331f430f265a67b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CosmonovaRnD/CasparCG/zipball/9f72f6643407974a375b53967331f430f265a67b",
+                "reference": "9f72f6643407974a375b53967331f430f265a67b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CosmonovaRnD\\CasparCG\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aleksandr Besedin",
+                    "email": "aleksandr.besedin@cosmonova.net"
+                }
+            ],
+            "description": "CasparCG PHP Library",
+            "support": {
+                "issues": "https://github.com/CosmonovaRnD/CasparCG/issues",
+                "source": "https://github.com/CosmonovaRnD/CasparCG/tree/v2.0.0"
+            },
+            "time": "2021-08-31T11:13:58+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

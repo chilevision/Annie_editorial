@@ -26,7 +26,7 @@ class RundownrowForm extends Component
     public $delay = '00:00:00';
     public $autotrigg = 1;
     public $metaData = '';
-    public $mediabowser = 'media';
+    public $mediabowser = 'MOVIE';
 
     public $header = 'rundown.new_row';
     public $submit_btn_label = 'rundown.create';
@@ -78,7 +78,8 @@ class RundownrowForm extends Component
         'editMeta'          => 'editMeta',
         'cancel_edit'       => 'cancel_edit',
         'sortingStarted'    => 'lockSorting',
-        'sortingEnded'      => 'unlockSorting'
+        'sortingEnded'      => 'unlockSorting',
+        'updateSource'      => 'updateSource'
     ];
 
     public function render()
@@ -134,7 +135,7 @@ class RundownrowForm extends Component
         $this->resetForm();
         event(new RundownEvent(['type'=> 'render', 'id' => $row->id], $this->rundown->id));
     }
-    /* Function to edit a  rundown row.
+    /* Function to edit a rundown row.
     |
     |
     */
@@ -259,6 +260,13 @@ class RundownrowForm extends Component
             $this->formAction           = 'update_meta';
             $this->type_disabled        = 'disabled';
             $this->edit_mode            = 'meta';
+
+            switch ($this->type){
+                case 'AUDIO'    : $this->mediabowser = 'AUDIO';     break;
+                case 'BG'       : $this->mediabowser = 'BG';        break;
+                case 'GFX'      : $this->mediabowser = 'TEMPLATE';  break;
+                default         : $this->mediabowser = 'MOVIE';     break;
+            }
         
             event(new RundownEvent(['type' => 'edit_meta', 'id' => $id], $this->rundown->id));
             $this->emit('in_edit_mode', true);
@@ -316,7 +324,7 @@ class RundownrowForm extends Component
         $this->formAction               = 'submit';
         $this->formType                 = 'standard';
         $this->delay                    = '00:00:00';
-        $this->mediabowser              = 'media';
+        $this->mediabowser              = 'MOVIE';
         $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
     }
 
@@ -344,12 +352,20 @@ class RundownrowForm extends Component
     Triggers when type select is changed */
     public function typeChange() {
         switch($this->type){
-            case 'MIXER':
-                $this->source = 'CAM1';
-            break;
-            case 'VB': 
-                $this->source = '';
-            break;
+            case 'MIXER'    : $this->source = 'CAM1';           break;
+            case 'VB'       : $this->source = '';               break;
+            case 'AUDIO'    : $this->mediabowser = 'AUDIO';     break;
+            case 'BG'       : $this->mediabowser = 'BG';        break;
+            case 'GFX'      : $this->mediabowser = 'TEMPLATE';  break;
+        }
+    }
+
+    /* Updates source value when a file is selected in form*/
+    public function updateSource($value, $duration)
+    {
+        $this->source = $value;
+        if($duration != null){
+            $this->duration = $duration;
         }
     }
 }

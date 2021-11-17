@@ -23,7 +23,7 @@
     @case('VB')
                 <x-Forms.input type="text" name="talent" value="{{ $talent }}" wrapClass="col" wire="talent" label="rundown.talent" inputClass="form-control-sm" />
                 <x-Forms.input type="text" name="cue" value="{{ $cue }}" wrapClass="col-2" wire="cue" label="rundown.cue" inputClass="form-control-sm" />
-                <x-Forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" sourceQuery="{{ $mediabowser }}" label="rundown.source" inputClass="form-control-sm" />
+                <x-Forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" sourceQuery="{{ $mediabowser }}" label="rundown.source" inputClass="form-control-sm" modalTarget="casparModal"/>
                 <x-Forms.input type="text" name="audio" value="{{ $audio }}" wrapClass="col" wire="audio" label="rundown.audio" inputClass="form-control-sm" />
                 <x-Forms.time name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
                 <x-Forms.input type="checkbox" name="autotrigg" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
@@ -56,7 +56,7 @@
 @if ($type == 'KEY')
                 <x-Forms.Select name="source" wrapClass="col-1" selectClass="form-control-sm" wire="source" label="rundown.source" :options="$mixerKeys" />
 @else
-                <x-Forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" sourceQuery="{{ $mediabowser }}" label="rundown.source" inputClass="form-control-sm" />
+                <x-Forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" sourceQuery="{{ $mediabowser }}" label="rundown.source" inputClass="form-control-sm" modalTarget="casparModal"/>
 @endif
                 <div class="form-group">
                     <label for="comment">Data</label>

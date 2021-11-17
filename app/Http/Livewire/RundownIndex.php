@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\Rundowns;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
-use stdClass;
 
 class RundownIndex extends Component
 {
@@ -17,11 +16,16 @@ class RundownIndex extends Component
     public $orderBy     = 'title';
     public $orderAsc    = true;
     public $arrow       = '<i class="bi bi-arrow-down-circle-fill"></i>';
+    public $search;
+
+    protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
         return view('livewire.rundown-index', [
-            'rundowns' => Rundowns::where('user_id', Auth::user()->id)->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->simplePaginate($this->perPage)
+            'rundowns' => Rundowns::where('user_id', Auth::user()->id)->when($this->search, function($query, $search){
+                return $query->where('title', 'LIKE', "%$search%");
+            })->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->perPage)
         ]);
     }
 

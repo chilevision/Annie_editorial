@@ -35,6 +35,7 @@ class Usermodal extends Component
     public function createUser()
     {
         $validatedData = $this->validate();
+        if ($this->admin == null) $this->admin = 0;
         User::create([
             'name'      => $validatedData['name'],
             'email'     => $validatedData['email'],

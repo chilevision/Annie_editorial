@@ -91,3 +91,13 @@ tr.rundown-break-row{
 #sso-box.saved{
     background-color: #91ffaf;
 }
+
+#caspar-content{
+    max-height: 500px; overflow-y: scroll;
+}
+.selected td{
+    background-color: #b4d9ea;
+}
+.hide{
+    display: none;
+}

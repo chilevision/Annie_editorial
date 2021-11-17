@@ -27,7 +27,6 @@
 @stop
 @section('content')
 <div class="container-fluid">
-	
 	<div class="card" style="width: 1400px; overflow-x: scroll; margin: 0 auto;">
 		<div class="card-header">
 			<a href="/dashboard/rundown">{{ __('rundown.scripts') }}</a><i class="bi bi-caret-right"></i>{{ __('rundown.edit') }}: <cite title="Source Title"> {{ $rundown->title }} </cite>
@@ -64,9 +63,39 @@
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="casparModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<livewire:caspar />
+</div>
 @endsection
 @section('footer_scripts')
 <script src="{{ asset('js/rundown.js') }}"></script>
+<script>
+	$(function(){
+    	$('#casparModal').on('click', '#caspar-content-table tr', function () {
+			$('#caspar-content-table tr').each(function () { $(this).removeClass('selected'); });
+			$(this).addClass('selected').find('input').prop("checked", true);
+    	});
+	});
+	function selectFile(){
+		var selected = $('#caspar-content-table input:checked').val();
+		if (selected != undefined){
+			var duration = null;
+			if($('#autoDuration').prop("checked") == true){
+				var duration = $('#caspar-content-table .selected').find('.duration').text();
+			}
+			Livewire.emit('updateSource', selected, duration);
+		}
+	}
+	function mediabrowser(query){
+		input = $('#input-source').val();
+		Livewire.emit('mediabrowser', query, input);
+	}
+
+	$('#casparModal').on('hidden.bs.modal', function () {
+		$('#caspar-content').empty();
+	});
+</script>
 @if (!$rundown->sortable)
 	<script> $( document ).ready(function() { sortable.options.disabled = true; }); </script>
 @endif

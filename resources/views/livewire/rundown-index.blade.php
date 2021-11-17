@@ -1,4 +1,10 @@
 <div>
+    <div class="input-group mb-3 col-3 float-right mt-n5">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+        </div>
+        <input type="text" class="form-control" wire:model.debounce.700ms="search" placeholder="Rundown" aria-label="Rundown" aria-describedby="basic-addon1">
+    </div>
     <table class="table table-striped table-hover">
         <thead class="thead-custom">
             <tr>

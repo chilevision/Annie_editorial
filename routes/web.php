@@ -23,6 +23,7 @@ use App\Http\Controllers\Users_controller;
 Route::view('/', 'auth.first')->middleware('first_user');
 Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('first_user');
 Auth::routes(['register' => false]);
+Route::get('/caspar', [\App\Http\Livewire\Caspar::class, 'render']);
 
 Auth::routes();
 

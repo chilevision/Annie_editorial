@@ -29,5 +29,7 @@ class Settings extends Model
         'mixer_keys',
         'sso',
         'user_ttl',
+        'media_updated',
+        'templates_updated',
     ];
 }
