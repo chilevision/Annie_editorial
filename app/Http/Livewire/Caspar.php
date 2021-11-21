@@ -46,7 +46,7 @@ class Caspar extends Component
             }
             else {
                 $files = Mediafiles::whereIn('type', $this->type)->when($this->search, function($query, $search){
-                    return $query->where('name', 'LIKE', "%$search%");
+                    return $query->where('name', 'LIKE', "%$search%")->orWhere('type', 'LIKE', "%$search%")->orWhere('modified_at', 'LIKE', "%$search%")->whereIn('type', $this->type);
                 })->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->perPage);
             }
         }

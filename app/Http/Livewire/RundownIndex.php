@@ -23,9 +23,12 @@ class RundownIndex extends Component
     public function render()
     {
         return view('livewire.rundown-index', [
-            'rundowns' => Rundowns::where('user_id', Auth::user()->id)->when($this->search, function($query, $search){
-                return $query->where('title', 'LIKE', "%$search%");
-            })->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->perPage)
+            'rundowns' => Rundowns::where('user_id', Auth::user()->id)
+                ->when($this->search, function($query, $search){
+                    return $query->where('title', 'LIKE', "%$search%")->orWhere('starttime', 'LIKE', "%$search%")->where('user_id', Auth::user()->id);
+                })
+                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
+                ->paginate($this->perPage)
         ]);
     }
 

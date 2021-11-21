@@ -101,3 +101,7 @@ tr.rundown-break-row{
 .hide{
     display: none;
 }
+
+.labbkillen{
+    background-color: rgb(225, 231, 225); padding: 2px 5px 2px 0;
+}

@@ -14,10 +14,13 @@ class Rundown extends Component
     public $page            = 'A';
     public $page_number     = 1;
     public $rundown_timer   = 0;
+    public $row;
 
     protected $listeners = [
         'render'            => 'add_rows',
-        'orderChanged'      => 'updateOrder'
+        'orderChanged'      => 'updateOrder',
+        'textEditor'        => 'init_textEditor',
+        'saveText'          => 'saveText'
     ];
 
     public $cells = [
@@ -77,6 +80,26 @@ class Rundown extends Component
         Rundown_rows::where('id', $moved_row)->update(['before_in_table' => $before_in_table]);
         Rundown_rows::where('id', $after_in_table)->update(['before_in_table' => $moved_row]);
         event(new RundownEvent(['type' => 'render'], $this->rundown->id));
+    }
+
+    function init_textEditor($input)
+    {
+        $this->row      = $input[0];
+        $type           = $input[1];
+        if ($this->row != '' || $this->row != null){
+            $data = Rundown_rows::where('id', $this->row)->first()->$type;
+            $title = __('rundown.edit_script');
+            if ($type == 'cam_notes') $title = __('rundown.edit_camera_notes');
+            if ($data == null) $data = '';
+            $this->emit('loadEditor', [$data, $type, $title]);
+        }
+    }
+    function saveText($data){
+        $type = $data[0];
+        $text = $data[1];
+        Rundown_rows::where('id', $this->row)->update([
+            $type   => $text
+        ]);
     }
 
     private function pick_out_row($id){

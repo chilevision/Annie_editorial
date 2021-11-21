@@ -81,8 +81,9 @@ class Rundowns_controller extends Controller
         $pusher_channel = Settings::where('id', 1)->value('pusher_channel');
         $errors = collect([]);
 		return view('rundown.edit')->with([
-            'rundown' => $rundown,
-             'errors' => $errors,
+            'rundown'           => $rundown,
+             'errors'           => $errors,
+             'pusher_channel'   => $pusher_channel
         ]);
     }
 

@@ -41,11 +41,11 @@
         <tr class="rundown-row sortable-row" id="rundown-row-{{ $row->id }}" @if($row->locked_by != NULL) style="color: #cccccc" @endif>
             <td scope="col">
                 <div class="dropdown">
-                    <a class="dropdown-toggle text-dark" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
+                    <a class="dropdown-toggle text-dark labbkillen" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
                     <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
                         <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
-                        <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#">{{ __('rundown.edit_script') }}</a>
-                        <a class="dropdown-item edit-cam-menu" href="#">{{ __('rundown.edit_camera_notes') }}</a>
+                        <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'script'])">{{ __('rundown.edit_script') }}</a>
+                        <a class="dropdown-item edit-cam-menu @if ($row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'cam_notes'])">{{ __('rundown.edit_camera_notes') }}</a>
                         <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}')">{{ __('rundown.new_meta') }}</a>
                         <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
                     </div>

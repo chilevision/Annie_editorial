@@ -5,7 +5,7 @@
 		var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
 			cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
 		});
-		var channel = pusher.subscribe('rundown');
+		var channel = pusher.subscribe({{ $pusher_channel }});
 		channel.bind('{{ $rundown->id }}', function(data) {
 			console.log(data.message.type);
 			switch (data.message.type){
@@ -24,6 +24,10 @@
 		});
 	</script>
 	<script src="{{ asset('js/Sortable.min.js')}}"></script>
+	<script src="{{ asset('js/summernote.min.js') }}"></script>
+@stop
+@section('add_styles')
+	<link rel="stylesheet" href="{{ asset('css/summernote.min.css') }}" />
 @stop
 @section('content')
 <div class="container-fluid">
@@ -63,39 +67,32 @@
 		</div>
 	</div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="casparModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modals -->
+<div class="modal fade" id="casparModal" tabindex="-1" aria-labelledby="casparModalLabel" aria-hidden="true">
 	<livewire:caspar />
+</div>
+<div class="modal fade" id="textEditorModal" tabindex="-1" aria-labelledby="textEditorModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="textEditorTitle"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="summernote"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('rundown.cancel') }}</button>
+				<button type="button" id="textEditorSave" class="btn btn-custom" onclick="">Save changes</button>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 @section('footer_scripts')
 <script src="{{ asset('js/rundown.js') }}"></script>
-<script>
-	$(function(){
-    	$('#casparModal').on('click', '#caspar-content-table tr', function () {
-			$('#caspar-content-table tr').each(function () { $(this).removeClass('selected'); });
-			$(this).addClass('selected').find('input').prop("checked", true);
-    	});
-	});
-	function selectFile(){
-		var selected = $('#caspar-content-table input:checked').val();
-		if (selected != undefined){
-			var duration = null;
-			if($('#autoDuration').prop("checked") == true){
-				var duration = $('#caspar-content-table .selected').find('.duration').text();
-			}
-			Livewire.emit('updateSource', selected, duration);
-		}
-	}
-	function mediabrowser(query){
-		input = $('#input-source').val();
-		Livewire.emit('mediabrowser', query, input);
-	}
-
-	$('#casparModal').on('hidden.bs.modal', function () {
-		$('#caspar-content').empty();
-	});
-</script>
 @if (!$rundown->sortable)
 	<script> $( document ).ready(function() { sortable.options.disabled = true; }); </script>
 @endif
