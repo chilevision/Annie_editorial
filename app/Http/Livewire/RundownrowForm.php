@@ -6,8 +6,6 @@ use Livewire\Component;
 use App\Models\Rundown_rows;
 use App\Models\Rundowns;
 use App\Models\Settings;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use App\Events\RundownEvent;
 use App\Models\Rundown_meta_rows;
 
@@ -34,6 +32,8 @@ class RundownrowForm extends Component
     public $type_disabled;
     public $formType = 'standard';
     public $edit_mode;
+    public $sourceOptions;
+    public $mixerKeys;
 
     protected $typeOptions = [
         ['value' => 'MIXER', 'title' => 'MIXER'],
@@ -46,27 +46,6 @@ class RundownrowForm extends Component
         ['value' => 'KEY', 'title' => 'KEY'],
         ['value' => 'BG', 'title' => 'BG'],
         ['value' => 'AUDIO', 'title' => 'AUDIO']
-    ];
-    protected $sourceOptions = [
-        ['value' => 'CAM1', 'title' => 'CAM1'],
-        ['value' => 'CAM2', 'title' => 'CAM2'],
-        ['value' => 'CAM3', 'title' => 'CAM3'],
-        ['value' => 'CAM4', 'title' => 'CAM4'],
-        ['value' => 'CAM5', 'title' => 'CAM5'],
-        ['value' => 'CAM6', 'title' => 'CAM6'],
-        ['value' => 'CAM7', 'title' => 'CAM7'],
-        ['value' => 'CAM8', 'title' => 'CAM8'],
-        ['value' => 'CAM9', 'title' => 'CAM9'],
-        ['value' => 'CAM10', 'title' => 'CAM10'],
-        ['value' => 'BLK', 'title' => 'BLK'],
-        ['value' => 'BARS', 'title' => 'BARS'],
-        ['value' => 'SSRC', 'title' => 'SSRC']  
-    ];
-    protected $mixerKeys = [
-        ['value' => 'KEY1', 'title' => 'KEY1'],
-        ['value' => 'KEY2', 'title' => 'KEY2'],
-        ['value' => 'KEY3', 'title' => 'KEY3'],
-        ['value' => 'KEY4', 'title' => 'KEY4'],
     ];
     protected $rules = [
         'name' => 'required|min:6',
@@ -81,6 +60,21 @@ class RundownrowForm extends Component
         'sortingEnded'      => 'unlockSorting',
         'updateSource'      => 'updateSource'
     ];
+
+    public function mount()   
+    {
+        $settings = Settings::where('id', 1)->first();
+        $sourceOptions    = unserialize($settings->mixer_inputs);
+        $mixerKeys        = unserialize($settings->mixer_keys);
+        $this->sourceOptions = [];
+        foreach ($sourceOptions as $option){
+            array_push($this->sourceOptions, ['value' => $option, 'title' => $option]);
+        }
+        $this->mixerKeys = [];
+        foreach ($mixerKeys as $option){
+            array_push($this->mixerKeys, ['value' => $option, 'title' => $option]);
+        }
+    }
 
     public function render()
     {
@@ -145,9 +139,6 @@ class RundownrowForm extends Component
         if($row !== NULL) {
             if ($this->edit_mode == 'row') $this->cancel_edit();
             if ($this->edit_mode == 'meta') $this->cancel_meta();
-            $row->locked_by = Auth::user()->name;
-            $row->locked_at = Carbon::now()->toDateTimeString();
-            $row->save();
             $this->rundown_row_id   = $id;
             $this->story            = $row->story;
             $this->talent           = $row->talent;
@@ -163,8 +154,8 @@ class RundownrowForm extends Component
             $this->formAction       = 'update';
             $this->type_disabled    = 'disabled';
         
-            event(new RundownEvent(['type' => 'edit', 'id' => $id], $this->rundown->id));
             $this->edit_mode = 'row';
+            $this->emit('lock', 'row', $id, 1);
             $this->emit('in_edit_mode', true);
         }
     }
@@ -179,27 +170,19 @@ class RundownrowForm extends Component
             $row->audio            = $this->audio;
             $row->duration         = to_seconds($this->duration);
             $row->autotrigg        = $this->autotrigg;
-            $row->locked_by = NULL;
-            $row->locked_at = NULL;
+            $row->locked_by        = NULL;
+            $row->locked_at        = NULL;
             $row->save();
         }
-        event(new RundownEvent(['type' => 'row_updated', 'id' => $this->rundown_row_id], $this->rundown->id));
+        $this->emit('lock', 'row', $this->rundown_row_id);
         $this->resetForm();
-        $this->edit_mode = NULL;
         $this->emit('in_edit_mode', false);
     }
 
-    public function cancel_edit(){
-        $row = Rundown_rows::find($this->rundown_row_id);
-        if($row) {
-            $row->locked_by = NULL;
-            $row->locked_at = NULL;
-            $row->save();
-        }
-        event(new RundownEvent(['type' => 'cancel_edit', 'id' => $this->rundown_row_id], $this->rundown->id));
-        $this->resetForm();
-        $this->edit_mode = NULL;
+    public function cancel_edit(){    
+        $this->emit('lock', 'row', $this->rundown_row_id);    
         $this->emit('in_edit_mode', false);
+        $this->resetForm();
     }
 
     /*
@@ -243,9 +226,6 @@ class RundownrowForm extends Component
         if($row !== NULL) {
             if ($this->edit_mode == 'row') $this->cancel_edit();
             if ($this->edit_mode == 'meta') $this->cancel_meta();
-            $row->locked_by = Auth::user()->name;
-            $row->locked_at = Carbon::now()->toDateTimeString();
-            $row->save();
             $this->rundown_meta_row_id  = $id;
             $this->story                = $row->title;
             $this->type                 = $row->type;
@@ -268,7 +248,7 @@ class RundownrowForm extends Component
                 default         : $this->mediabowser = 'MOVIE';     break;
             }
         
-            event(new RundownEvent(['type' => 'edit_meta', 'id' => $id], $this->rundown->id));
+            $this->emit('lock', 'meta_row', $id, 1);
             $this->emit('in_edit_mode', true);
             $this->dispatchBrowserEvent('set_duration_input', ['newTime' => $this->duration]);
         }
@@ -288,24 +268,16 @@ class RundownrowForm extends Component
             $row->locked_at = NULL;
             $row->save();
         }
-        event(new RundownEvent(['type' => 'row_updated', 'id' => $this->rundown_meta_row_id], $this->rundown->id));
+        $this->emit('lock', 'meta_row', $this->rundown_meta_row_id);
         $this->resetForm();
-        $this->edit_mode = NULL;
         $this->emit('in_edit_mode', false); 
     }
 
     /* Resets form to default */
     public function cancel_meta(){
-        $row = Rundown_meta_rows::find($this->rundown_meta_row_id);
-        if($row !== NULL){
-            $row->locked_by = NULL;
-            $row->locked_at = NULL;
-            $row->save();
-        }
-        event(new RundownEvent(['type' => 'cancel_meta_edit', 'id' => $this->rundown_meta_row_id], $this->rundown->id));
-        $this->resetForm();
-        $this->edit_mode = NULL;
+        $this->emit('lock', 'meta_row', $this->rundown_meta_row_id);
         $this->emit('in_edit_mode', false);
+        $this->resetForm();
     }
 
     /*
@@ -326,6 +298,7 @@ class RundownrowForm extends Component
         $this->delay                    = '00:00:00';
         $this->mediabowser              = 'MOVIE';
         $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
+        $this->edit_mode = NULL;
     }
 
     /* Disable sorting functionality in rundown table */

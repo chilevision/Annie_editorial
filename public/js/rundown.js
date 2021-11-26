@@ -8,6 +8,9 @@
 /* ----------------------------------------------------------*/
 var sortable;
 var code;
+var row;
+var type;
+var lock_updater = [];
 
 $( document ).ready(function() {
     initSortable();
@@ -108,11 +111,6 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
-function disable_sorting(sortingCode){
-    if (sortingCode != code){
-        sortable.options.disabled = true;
-    }
-}
 
 /*Sends source input value to backend on media browser open 
 |
@@ -175,6 +173,8 @@ Livewire.on('in_edit_mode', edit => {
 |       data[2] = modal title
 */
 Livewire.on('loadEditor', data => {
+    type    = data[1]
+    row     = data[3];
     $('#summernote').summernote('reset');
     $('#summernote').summernote('code', data[0]);
     $('#textEditorTitle').text(data[2]);
@@ -200,6 +200,16 @@ $('#casparModal').on('hidden.bs.modal', function () {
     $('#caspar-content').empty();
 });
 
+/* Listens for text editor modal closeing
+|
+| Unlocks editing 
+*/
+$('#textEditorModal').on('hidden.bs.modal', function () {
+    console.log(type);
+    console.log(row);
+    Livewire.emit('lock', type, row);
+});
+
 /* Listens for if a user exits page
 |
 | If the user is in edit mode: emits to cancel edit before user exits
@@ -215,19 +225,60 @@ window.onbeforeunload = function () {
 |
 |
 */
-function disable_menu(id){
-    $('#rundown-row-'+id).css({'color': '#cccccc'}).find('.dropdown-menu').find('.delete-row-menu').addClass('disabled');
-    $('#rundown-row-'+id).find('.dropdown-menu').find('.edit-row-menu').addClass('disabled');
+function disable_sorting(sortingCode){
+    if (sortingCode != code){
+        sortable.options.disabled = true;
+    }
 }
-function enable_menu(id){
-    $('#rundown-row-'+id).css({'color': '#000000'}).find('.dropdown-menu').find('.delete-row-menu').removeClass('disabled');
-    $('#rundown-row-'+id).find('.dropdown-menu').find('.edit-row-menu').removeClass('disabled');
+
+function lock(data){
+    switch (data.type){
+        case 'row' : 
+            element         = '#rundown-row-'+data.id;
+            edit_menu       = '.edit-row-menu';
+            delete_menu     = '.delete-row-menu';
+            disable_row     = 1;
+            break;
+        case 'meta_row' : 
+            element         = '#rundown-meta-row-'+data.id;
+            edit_menu       = '.edit-meta-menu';
+            delete_menu     = '.delete-meta-menu';
+            disable_row     = 1;
+            break;
+        case 'script'   :
+            element         = '#rundown-row-'+data.id;
+            edit_menu       = '.edit-script-menu';
+            delete_menu     = '.delete-row-menu';
+            disable_row     = 0;
+        case 'cam_notes'   :
+            element         = '#rundown-row-'+data.id;
+            edit_menu       = '.edit-cam-menu';
+            delete_menu     = '.delete-row-menu';
+            disable_row     = 0;
+    }
+    (data.lock) ? disable_menu(element, edit_menu, delete_menu, disable_row, data) : enable_menu(element, edit_menu, delete_menu, disable_row);
 }
-function disable_meta_menu(id){
-    $('#rundown-meta-row-'+id).css({'color': '#cccccc'}).find('.dropdown-menu').find('.delete-meta-menu').addClass('disabled');
-    $('#rundown-meta-row-'+id).find('.dropdown-menu').find('.edit-meta-menu').addClass('disabled');
+function disable_menu(element, edit_menu, delete_menu, disable_row, data){
+    if (disable_row) $(element).css({'color': '#cccccc'});
+    $(element).find('.dropdown-menu').find(delete_menu, edit_menu).addClass('disabled');
+    $(element).find('.dropdown-menu').find(edit_menu).addClass('disabled');
 }
-function enable_meta_menu(id){
-    $('#rundown-meta-row-'+id).css({'color': '#000000'}).find('.dropdown-menu').find('.delete-meta-menu').removeClass('disabled');
-    $('#rundown-meta-row-'+id).find('.dropdown-menu').find('.edit-meta-menu').removeClass('disabled');
+function enable_menu(element, edit_menu, delete_menu, disable_row){
+    if (disable_row) $(element).css({'color': '#000000'});
+    $(element).find('.dropdown-menu').find(delete_menu, edit_menu).removeClass('disabled');
+    $(element).find('.dropdown-menu').find(edit_menu).removeClass('disabled');
 }
+
+Livewire.on('keepLocked', data => {
+    type = 0;
+    if (data.type == 'row' || data.type == 'meta_row') type = 1;
+    if (data.lock){
+        clearInterval(lock_updater[type]);
+        lock_updater[type] = setInterval( function() {
+            Livewire.emit('update_lock', data);
+        }, 60000);
+    }
+    else {
+        clearInterval(lock_updater[type]);
+    }
+});

@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\Rundown_rows;
 use App\Events\RundownEvent;
 use App\Models\Rundown_meta_rows;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class Rundown extends Component
 {
@@ -20,7 +22,9 @@ class Rundown extends Component
         'render'            => 'add_rows',
         'orderChanged'      => 'updateOrder',
         'textEditor'        => 'init_textEditor',
-        'saveText'          => 'saveText'
+        'saveText'          => 'saveText',
+        'lock'              => 'lock',
+        'update_lock'       => 'update_lock'
     ];
 
     public $cells = [
@@ -82,26 +86,6 @@ class Rundown extends Component
         event(new RundownEvent(['type' => 'render'], $this->rundown->id));
     }
 
-    function init_textEditor($input)
-    {
-        $this->row      = $input[0];
-        $type           = $input[1];
-        if ($this->row != '' || $this->row != null){
-            $data = Rundown_rows::where('id', $this->row)->first()->$type;
-            $title = __('rundown.edit_script');
-            if ($type == 'cam_notes') $title = __('rundown.edit_camera_notes');
-            if ($data == null) $data = '';
-            $this->emit('loadEditor', [$data, $type, $title]);
-        }
-    }
-    function saveText($data){
-        $type = $data[0];
-        $text = $data[1];
-        Rundown_rows::where('id', $this->row)->update([
-            $type   => $text
-        ]);
-    }
-
     private function pick_out_row($id){
         $row_before_this = $this->rundownrows->where('id', $id)->first()['before_in_table'];
         //if this isn't the last row: find the next row and update it's "before_in_table" value
@@ -110,5 +94,85 @@ class Rundown extends Component
             Rundown_rows::where('id', $next_row)->update(['before_in_table' => $row_before_this]);
          }
          return;
+    }
+    /*~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+                            TEXT EDITOR
+    ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~*/
+
+    public function init_textEditor($input)
+    {
+        $this->row      = $input[0];
+        $type           = $input[1];
+        if ($this->row != '' || $this->row != null){
+            $data = Rundown_rows::where('id', $this->row)->first()->$type;
+            if ($type == 'cam_notes') $title = __('rundown.edit_camera_notes');
+            else $title = __('rundown.edit_script');
+            $this->lock($type, $this->row, 1);
+            if ($data == null) $data = '';
+            $this->emit('loadEditor', [$data, $type, $title, $this->row]);
+        }
+    }
+    public function saveText($data){
+        $type = $data[0];
+        $text = $data[1];
+        Rundown_rows::where('id', $this->row)->update([
+            $type   => $text
+        ]);
+        $this->lock($type, $this->row);
+    }
+
+    /*~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+                        MENU LOCKING
+    ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~*/
+    public function update_lock($data)
+    {
+        $this->lock($data['type'], $data['id'], 1, 0);
+    }
+
+    public function lock($type, $id, $lock = 0, $emit = 1)
+    {
+        $fields     = $this->get_fields($type);
+        if ($fields != null){ 
+            $user       = null;
+            $time       = null;
+            if ($lock){
+                $user = Auth::user()->id;
+                $time = Carbon::now()->toDateTimeString();
+            }
+
+            if ($type == 'meta_row'){
+                Rundown_meta_rows::where('id', $id)->update([
+                    $fields[0]  => $user,
+                    $fields[1]  => $time
+                ]);
+            }
+            else{
+                Rundown_rows::where('id', $id)->update([
+                    $fields[0]  => $user,
+                    $fields[1]  => $time
+                ]);
+            }
+            if ($emit){ 
+                $this->emit('keepLocked', ['type' => $type, 'id' => $id, 'lock' => $lock]);
+                event(new RundownEvent(['type' => $type, 'id' => $id, 'lock' => $lock], $this->rundown->id));
+            }
+        }
+    }
+
+    protected function get_fields($type)
+    {
+        switch ($type){
+            case 'row' : 
+            case 'meta_row' : 
+                return ['locked_by', 'locked_at'];
+                break;
+            case 'script' : 
+                return ['script_locked_by', 'script_locked_at'];
+                break;
+            case 'cam_notes' : 
+                return ['notes_locked_by', 'notes_locked_at'];
+                break;
+            default : return null;
+        }
     }
 }

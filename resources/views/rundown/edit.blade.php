@@ -5,21 +5,18 @@
 		var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
 			cluster: "{{ env('PUSHER_APP_CLUSTER') }}"
 		});
-		var channel = pusher.subscribe({{ $pusher_channel }});
+		var channel = pusher.subscribe('{{ $pusher_channel }}');
 		channel.bind('{{ $rundown->id }}', function(data) {
 			console.log(data.message.type);
 			switch (data.message.type){
 				case 'render' 			: Livewire.emit('render'); 				break;
-				case 'edit' 			: disable_menu(data.message.id); 		break;
-				case 'edit_meta'		: disable_meta_menu(data.message.id);	break;
-				case 'cancel_edit'		: enable_menu(data.message.id);			break;
-				case 'cancel_meta_edit'	: enable_meta_menu(data.message.id);	break;
 				case 'lockSorting'		: disable_sorting(data.message.code);	break;
 				case 'unlockSorting'	: sortable.options.disabled = false;	break;
-				case 'row_updated'	: 
+				case 'row_updated'		: 
 					enable_menu(data.message.id);
 					Livewire.emit('render');
 					break;
+				default : lock(data.message); break;
 			}
 		});
 	</script>
