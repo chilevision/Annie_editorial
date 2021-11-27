@@ -153,7 +153,7 @@
   @if ($i%3 == 0) <div class="row"><div class="form-group col-3"><input class="form-control form-control-sm" name="mixer_key_{{ $display_count }}" type="text" value="KEY{{ $display_count }}"/></div>
   @else           <div class="form-group col-3"><input class="form-control form-control-sm" name="mixer_key_{{ $display_count }}" type="text" value="KEY{{ $display_count }}"/></div>
   @endif
-  @if ($i%3 == 2 || $display_count == count($inputs)) </div> @endif
+  @if ($i%3 == 2 || $display_count == count($keys)) </div> @endif
   @php $i++ @endphp
 @endforeach
                 </div>
