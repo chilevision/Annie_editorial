@@ -17,6 +17,7 @@ class Rundown extends Component
     public $page_number     = 1;
     public $rundown_timer   = 0;
     public $row;
+    public $show_meta       = false;
 
     protected $listeners = [
         'render'            => 'add_rows',
@@ -131,6 +132,7 @@ class Rundown extends Component
 
     public function lock($type, $id, $lock = 0, $emit = 1)
     {
+        $this->show_meta = false;
         $fields     = $this->get_fields($type);
         if ($fields != null){ 
             $user       = null;
@@ -157,6 +159,8 @@ class Rundown extends Component
                 event(new RundownEvent(['type' => $type, 'id' => $id, 'lock' => $lock], $this->rundown->id));
             }
         }
+
+        if ($type == 'meta_row') $this->show_meta = Rundown_meta_rows::where('id', $id)->first()->rundown_rows_id;
     }
 
     protected function get_fields($type)

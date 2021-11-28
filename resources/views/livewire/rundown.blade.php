@@ -72,7 +72,7 @@
         @if (!$row->Rundown_meta_rows->isEmpty())
         <tr class="meta-row">
             <td colspan="12" class="hiddenRow">
-				<div class="accordian-body collapse meta-container" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
+				<div class="accordian-body collapse meta-container @if ($row->id == $show_meta)show @endif" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
                     <x-Table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
         @php $i = 1; @endphp
         @foreach ($row->Rundown_meta_rows as $meta_row )
