@@ -57,7 +57,7 @@
                 <td>{!! formatBytes($file->size) !!}</td>
                 <td>{{ $file->modified_at }}</td>
                 <td class="duration">{{ gmdate('H:i:s', $file->duration) }}</td>
-                <td>{{ $file->fps }}</td>
+                <td class="file_fps">{{ $file->fps }}</td>
               </tr>
   @endforeach
             </tbody>

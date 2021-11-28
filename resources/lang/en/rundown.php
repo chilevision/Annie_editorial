@@ -17,7 +17,8 @@ return [
     'save'                  => 'Save file',
     'select'                => 'Select',
     'print'                 => 'Print script',
-    'delete'                 => 'Delete',
+    'delete'                => 'Delete',
+    'isLoaded'              => 'is loaded.',
 
     'title'                 => 'Title',
     'date'                  => 'Date',

@@ -19,6 +19,7 @@ class Rundowns extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->boolean('sortable')->default(1);
+            $table->boolean('loaded')->default(0);
             $table->timestamp('starttime');
             $table->timestamp('stoptime');
             $table->integer('duration');
@@ -38,6 +39,7 @@ class Rundowns extends Migration
             $table->string('source')->nullable();
             $table->string('audio')->nullable();
             $table->integer('duration');
+            $table->smallInteger('file_fps')->default(1);
             $table->binary('script')->nullable();
             $table->binary('cam_notes')->nullable();
             $table->boolean('autotrigg')->default(1);

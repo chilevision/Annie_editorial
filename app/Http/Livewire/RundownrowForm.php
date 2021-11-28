@@ -21,8 +21,9 @@ class RundownrowForm extends Component
     public $source = 'CAM1';
     public $audio;
     public $duration = '00:00:00';
+    public $file_fps;
     public $delay = '00:00:00';
-    public $autotrigg = 1;
+    public $autotrigg = 0;
     public $metaData = '';
     public $mediabowser = 'MOVIE';
 
@@ -67,12 +68,16 @@ class RundownrowForm extends Component
         $sourceOptions    = unserialize($settings->mixer_inputs);
         $mixerKeys        = unserialize($settings->mixer_keys);
         $this->sourceOptions = [];
-        foreach ($sourceOptions as $option){
-            array_push($this->sourceOptions, ['value' => $option, 'title' => $option]);
+        if (is_array($sourceOptions) && !empty($sourceOptions)){
+            foreach ($sourceOptions as $option){
+                array_push($this->sourceOptions, ['value' => $option, 'title' => $option]);
+            }
         }
         $this->mixerKeys = [];
-        foreach ($mixerKeys as $option){
-            array_push($this->mixerKeys, ['value' => $option, 'title' => $option]);
+        if (is_array($mixerKeys) && !empty($mixerKeys)){
+            foreach ($mixerKeys as $option){
+                array_push($this->mixerKeys, ['value' => $option, 'title' => $option]);
+            }
         }
     }
 
@@ -124,6 +129,7 @@ class RundownrowForm extends Component
             'source'            => $this->source,
             'audio'             => $this->audio,
             'duration'          => $duration,
+            'file_fps'          => $this->file_fps,
             'autotrigg'         => $this->autotrigg
         ]);
         $this->resetForm();
@@ -147,6 +153,7 @@ class RundownrowForm extends Component
             $this->source           = $row->source;
             $this->audio            = $row->audio;
             $this->duration         = gmdate('H:i:s', $row->duration);
+            $this->file_fps         = $row->file_fps;
             $this->autotrigg        = $row->autotrigg;
 
             $this->header           = 'rundown.edit_row';
@@ -169,6 +176,7 @@ class RundownrowForm extends Component
             $row->source           = $this->source;
             $row->audio            = $this->audio;
             $row->duration         = to_seconds($this->duration);
+            $row->file_fps         = $this->file_fps;
             $row->autotrigg        = $this->autotrigg;
             $row->locked_by        = NULL;
             $row->locked_at        = NULL;
@@ -288,7 +296,7 @@ class RundownrowForm extends Component
     |
     /* Resets form to default */ 
     private function resetForm(){
-        $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration', 'rundown_meta_row_id', 'rundown_row_id', 'metaData', 'type_disabled']);
+        $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration', 'file_fps', 'rundown_meta_row_id', 'rundown_row_id', 'metaData', 'type_disabled']);
         $this->type                     = 'MIXER';
         $this->autotrigg                = 1;
         $this->header                   = 'rundown.new_row';
@@ -334,9 +342,10 @@ class RundownrowForm extends Component
     }
 
     /* Updates source value when a file is selected in form*/
-    public function updateSource($value, $duration)
+    public function updateSource($value, $duration, $fps)
     {
-        $this->source = $value;
+        $this->source       = $value;
+        $this->file_fps     = $fps;
         if($duration != null){
             $this->duration = $duration;
         }

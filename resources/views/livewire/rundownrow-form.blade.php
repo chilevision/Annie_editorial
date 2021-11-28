@@ -27,6 +27,7 @@
                 <x-Forms.input type="text" name="audio" value="{{ $audio }}" wrapClass="col" wire="audio" label="rundown.audio" inputClass="form-control-sm" />
                 <x-Forms.time name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
                 <x-Forms.input type="checkbox" name="autotrigg" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
+                <input type="hidden" name="file_fps" wire="file_fps" />
         @break
 
     @case('PRE')

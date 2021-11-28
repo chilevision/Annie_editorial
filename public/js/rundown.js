@@ -129,10 +129,11 @@ function selectFile(){
     var selected = $('#caspar-content-table input:checked').val();
     if (selected != undefined){
         var duration = null;
+        var fps = $('#caspar-content-table .selected').find('.file_fps').text();
         if($('#autoDuration').prop("checked") == true){
             var duration = $('#caspar-content-table .selected').find('.duration').text();
         }
-        Livewire.emit('updateSource', selected, duration);
+        Livewire.emit('updateSource', selected, duration, fps);
     }
 }
 

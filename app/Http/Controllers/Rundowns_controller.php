@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Livewire\Rundown;
 use Illuminate\Http\Request;
 use App\Models\Rundowns;
+use App\Models\Rundown_rows;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Auth;
 
@@ -88,18 +90,6 @@ class Rundowns_controller extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -166,5 +156,34 @@ class Rundowns_controller extends Controller
 			return(__('rundown.message_error_date3'));
    		}
         return;
+    }
+
+    public function load($id)
+    {
+        Rundowns::where('loaded', 1)->update(['loaded' => 0]);
+        $rundown = Rundowns::where('id', $id)->first();
+        $rundown->loaded = 1;
+        $rundown->save();
+        return redirect(route('rundown.index'))->with('status', 'Rundown: <i>' . $rundown->title . '</i> ' . __('rundown.isLoaded'));
+    }
+
+    public function old_api()
+    {
+        $loaded_id = Rundowns::where('loaded', 1)->first()->id;
+        $rows = Rundown_rows::where('rundown_id', $loaded_id)->get();
+        $sorted = sort_rows($rows)[0];
+        $filtered = $sorted->where('type', 'VB');
+        $output = [];
+        if (is_object($filtered) && !empty($filtered)){
+            foreach ($filtered as $file){
+                array_push($output, [
+                    'file'      => $file->source,
+                    'frames'    => $file->duration * $file->file_fps,
+                    'fps'       => $file->file_fps,
+                    'autoplay'  => $file->autotrigg
+                ]);
+            }
+        }
+        echo(json_encode($output));
     }
 }

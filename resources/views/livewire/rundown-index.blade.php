@@ -38,9 +38,9 @@
                             <a href="/dashboard/rundown/xml/{{ $rundown->id }}" class="btn btn-custom" role="button"><i class="bi bi-save"></i></a>
                             <a href="makepdf/{{$rundown->id}}" class="btn btn-custom" target="_new" role="button"><i class="bi bi-printer"></i></a>
     @if (empty($blocker))									    
-                            <a href="/dashboard/rundown/load/{{$rundown->id}}" class="btn btn-custom" role="button"><i class="bi bi-box-arrow-right"></i></a>
+                            <a href="/dashboard/old/load/{{$rundown->id}}" class="btn btn-custom" role="button"><i class="bi bi-box-arrow-right"></i></a>
     @elseif ($blocker->id == $rundown->id)
-                            <a href="/dashboard/rundown/load/{{$rundown->id}}" class="btn btn-custom" role="button"><i class="bi bi-box-arrow-right"></i></a>
+                            <a href="/dashboard/old/load/{{$rundown->id}}" class="btn btn-custom" role="button"><i class="bi bi-box-arrow-right"></i></a>
     @endif										    
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </div>

@@ -23,16 +23,18 @@ use App\Http\Controllers\Users_controller;
 Route::view('/', 'auth.first')->middleware('first_user');
 Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('first_user');
 Auth::routes(['register' => false]);
-Route::get('/caspar', [\App\Http\Livewire\Caspar::class, 'render']);
+Route::get('/old/api', [\App\Http\Controllers\Rundowns_controller::class, 'old_api']);
 
 Auth::routes();
 
 //Routes for authenticated users:
 Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/', [\App\Http\Controllers\Dashboard_controller::class, 'index']);
-	Route::resource('/rundown', \App\Http\Controllers\Rundowns_controller::class);
+	Route::resource('/rundown', \App\Http\Controllers\Rundowns_controller::class, [
+		'names' => [ 'index' => 'rundown.index'] ]);
 	Route::get('/rundown/{id}/editcal', [\App\Http\Controllers\Rundowns_controller::class, 'edit_calendar']);
 	Route::post('/rundown/updatecal', [\App\Http\Controllers\Rundowns_controller::class, 'update_calendar']);
+	Route::get('/old/load/{id}', [\App\Http\Controllers\Rundowns_controller::class, 'load']);
 });
 
 //Routes for administrator users: 
