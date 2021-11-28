@@ -16,6 +16,8 @@ class Rundowns extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'sortable',
+        'loaded',
         'starttime',
         'stoptime',
         'duration',
