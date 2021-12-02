@@ -11,6 +11,10 @@ class Kernel extends HttpKernel
      *
      * These middleware are run during every request to your application.
      *
+     * 
+     * 
+     *  \Subfission\Cas\Middleware\CASAuth::class,
+     *   \Subfission\Cas\Middleware\RedirectCASAuthenticated::class,
      * @var array
      */
     protected $middleware = [
@@ -21,6 +25,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        
     ];
 
     /**

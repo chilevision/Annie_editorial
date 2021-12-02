@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\Settings;
 
 class LoginController extends Controller
 {
@@ -28,11 +29,6 @@ class LoginController extends Controller
      */
     protected $redirectTo = 'dashboard';
 
-    //Change login credentials from e-mail to username
-    public function username()
-    {
-        return 'name';
-    }
     /**
      * Create a new controller instance.
      *
@@ -41,5 +37,18 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    //Change login credentials from e-mail to username
+    public function username()
+    {
+        return 'name';
+    }
+
+    public function showLoginForm()
+    {
+    $sso = Settings::where('id', 1)->first()->sso;
+
+    return view('auth.login', compact('sso'));
     }
 }

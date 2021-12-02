@@ -6,11 +6,8 @@
 			{{ __('app.users') }}
 		</div>
         <div class="card-body">
-            <div class="row pb-4">
-                <livewire:sso />
-            </div>
-        </div>
         <livewire:users />
+        </div>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="userModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

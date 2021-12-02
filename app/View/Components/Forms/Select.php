@@ -14,6 +14,7 @@ class Select extends Component
     public $wires = '';
     public $label;
     public $options;
+    public $selected;
 
 
     /**
@@ -21,7 +22,7 @@ class Select extends Component
      *
      * @return void
      */
-    public function __construct($name, $wrapClass = '', $selectClass = '', $disabled = '', $wire, $label, $options)
+    public function __construct($name, $wire, $label, $options, $wrapClass = '', $selectClass = '', $disabled = '', $selected = '')
     {
         if ($wire != '') $this->wires = $wire;
         $this->name         = $name;
@@ -30,6 +31,7 @@ class Select extends Component
         $this->disabled     = $disabled;
         $this->label        = $label;
         $this->options      = $options;
+        $this->selected     = $selected;
     }
 
     /**

@@ -27,4 +27,8 @@ class Rundowns extends Model
     {
         return $this->hasMany(Rundown_rows::class);
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class);
+    }
 }

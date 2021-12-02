@@ -45,6 +45,9 @@ return [
     'sso-validation'    => 'CAS/SSO validation URL:',
     'sso-version'       => 'CAS/SSO version:',
     'sso-logout'        => 'CAS/SSO logout URL:',
+    'never'             => 'Never',
+    'months'            => 'Months',
+    'auth'              => 'Authentication',
 
     'message_warning1'  => 'Are you sure you want to delete user: ',
     

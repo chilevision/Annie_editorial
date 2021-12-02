@@ -25,11 +25,15 @@ Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('fir
 Auth::routes(['register' => false]);
 Route::get('/old/api', [\App\Http\Controllers\Rundowns_controller::class, 'old_api']);
 
+Route::get('/cas/login', [\App\Http\Controllers\CasController::class, 'login'])->name('cas.login');
+Route::post('cas/logout', [\App\Http\Controllers\CasController::class, 'logout'])->name('cas.logout');
+Route::get('/cas/callback', [\App\Http\Controllers\CasController::class, 'callback'])->name('cas.callback');
+
 Auth::routes();
 
 //Routes for authenticated users:
 Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
-	Route::get('/', [\App\Http\Controllers\Dashboard_controller::class, 'index']);
+	Route::get('/', [\App\Http\Controllers\Dashboard_controller::class, 'index'])->name('dashboard');
 	Route::resource('/rundown', \App\Http\Controllers\Rundowns_controller::class, [
 		'names' => [ 'index' => 'rundown.index'] ]);
 	Route::get('/rundown/{id}/editcal', [\App\Http\Controllers\Rundowns_controller::class, 'edit_calendar']);

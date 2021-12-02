@@ -60,6 +60,47 @@
                                 </div>
                             </div>
                         </form>
+@if ($sso)
+<hr/>
+                        <div class="text-center">
+                            <p>{{ __('app.sso_login') }}</p>
+                            <a class="btn btn-dark" href="{{ route('cas.login') }}"><i class="bi bi-key"></i> SSO </a>
+                        </div>
+@endif
+
+                        <div class="text-center mt-5">
+                            <small class="text-muted">{{ __('app.accept') }} <a href="#" data-toggle="modal" data-target="#termsModal">{{ __('app.tnc') }}.</a></small>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title text-capitalize" id="termsModalLabel">{{ __('app.tnc') }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body pr-5 pl-5 pt-4">
+                                    <h5 class="text-dark">{{ __('gdpr.personal_data_head') }}</h5>
+                                    <p class="text-dark">{{ __('gdpr.personal_data_body') }}</p>
+                                    <h5 class="text-dark">{{ __('gdpr.leagal_ground_head') }}</h5>
+                                    <p class="text-dark">{{ __('gdpr.leagal_ground_body') }}</p>
+                                    <h5 class="text-dark">{{ __('gdpr.acquire_head') }}</h5>
+                                    <p class="text-dark">{{ __('gdpr.acquire_body') }}</p>
+                                    <h5 class="text-dark">{{ __('gdpr.data_access_head') }}</h5>
+                                    <p class="text-dark">{{ __('gdpr.data_access_body') }}</p>
+                                    <h5 class="text-dark">{{ __('gdpr.data_ttl_head') }}</h5>
+                                    <p class="text-dark">{{ __('gdpr.data_ttl_body') }}</p>
+                                    <h5 class="text-dark">{{ __('gdpr.cookies_head') }}</h5>
+                                    <p class="text-dark">{{ __('gdpr.cookies_body') }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

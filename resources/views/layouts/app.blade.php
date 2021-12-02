@@ -82,15 +82,20 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="@if (Auth::user()->cas){{ route('cas.logout') }}@else{{ route('logout') }}@endif"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
+                                    @if (Auth::user()->cas)
+                                    <form id="logout-form" action="{{ route('cas.logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                    @else
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+                                    @endif
                                 </div>
                             </li>
                         @endguest

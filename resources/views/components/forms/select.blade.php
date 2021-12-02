@@ -11,7 +11,7 @@
     >
 @if(is_array($options))
     @foreach ($options as $option)
-        <option value="{{ $option['value'] }}">{{ $option['title'] }}</option>
+        <option value="{{ $option['value'] }}" @if ($selected == $option['value']) selected="selected" @endif>{{ $option['title'] }}</option>
     @endforeach
 @endif
     </select>

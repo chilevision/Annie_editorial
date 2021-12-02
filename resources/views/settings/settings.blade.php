@@ -61,6 +61,7 @@
         <div class="col-md-3 pt-0">
           <div class="list-group list-group-flush settings-links">
             <a class="list-group-item list-group-item-action active" data-toggle="list" href="#settings-general">{{ __('settings.general') }}</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-users">{{ __('settings.auth') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-mixer">{{ __('settings.mixer') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-vserver">{{ __('settings.vserver') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-gfxserver">{{ __('settings.gfxserver') }}</a>
@@ -106,6 +107,25 @@
                       <x-Forms.input type="text" name="color10" value="{{ $colors[9] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="settings-users">
+              <div class="card-body pb-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="sso" name="sso" value="{{ $settings->sso }}" @if ($settings->sso)checked @endif>
+                  <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
+                </div>
+                <div class="row">
+                  <x-Forms.input type="text" name="sso_hostname" wrapClass="col" wire="" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
+                  <x-Forms.input type="text" name="sso_validation" wrapClass="col" wire="" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
+                </div>
+                <div class="row">
+                    <x-Forms.input type="text" name="sso_version" wrapClass="col" wire="" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
+                    <x-Forms.input type="text" name="sso_logout" wrapClass="col" wire="" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
+                </div>
+                <div class="form-row">
+                  <x-Forms.select name="ttl" wrapClass="col-auto" selected="{{ $settings->user_ttl }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL" />
                 </div>
               </div>
             </div>

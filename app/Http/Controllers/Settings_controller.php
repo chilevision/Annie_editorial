@@ -15,6 +15,13 @@ class Settings_controller extends Controller
     public function index()
     {
         $settings       = Settings::where('id', 1)->first();
+        $ttlOptions = [
+            ['value' => '0', 'title' => __('settings.never')],
+            ['value' => '6', 'title' => '6 '.__('settings.months')],
+            ['value' => '12', 'title' => '12 '.__('settings.months')],
+            ['value' => '24', 'title' => '24 '.__('settings.months')],
+            ['value' => '36', 'title' => '36 '.__('settings.months')]
+        ];
         $colors         = unserialize($settings->colors);
         $mixer_inputs   = unserialize($settings->mixer_inputs);
         $mixer_keys     = unserialize($settings->mixer_keys);
@@ -24,7 +31,8 @@ class Settings_controller extends Controller
             'settings'  => $settings,
             'colors'    => $colors,
             'inputs'    => $mixer_inputs,
-            'keys'      => $mixer_keys
+            'keys'      => $mixer_keys,
+            'userTTL'   => $ttlOptions
         ]);
     }
 
@@ -40,6 +48,8 @@ class Settings_controller extends Controller
         $colors         = [];
         $mixer_inputs   = [];
         $mixer_keys     = [];
+        $sso            = 0;
+        if ($request->input('sso')) $sso = 1;
         foreach ($request->input() as $key=>$input){
             if (strpos($key, 'color') === 0)        array_push($colors, $input);
             if (strpos($key, 'mixer_input') === 0)  array_push($mixer_inputs, $input);
@@ -54,6 +64,8 @@ class Settings_controller extends Controller
             'templateserver_port'       => $request->input('gfxserver_port'),
             'pusher_channel'            => $request->input('pusher_channel'),
             'colors'                    => serialize($colors),
+            'sso'                       => $sso,
+            'user_ttl'                  => $request->input('ttl'),
             'mixer_inputs'              => serialize($mixer_inputs),
             'mixer_keys'                => serialize($mixer_keys)
         ]);
