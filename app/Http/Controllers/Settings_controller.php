@@ -51,7 +51,7 @@ class Settings_controller extends Controller
         $sso            = 0;
         if ($request->input('sso')) $sso = 1;
         foreach ($request->input() as $key=>$input){
-            if (strpos($key, 'color') === 0)        array_push($colors, $input);
+            if (strpos($key, 'color') === 0)        array_push($colors, substr($input, -6));
             if (strpos($key, 'mixer_input') === 0)  array_push($mixer_inputs, $input);
             if (strpos($key, 'mixer_key') === 0)    array_push($mixer_keys, $input);
         }
