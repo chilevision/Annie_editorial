@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Rundowns;
 use App\Models\Rundown_rows;
 use App\Models\Settings;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 //date_default_timezone_set("Europe/Stockholm");
@@ -34,7 +35,9 @@ class Rundowns_controller extends Controller
      */
     public function create()
     {
-        return view('rundown.create');
+        $all_users = User::where('id', '!=', Auth::user()->id)->pluck('name')->toArray();
+
+        return view('rundown.create')->with('all_users', $all_users);
     }
 
     /**
@@ -49,6 +52,15 @@ class Rundowns_controller extends Controller
      */
     public function store(Request $request)
     {
+        $user_ids = [Auth::user()->id];
+        $users = explode (",", $request->input('users'));
+        foreach ($users as $user){
+            $user_id = User::where('name', $user)->first();
+            if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
+            else{
+                array_push($user_ids, $user_id->id);
+            }
+        }
         $validator = $this->validateTimestamps($request);
         if ($validator){ 
             return redirect('dashboard/rundown/create')->withErrors($validator)->withInput();
@@ -58,12 +70,14 @@ class Rundowns_controller extends Controller
         $duration   = strtotime($stoptime) - strtotime($starttime);
 
         $newrundown = Rundowns::create([
-            'user_id'		=> Auth::user()->id,
             'title'         => addslashes($request->input('rundown-title')),
+            'owner'         => Auth::user()->id,
             'starttime'		=> $starttime,
             'stoptime'		=> $stoptime,
             'duration'      => $duration,
         ]);
+        $newrundown->users()->attach($user_ids);
+
         return redirect('dashboard/rundown/'.$newrundown->id.'/edit');
     }
 
@@ -80,6 +94,9 @@ class Rundowns_controller extends Controller
     public function edit($id)
     {
         $rundown = Rundowns::find($id);
+        if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
+        
+        if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         $pusher_channel = Settings::where('id', 1)->value('pusher_channel');
         $errors = collect([]);
 		return view('rundown.edit')->with([
@@ -109,7 +126,34 @@ class Rundowns_controller extends Controller
      */
     public function edit_calendar($id)
     {
-        return view('rundown.edit_calendar')->with('rundown', Rundowns::findOrFail($id));
+        $rundown = Rundowns::findOrFail($id);
+        if (Auth::user()->id == $rundown->owner){
+            $startdate  = date('Y-m-d',strtotime($rundown->starttime));
+            $stopdate   = date('Y-m-d',strtotime($rundown->stoptime));
+            $starttime  = date('H:i',strtotime($rundown->starttime));
+            $stoptime   = date('H:i',strtotime($rundown->stoptime));
+            $users      = '';
+            $all_users = User::where('id', '!=', $rundown->owner)->pluck('name')->toArray();
+            foreach ($rundown->users as $user){
+                if ($user->id != $rundown->owner){
+                    $users = $users . $user->name.',';
+                }
+            }
+
+            $users = substr($users, 0, -1);
+            return view('rundown.edit_calendar')->with([
+                'rundown'       => $rundown, 
+                'startdate'     => $startdate,
+                'stopdate'      => $stopdate,
+                'starttime'     => $starttime,
+                'stoptime'      => $stoptime,
+                'users'         => $users,
+                'all_users'     => $all_users
+            ]);
+        }
+        else {
+            return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
+        }
     }
     
     /**
@@ -120,9 +164,21 @@ class Rundowns_controller extends Controller
      */
     public function update_calendar(Request $request)
     {
+        $user_ids = [Auth::user()->id];
+        if ($request->input('users') != null){
+            $users = explode (",", $request->input('users'));
+            foreach ($users as $user){
+                $user_id = User::where('name', $user)->first();
+                if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
+                else{
+                    array_push($user_ids, $user_id->id);
+                }
+            }
+        }
+
         $validator = $this->validateTimestamps($request);
         if ($validator){ 
-            return redirect('dashboard/rundown/'.$request->input('id').'/editcal')->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput();
         }
         $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
         $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
@@ -133,8 +189,13 @@ class Rundowns_controller extends Controller
             'starttime'		=> $starttime,
             'stoptime'		=> $stoptime,
             'duration'      => $duration,
-        ]);	
-        return redirect('dashboard/rundown')->with('status', __('rundown.message_date_updated'));
+        ]);
+
+        Rundowns::findOrFail($request->input('id'))->users()->sync($user_ids);
+        if ($request->input('redirect')){
+            return redirect($request->input('redirect'));
+        }
+        return redirect(route('rundown.index'))->with('status', __('rundown.message_date_updated'));
 	}
 
     //Validates timestamps

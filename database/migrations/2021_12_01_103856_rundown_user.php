@@ -14,10 +14,11 @@ class RundownUser extends Migration
     public function up()
     {
         Schema::create('rundown_user', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id')->unsigned();
-            $table->unsignedBigInteger('rundown_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('rundown_id')->references('id')->on('rundowns');
+            $table->unsignedBigInteger('rundowns_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('rundowns_id')->references('id')->on('rundowns')->onDelete('cascade');
         });
     }
 

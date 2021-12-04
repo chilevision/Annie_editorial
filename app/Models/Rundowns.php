@@ -14,8 +14,8 @@ class Rundowns extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'user_id',
         'title',
+        'owner',
         'sortable',
         'loaded',
         'starttime',
@@ -29,6 +29,11 @@ class Rundowns extends Model
     }
 
     public function users(){
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'rundown_user');
+    }
+
+    public function owner()
+    {
+        return $this->hasOne(User::class);
     }
 }

@@ -37,7 +37,19 @@
 			<table class="table table-bordered table-sm mb-n1 mt-4">
 				<tr>
 					<td class="text-center">
-						<a  href="/dashboard/rundown/{{ $rundown->id }}/editcal"><i class="bi bi-pencil float-right"></i></a>
+						<div class="dropdown float-left">
+							<button class="btn btn-custom shadow-none dropdown-toggle" type="button" id="teamlist" data-toggle="dropdown" aria-expanded="false">
+								<i class="bi bi-people-fill"></i> {{ __('rundown.team') }}
+							</button>
+							<div class="dropdown-menu" aria-labelledby="teamlist">
+@foreach ($rundown->users as $user)
+								<li class="dropdown-item-custom">{{ $user->name }}</li>
+@endforeach
+							</div>
+						  </div>
+@if ($rundown->owner == Auth::user()->id)
+						<a class="btn btn-custom shadow-none float-right" href="/dashboard/rundown/{{ $rundown->id }}/editcal"><i class="bi bi-pencil"></i> {{ __('rundown.edit')}}</a>
+@endif
 						<h2>{{ $rundown->title }}</h2>
 					</td>
 				</tr>

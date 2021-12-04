@@ -28,7 +28,7 @@
                 <td>{{ gmdate('Y-m-d', strtotime($user->created_at)) }}</td>
                 <td>{{ $user->admin }}</td>
                 <td width="150px">
-                    <form name="delete-user-form" onSubmit="if(!confirm('{{ __('settings.message_warning1') }}{{ $user->name }}')){return false;}" method="POST" action="users/{{ $user->id }}">
+                    <form name="delete-user-form" onsubmit="return confirm('{{ __('settings.message_warning1') }} {{ $user->name }}?');" method="POST" action="users/{{ $user->id }}">
                         @csrf
                         @method('DELETE')
                         <div class="btn-group btn-group float-right">

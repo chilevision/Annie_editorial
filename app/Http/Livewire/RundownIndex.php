@@ -17,18 +17,22 @@ class RundownIndex extends Component
     public $orderAsc    = true;
     public $arrow       = '<i class="bi bi-arrow-down-circle-fill"></i>';
     public $search;
+    public $shared      = 0;
 
     protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
+        $this->shared ? $where = '!=' : $where = '=';
+        $rundowns = Auth::user()->rundowns()->where('owner', $where, Auth::user()->id)
+            ->when($this->search, function($query, $search){
+                return $query->where('title', 'LIKE', "%$search%")->orWhere('starttime', 'LIKE', "%$search%");
+            })
+            ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
+            ->paginate($this->perPage);
+
         return view('livewire.rundown-index', [
-            'rundowns' => Rundowns::where('user_id', Auth::user()->id)
-                ->when($this->search, function($query, $search){
-                    return $query->where('title', 'LIKE', "%$search%")->orWhere('starttime', 'LIKE', "%$search%")->where('user_id', Auth::user()->id);
-                })
-                ->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')
-                ->paginate($this->perPage)
+            'rundowns' => $rundowns
         ]);
     }
 
@@ -38,5 +42,11 @@ class RundownIndex extends Component
         else $this->orderAsc = true;
         $this->orderBy  = $newOrderBy;
         $this->orderAsc ? $this->arrow = '<i class="bi bi-arrow-down-circle-fill"></i>' : $this->arrow = '<i class="bi bi-arrow-up-circle-fill"></i>';
+    }
+
+    public function changeRundowns($nav)
+    {
+        $this->shared = 0;
+        if($nav == 'shared') $this->shared = 1;
     }
 }

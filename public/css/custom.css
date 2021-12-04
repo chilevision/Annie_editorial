@@ -105,3 +105,15 @@ tr.rundown-break-row{
 .rundown-dropdown-link{
     background-color: rgb(225, 231, 225); padding: 2px 5px 2px 0;
 }
+.dropdown-item-custom{
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
