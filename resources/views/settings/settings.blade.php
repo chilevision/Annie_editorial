@@ -113,7 +113,7 @@
             <div class="tab-pane fade" id="settings-users">
               <div class="card-body pb-2">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="sso" name="sso" value="{{ $settings->sso }}" @if ($settings->sso)checked @endif>
+                  <input class="form-check-input" type="checkbox" id="sso" name="sso" value="1" @if ($settings->sso)checked @endif>
                   <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
                 </div>
                 <div class="row">
