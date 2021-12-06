@@ -8,6 +8,14 @@ use App\Models\Rundown_meta_rows;
 
 class RundownRowSeeder extends Seeder
 {
+    public $rundown_id  = 4;        //Set this to the id of the rundown you want to add rows to. 
+    public $rows        = 10;       //Set this to the amount of rows you want for each rundown.
+    public $add_meta    = true;     //Set this to true if you want to generate meta rows to each rundown row.
+    public $max_meta    = 5;        //Set this to the maximum amount of meta rows generated for each rundown row.
+
+    //-------- Do not edit below this line! ---------------
+    public $position;
+    
     /**
      * Run the database seeds.
      *
@@ -15,90 +23,24 @@ class RundownRowSeeder extends Seeder
      */
     public function run()
     {
-        $colors = ['930000', '47295e', 'e05400', '007792', '718815', 'da8f00', '003a48', '5c220a', '054334', '870058'];
-        $storys = [ 
-            'How Will Falun Be In The Future.', 
-            '5 Stereotypes About Falun That Aren\'t Always True.', 
-            'You Will Never Believe These Bizarre Truth Of Falun.', 
-            'These Local Practices In Falun Are So Bizarre That They Will Make Your Jaw Drop!',
-            '10 Secrets About Falun That Nobody Will Tell You.',
-            '7 Factors That Affect Falun\'s Longevity.',
-            'Understanding The Background Of Falun.',
-            '7 Things You Should Know About Falun.',
-            'Seven Clarifications On Falun.',
-            'On more'
-        ];
-        $names = ['Brayden Bowler', 'Konrad Melendez', 'Maksim Wagstaff', 'Marion Woodward', 'Nansi Lawson', 'Shahid Squires', 'Oliwier Austin', 'Tania Ayala', 'Jaspal Prosser', 'Carl Garcia'];
-        $cues = [
-            'It\'ll be a big occasion.',
-            'That would be a really big surprise, wouldn\'t it?',
-            'Taking chances can be risky.',
-            'Your house is big.',
-            'Have you opened the door?',
-            'We see them every week.',
-            'We have a big job ahead of us.',
-            'It\'s not a big dark secret.',
-            'The Earth is spherical.',
-            'Colors are magical',
-        ];
-        $types = ['MIXER', 'VB'];
-        $audio = ['LIVE', 'TAPE', 'TAPE+LIVE'];
-        
-        foreach ($colors as $key => $value){
-            $type = $types[random_int(0,1)];
-            ($type == 'MIXER') ? $source = 'CAM'.random_int(1,10) : $source = strtok($storys[$key], ' ');
-            ($key == 0) ? $position = NULL : $position = $key ;
-            $array = [
-                'rundown_id'        => 36,
-                'before_in_table'   => $position,
-                'story'             => $storys[$key],
-                'color'             => $value,
-                'talent'            => $names[$key],
-                'cue'               => $cues[$key],
-                'type'              => $type,
-                'source'            => $source,
-                'audio'             => $audio[random_int(0,2)],
-                'duration'          => random_int(1,180)
-            ];
-            Rundown_rows::create( $array );
-        }
-
-
-        $metaTypes = ['AUDIO', 'GFX', 'KEY', 'BG'];
-        $bgTypes = ['SCREEN', 'MONITOR', 'GREEN-SCREEN'];
-        $i = 0;
-        while ( $i< 50 ){
-            $theType = $metaTypes[random_int(0, count($metaTypes)-1)];
-            switch ($theType){
-                case 'AUDIO' : 
-                    $theTitle = 'AUDIO SCENE SWITCH';
-                    $theSource = 'scene: '.random_int(1, 10);
-                break;
-                case 'GFX' :
-                    $theTitle = $names[random_int(0, count($names)-1)].' LOWER THIRD';
-                    $theSource = 'NEWS_LOWER_THIRD04';
-                break;
-                case 'KEY' :
-                    $theTitle = 'PIP KEY 0'.random_int(1, 8);
-                    $theSource = 'KEY-'.random_int(1, 4);
-                break;
-                case 'BG' :
-                    $theTitle = $bgTypes[random_int(0, count($bgTypes)-1)].' BACKGROUND';
-                    strtok(str_shuffle($storys[random_int(0, count($storys)-1)]), ' ');  
-                    $theSource = 'KEY-'.random_int(1, 4);
-                break;
+        $rows_count = Rundown_rows::where('rundown_id', $this->rundown_id)->count();
+        for ($i = 1; $i <= $this->rows; $i++) {
+            if ($rows_count == 0) $this->position = null;
+            else{
+                $this->position = Rundown_rows::where('rundown_id', $this->rundown_id)->orderBy('before_in_table', 'DESC')->first()->id;
             }
-            $metaArray = [
-                'rundown_rows_id'   => random_int(1, count($colors)),
-                'title'             => $theTitle,
-                'type'              => $theType,
-                'source'            => $theSource,
-                'delay'             => random_int(0, 179),
-                'duration'          => random_int(1, 999999)
-            ];
-            Rundown_meta_rows::create($metaArray);
-            
-            $i++;
+            $row = Rundown_rows::factory()->create([
+                'rundown_id'        => $this->rundown_id,
+                'before_in_table'   => $this->position
+            ]);
+
+            if ($this->add_meta){
+                if (rand(0, 1)) { 
+                    Rundown_meta_rows::factory(rand(1, $this->max_meta))->create([
+                        'rundown_rows_id'   => $row->id
+                    ]);
+                }
+            }
         }
     }
 }

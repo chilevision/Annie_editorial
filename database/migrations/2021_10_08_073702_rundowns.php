@@ -39,7 +39,7 @@ class Rundowns extends Migration
             $table->string('source')->nullable();
             $table->string('audio')->nullable();
             $table->integer('duration');
-            $table->smallInteger('file_fps')->default(1);
+            $table->smallInteger('file_fps')->nullable();
             $table->binary('script')->nullable();
             $table->binary('cam_notes')->nullable();
             $table->boolean('autotrigg')->default(1);

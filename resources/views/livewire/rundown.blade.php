@@ -63,7 +63,7 @@
                 <p class="rundown-p" data-toggle="tooltip" data-placement="bottom" title="{{ $row->source }}">FILE <i class="bi bi-info-circle"></i></p>
         @endif
             </td>
-            <td scope="col">{{ $row->audio }}</td>
+            <td scope="col"><div class="overflow-hidden" style="width: 80px">{{ $row->audio }}</div></td>
             <td scope="col">{{ gmdate('H:i:s', $row->duration) }}</td>
             <td scope="col">{{ date('H:i:s', $timer) }}</td>
         @php $timer = $timer + $row->duration @endphp
