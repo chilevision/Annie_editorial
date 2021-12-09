@@ -90,5 +90,6 @@ return [
     'Caspar_error_2'        => 'An error occurred during media retrieval. The server responded with:',
     'not_exist'             => 'The rundown does not exist.',
     'permission_denied'     => 'You do not have permissions to access thiss rundown.',
+    'permission_removed'    => 'You do no longer have permissions to access thiss rundown.',
 
 ];

@@ -9,7 +9,10 @@
 		channel.bind('{{ $rundown->id }}', function(data) {
 			console.log(data.message.type);
 			switch (data.message.type){
-				case 'render' 			: Livewire.emit('render'); 				break;
+				case 'render' 			: 
+					Livewire.emit('render');
+					if (data.message.title != undefined) setNewTitle(data.message.title);
+					break;
 				case 'lockSorting'		: disable_sorting(data.message.code);	break;
 				case 'unlockSorting'	: sortable.options.disabled = false;	break;
 				case 'row_updated'		: 
@@ -19,6 +22,9 @@
 				default : lock(data.message); break;
 			}
 		});
+		function setNewTitle(title){
+			$('#navTitle').text(title);
+		}
 	</script>
 	<script src="{{ asset('js/Sortable.min.js')}}"></script>
 	<script src="{{ asset('js/summernote.min.js') }}"></script>
@@ -30,49 +36,11 @@
 <div class="container-fluid">
 	<div class="card" style="width: 1400px; overflow-x: scroll; margin: 0 auto;">
 		<div class="card-header">
-			<a href="/dashboard/rundown">{{ __('rundown.scripts') }}</a><i class="bi bi-caret-right"></i>{{ __('rundown.edit') }}: <cite title="Source Title"> {{ $rundown->title }} </cite>
+			<a href="/dashboard/rundown">{{ __('rundown.scripts') }}</a><i class="bi bi-caret-right"></i>{{ __('rundown.edit') }}: <cite id="navTitle" title="Source Title"> {{ $rundown->title }} </cite>
 		</div>	
 		<div class="card-body">
 			@livewire('rundownrow-form', ['rundown' => $rundown])
-			<table class="table table-bordered table-sm mb-n1 mt-4">
-				<tr>
-					<td class="text-center">
-						<div class="dropdown float-left">
-							<button class="btn btn-custom shadow-none dropdown-toggle" type="button" id="teamlist" data-toggle="dropdown" aria-expanded="false">
-								<i class="bi bi-people-fill"></i> {{ __('rundown.team') }}
-							</button>
-							<div class="dropdown-menu" aria-labelledby="teamlist">
-@foreach ($rundown->users as $user)
-								<li class="dropdown-item-custom">{{ $user->name }}</li>
-@endforeach
-							</div>
-						  </div>
-@if ($rundown->owner == Auth::user()->id)
-						<a class="btn btn-custom shadow-none float-right" href="/dashboard/rundown/{{ $rundown->id }}/editcal"><i class="bi bi-pencil"></i> {{ __('rundown.edit')}}</a>
-@endif
-						<h2>{{ $rundown->title }}</h2>
-					</td>
-				</tr>
-			</table>
-			<table class="table table-bordered table-sm mt-1">
-				<thead>
-					<tr>
-					<th scope="col">{{ __('rundown.air_date') }}</th>
-					<th scope="col">{{ __('rundown.air_time') }}</th>
-					<th scope="col">{{ __('rundown.lenght') }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-					<td>{{ gmdate('Y-m-d', strtotime($rundown->starttime))}}</td>
-					<td>{{ date('H:i', strtotime($rundown->starttime)).' - '.date('H:i', strtotime($rundown->stoptime)) }}</td>
-					<td>{{ gmdate('H:i', $rundown->duration) }}</td>
-					</tr>						
-				</tbody>
-			</table>
-			<div id="rundown-edit-table-wrap">
-				@livewire('rundown', ['rundown' => $rundown])
-			</div>
+			@livewire('rundown', ['rundown' => $rundown])
 		</div>
 	</div>
 </div>

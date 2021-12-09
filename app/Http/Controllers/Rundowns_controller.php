@@ -8,6 +8,7 @@ use App\Models\Rundowns;
 use App\Models\Rundown_rows;
 use App\Models\Settings;
 use App\Models\User;
+use App\Events\RundownEvent;
 use Illuminate\Support\Facades\Auth;
 
 //date_default_timezone_set("Europe/Stockholm");
@@ -95,8 +96,8 @@ class Rundowns_controller extends Controller
     {
         $rundown = Rundowns::find($id);
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
-        
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
+        
         $pusher_channel = Settings::where('id', 1)->value('pusher_channel');
         $errors = collect([]);
 		return view('rundown.edit')->with([
@@ -192,6 +193,7 @@ class Rundowns_controller extends Controller
         ]);
 
         Rundowns::findOrFail($request->input('id'))->users()->sync($user_ids);
+        event(new RundownEvent(['type' => 'render', 'id' => '', 'title' => $request->input('rundown-title')], $request->input('id')));
         if ($request->input('redirect')){
             return redirect($request->input('redirect'));
         }

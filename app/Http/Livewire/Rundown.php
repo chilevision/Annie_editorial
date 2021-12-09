@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\Rundowns;
 use App\Models\Rundown_rows;
 use App\Events\RundownEvent;
 use App\Models\Rundown_meta_rows;
@@ -20,7 +21,7 @@ class Rundown extends Component
     public $show_meta       = false;
 
     protected $listeners = [
-        'render'            => 'add_rows',
+        'render'            => 'render',
         'orderChanged'      => 'updateOrder',
         'textEditor'        => 'init_textEditor',
         'saveText'          => 'saveText',
@@ -55,11 +56,22 @@ class Rundown extends Component
 
     public function render()
     {
-        $timer = strtotime($this->rundown->starttime);
-        $this->page            = 'A';
-        $this->page_number     = 1;
-        $this->add_rows();
-        return view('livewire.rundown')->with(['rundownrows' => $this->rundownrows, 'rundown' => $this->rundown, 'timer' => $timer]);
+        $rundown_id            = $this->rundown->id;
+        $this->rundown         = Rundowns::find($rundown_id);
+        if ($this->rundown->users->firstWhere('id', Auth::user()->id) == null){
+            return view('livewire.rundown')->with('error',  __('rundown.permission_removed'));
+        }
+        else{
+            $timer                 = strtotime($this->rundown->starttime);
+            $this->page            = 'A';
+            $this->page_number     = 1;
+            $this->add_rows();
+            return view('livewire.rundown')->with([
+                'rundownrows' => $this->rundownrows,
+                'rundown' => $this->rundown,
+                'timer' => $timer
+            ]);
+        }
     }
 
     public function add_rows()
