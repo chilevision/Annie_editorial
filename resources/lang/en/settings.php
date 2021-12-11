@@ -13,7 +13,6 @@ return [
     'settings'          => 'Settings',
     'general'           => 'General',
     'mixer'             => 'Vison mixer',
-    'users_and_roles'   => 'Users & roles',
     'vserver'           => 'Video server',
     'gfxserver'         => 'Graphics server',
     'router'            => 'Video router',

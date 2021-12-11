@@ -1,7 +1,4 @@
 <div>
-    <div class="col align-self-end ml-auto">
-        <button type="button" class="btn btn-custom float-right mb-4" data-toggle="modal" data-target="#userModal">{{ __('settings.create-user') }}</button>
-    </div>
     <table class="table table-striped table-hover">
         <thead class="thead-custom">
             <tr>
@@ -32,8 +29,10 @@
                         @csrf
                         @method('DELETE')
                         <div class="btn-group btn-group float-right">
-                            <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#userModal" wire:click="editUser('{{ $user->id }}')"><i class="bi bi-pencil"></i></button>
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-custom"><i class="bi bi-pencil"></i></a>
+@if ($user->id != Auth::user()->id)
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+@endif
                         </div>
                     </form>
                 </td>

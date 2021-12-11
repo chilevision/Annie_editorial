@@ -23,7 +23,6 @@ class Users extends Component
     public $orderAsc    = true;
     public $arrow       = '<i class="bi bi-arrow-down-circle-fill"></i>';
 
-    protected $listeners = ['refresh_users' => 'render'];
 
     public function render()
     {
