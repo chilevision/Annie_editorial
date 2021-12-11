@@ -1,5 +1,5 @@
 <div>
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover table-sm">
         <thead class="thead-custom">
             <tr>
                 <th><a href="#" wire:click="changeOrder('id')" class="text-light">{{ __('settings.id') }}@if ($orderBy == 'id') {!! $arrow !!} @endif</a></th>

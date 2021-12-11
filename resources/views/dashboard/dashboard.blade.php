@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('add_styles')
+	<link rel="stylesheet" href="{{ asset('css/simple-calendar.css') }}" />
+@stop
 @section('content')
 <div class="container" onload="toggleMenuActive()">
     <div class="row">
@@ -23,6 +25,7 @@
 						</tr>
 					</tbody>
 				</table>
+				<div id="calendar"></div>
 			</div>
 		</div>
 	</div>
@@ -78,4 +81,12 @@ Slutord anger vad det sista som sägs i ett inslag eller avsnitt är.</p>
 		</div>
 	</div>
 </div>
+@endsection
+@section('footer_scripts')
+<script src="{{ asset('js/jquery.simple-calendar.min.js') }}"></script>
+<script>
+	$(function(){
+  $("#calendar").simpleCalendar();
+});
+</script>
 @endsection
