@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'welcome' => 'Annie automation - rundown',
+    'welcome' => 'Annie automation - Editorial',
     'intro' => 'CasparCG is a software developed by Sveriges televison for professonal playback of grafics, audio and video, designd for broadcast.',
     'read_more' => 'Read More',
     'rundown_count' => 'Total rundowns:',

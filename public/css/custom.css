@@ -1,3 +1,13 @@
+@font-face {
+    font-family: ZillaSlab;
+    src: url('/fonts/Zilla_Slab/ZillaSlab-Medium.ttf');
+}
+h1,h2,h3{
+    font-family: ZillaSlabBold;
+}
+.dashboard{
+    color: #32a4cd;
+}
 #login_img{
     background-image: url('img/login.jpg');
     background-repeat: no-repeat;

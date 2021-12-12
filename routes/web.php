@@ -38,6 +38,7 @@ Auth::routes();
 //Routes for authenticated users:
 Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/', [Dashboard_controller::class, 'index'])->name('dashboard');
+	Route::post('/getcalendardata', [Dashboard_controller::class, 'getCalendarData'])->name('calenderdata');
 	Route::resource('/rundown', Rundowns_controller::class, [
 		'names' => ['index' => 'rundown.index']]);
 	Route::get('/rundown/{id}/editcal', [Rundowns_controller::class, 'edit_calendar']);

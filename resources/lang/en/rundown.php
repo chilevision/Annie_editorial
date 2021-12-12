@@ -69,6 +69,8 @@ return [
     'under'                 => 'Rundown is under by:',
     'over'                  => 'Rundown is over by:',
     'in_sync'               => 'Rundown is in sync',
+    'schedule'              => 'Rundown schedule',
+    'view-schedule'         => 'View schedule',
 
     'mediafiles'            => 'Media Files',
     'templatefiles'         => 'Template Files',

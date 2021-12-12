@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('add_styles')
 <link href="{{ asset('css/amsify.suggestags.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{{ asset('css/simple-calendar.css') }}" />
 @endsection
 @section('content')
 <div class="container">
@@ -20,6 +21,11 @@
 						<div class="form-row mb-3">
 							<x-Forms.input type="date" name="start-date" value="{{old('start-date', $startdate)}}" wrapClass="" wire="" label="rundown.new_start" inputClass="customDatePicker"/>
 							<x-Forms.time type="time" name="start-time" value="{{old('start-time', $starttime)}}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
+							<div class="col">
+								<button type="button" class="btn btn-custom float-right mt-4" data-toggle="modal" data-target="#scheduleModal">
+									{{ __('rundown.view-schedule') }}
+								</button>
+							</div>
 						</div>
 						<div class="form-row mb-3">
 							<x-Forms.input type="date" name="stop-date" value="{{old('stop-date', $stopdate)}}" wrapClass="" wire="" label="rundown.new_stop" inputClass="customDatePicker" />
@@ -42,10 +48,30 @@
 			</div>
 		</div>
 	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="scheduleLabel">{{ __('rundown.schedule') }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<x-calendar/>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('app.close') }}</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 @section('footer_scripts')
 <script src="{{ asset('js/jquery.amsify.suggestags.js') }}"></script>
+<script src="{{ asset('js/jquery.simple-calendar.min.js') }}"></script>
 <script>
 	$('#rundownUsers').amsifySuggestags({
 		suggestions: @php  echo json_encode($all_users); @endphp

@@ -23,4 +23,5 @@ return [
     'sso_login'     => 'Or sign in with:',
     'accept'        => 'By signing in to this website you accept our',
     'tnc'           => 'terms and conditions',
+    'close'         => 'Close'
 ];
