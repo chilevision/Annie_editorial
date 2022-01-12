@@ -44,6 +44,7 @@ class RundownrowForm extends Component
     ];
     protected $MetaTypeOptions = [
         ['value' => 'GFX', 'title' => 'GFX'],
+        ['value' => 'MIXER', 'title' => 'MIXER'],
         ['value' => 'KEY', 'title' => 'KEY'],
         ['value' => 'BG', 'title' => 'BG'],
         ['value' => 'AUDIO', 'title' => 'AUDIO']
@@ -332,6 +333,7 @@ class RundownrowForm extends Component
     /* Sets values in form depending on type selected
     Triggers when type select is changed */
     public function typeChange() {
+        $this->source = '';
         switch($this->type){
             case 'MIXER'    : $this->source = 'CAM1';           break;
             case 'VB'       : $this->source = '';               break;

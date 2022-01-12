@@ -117,8 +117,14 @@ class Rundown extends Component
         $this->row      = $input[0];
         $type           = $input[1];
         if ($this->row != '' || $this->row != null){
-            $data = Rundown_rows::where('id', $this->row)->first()->$type;
-            if ($type == 'cam_notes') $title = __('rundown.edit_camera_notes');
+            if ($type == 'cam_meta_notes'){
+                $data = Rundown_meta_rows::where('id', $this->row)->first()->data;
+                $type = 'meta_row';
+            }
+            else{
+                $data = Rundown_rows::where('id', $this->row)->first()->$type;
+            }
+            if ($type == 'cam_notes' || $type == 'meta_row') $title = __('rundown.edit_camera_notes');
             else $title = __('rundown.edit_script');
             $this->lock($type, $this->row, 1);
             if ($data == null) $data = '';
@@ -128,9 +134,16 @@ class Rundown extends Component
     public function saveText($data){
         $type = $data[0];
         $text = $data[1];
-        Rundown_rows::where('id', $this->row)->update([
-            $type   => $text
-        ]);
+        if ($type == 'meta_row'){
+            Rundown_meta_rows::where('id', $this->row)->update([
+                'data' => $text
+            ]);
+        }
+        else{
+            Rundown_rows::where('id', $this->row)->update([
+                $type   => $text
+            ]);
+        }
         $this->lock($type, $this->row);
     }
 
@@ -172,7 +185,7 @@ class Rundown extends Component
             }
         }
 
-        if ($type == 'meta_row') $this->show_meta = Rundown_meta_rows::where('id', $id)->first()->rundown_rows_id;
+        if ($type == 'meta_row' && $id != null) $this->show_meta = Rundown_meta_rows::where('id', $id)->first()->rundown_rows_id;
     }
 
     protected function get_fields($type)

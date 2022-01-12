@@ -21,8 +21,12 @@ return [
     'show_lenght'       => 'Maximum duration of a rundown:',
     'pusher_channel'    => 'Site pusher channel name:',
     'color'             => 'Color theme for rundowns:',
+    'vservername'       => 'Video server name:',
+    'vserverchannel'    => 'Video server channel:',
     'vserverip'         => 'Video server IP:',
     'vserverport'       => 'Video server port:',
+    'gfxservername'     => 'Graphics server name:',
+    'gfxserverchannel'  => 'Graphics server channel:',
     'gfxserverip'       => 'Graphics server IP:',
     'gfxserverport'     => 'Graphics server port:',
     'create-user'       => 'New user',
@@ -47,6 +51,7 @@ return [
     'never'             => 'Never',
     'months'            => 'Months',
     'auth'              => 'Authentication',
+    'page'                  => 'Page',
 
     'message_warning1'  => 'Are you sure you want to delete user: ',
     

@@ -56,12 +56,14 @@
                 <x-Forms.Select name="type" wrapClass="col-1" selectClass="form-control-sm" disabled="{{ $type_disabled }}" :wire="[['type' => 'model', 'target' => 'type'],['type' => 'change', 'target' => 'typeChange']]" label="rundown.type" :options="$MetaTypeOptions" />
 @if ($type == 'KEY')
                 <x-Forms.Select name="source" wrapClass="col-1" selectClass="form-control-sm" wire="source" label="rundown.source" :options="$mixerKeys" />
+@elseif ($type == 'MIXER')
+                <x-Forms.Select name="source" wrapClass="col" selectClass="form-control-sm" wire="source" label="rundown.source" :options="$sourceOptions" />
 @else
                 <x-Forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" sourceQuery="{{ $mediabowser }}" label="rundown.source" inputClass="form-control-sm" modalTarget="casparModal"/>
 @endif
                 <div class="form-group">
-                    <label for="comment">Data</label>
-                    <textarea class="form-control" rows="2" id="comment" wire:model="metaData"></textarea>
+                    <label for="comment">@if($type == 'MIXER'){{ __('rundown.notes') }}@else Data @endif</label>
+                    <textarea class="form-control" rows="2" id="comment" wire:model="metaData" style="white-space:nowrap;"></textarea>
                 </div>
                 <x-Forms.time name="delay" value="{{ $delay }}" wrapClass="col" wire="delay" label="rundown.delay" inputClass="form-control-sm" step="1" />
                 <x-Forms.time name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />

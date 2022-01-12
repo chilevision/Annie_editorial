@@ -50,7 +50,15 @@
         @switch($row->type)
         @case('PRE')
             <tr class="rundown-row" id="rundown-row-{{ $row->id }}">
-                <td scope="col" class="rundown-pre">PRE</td>
+                <td scope="col" class="rundown-pre">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-white" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">PRE</a>
+                        <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
+                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
+                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                        </div>
+                    </div>
+                </td>
                 <td scope="col" class="rundown-pre"><i class="bi bi-list-nested"></i></td>
                 <td scope="col" class="rundown-pre">{{ $row->story }}</td>
                 <td scope="col" class="rundown-pre">{{ $row->type }}</td>
@@ -60,11 +68,20 @@
                 <td scope="col" class="rundown-pre"></td>
                 <td scope="col" class="rundown-pre"></td>
                 <td scope="col" class="rundown-pre"></td>
+                <td scope="col" class="rundown-pre"></td>
             </tr>
             @break
             @case('BREAK')
             <tr class="rundown-row rundown-break-row sortable-row" id="rundown-row-{{ $row->id }}">
-                <td scope="col" class="rundown-break">BRK</td>
+                <td scope="col" class="rundown-break">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-dark" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">BRK</a>
+                        <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
+                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
+                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                        </div>
+                    </div>
+                </td>
                 <td scope="col" class="rundown-break"></td>
                 <td scope="col" class="rundown-break">{{ $row->story }}</td>
                 <td scope="col" class="rundown-break">{{ $row->type }}</td>
@@ -129,6 +146,7 @@
                                         <div class="dropdown-menu" aria-labelledby="meta-{{ $meta_row->id }}-link">
                                             <a class="dropdown-item edit-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
                                             <a class="dropdown-item delete-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
+                                            @if ($meta_row->type == 'MIXER')<a class="dropdown-item edit-cam-menu @if ($meta_row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $meta_row->id }}', 'cam_meta_notes'])">{{ __('rundown.edit_camera_notes') }}</a>@endif
                                         </div>
                                     </div>
                                 </td>
@@ -136,7 +154,7 @@
                                 <td scope="col"><div class="overflow-hidden" style="width: 300px">{{ $meta_row->title }}</div></td>
                                 <td scope="col">{{  $meta_row->type }}</td>
                                 <td scope="col"><div class="overflow-hidden" style="width: 250px">{{  $meta_row->source }}</div></td>
-                                <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ $meta_row->data }}</div></td>
+                                <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ strip_tags($meta_row->data) }}</div></td>
                                 <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
                                 <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                             </tr>

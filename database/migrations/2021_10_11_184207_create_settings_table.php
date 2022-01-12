@@ -17,10 +17,14 @@ class CreateSettingsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->integer('max_rundown_lenght')->nullable();
+            $table->string('videoserver_name')->nullable();
             $table->string('videoserver_ip', 45)->nullable();
-            $table->smallInteger('videoserver_port')->unsigned()->nullable();
+            $table->smallInteger('videoserver_port')->unsigned()->default(5250);
+            $table->smallInteger('videoserver_channel')->unsigned()->default(1);
+            $table->string('templateserver_name')->nullable();
             $table->string('templateserver_ip', 45)->nullable();
-            $table->smallInteger('templateserver_port')->unsigned()->nullable();
+            $table->smallInteger('templateserver_port')->unsigned()->default(5250);
+            $table->smallInteger('templateserver_channel')->unsigned()->default(1);
             $table->string('pusher_channel')->nullable();
             $table->string('logo_path')->nullable();
             $table->binary('colors')->nullable();

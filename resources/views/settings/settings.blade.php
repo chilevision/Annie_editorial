@@ -181,14 +181,18 @@
             </div>
             <div class="tab-pane fade" id="settings-vserver">
               <div class="card-body pb-2">
+                <x-Forms.input type="text" name="vserver_name" value="{{ $settings->videoserver_name }}" wrapClass="col" wire="" label="settings.vservername" inputClass="form-control" />
                 <x-Forms.input type="text" name="vserver_ip" value="{{ $settings->videoserver_ip }}" wrapClass="col" wire="" label="settings.vserverip" inputClass="form-control" />
                 <x-Forms.input type="number" name="vserver_port" value="{{ $settings->videoserver_port }}" wrapClass="col" wire="" label="settings.vserverport" inputClass="form-control" />
+                <x-Forms.input type="number" name="vserver_channel" value="{{ $settings->videoserver_channel }}" wrapClass="col" wire="" label="settings.vserverchannel" inputClass="form-control" />
               </div>
             </div>
             <div class="tab-pane fade" id="settings-gfxserver">
               <div class="card-body pb-2">
+                <x-Forms.input type="text" name="gfxserver_name" value="{{ $settings->templateserver_name }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
                 <x-Forms.input type="text" name="gfxserver_ip" value="{{ $settings->templateserver_ip }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
                 <x-Forms.input type="number" name="gfxserver_port" value="{{ $settings->templateserver_port }}" wrapClass="col" wire="" label="settings.gfxserverport" inputClass="form-control" />
+                <x-Forms.input type="number" name="gfxserver_channel" value="{{ $settings->templateserver_channel }}" wrapClass="col" wire="" label="settings.gfxserverchannel" inputClass="form-control" />
               </div>
             </div>
           </div>

@@ -26,6 +26,9 @@ h1,h2,h3{
 tr.rundown-break-row{
     display: table-row; line-height: 0.3;
 }
+tr.rundown-break-row .dropdown-menu{
+    line-height: 1.5;
+}
 .tooltip-inner {
     max-width: 450px!important;
 }

@@ -21,7 +21,7 @@ class Rundown_meta_rowsFactory extends Factory
      */
     public function definition()
     {
-        $type = $this->faker->randomElement(['AUDIO', 'GFX', 'KEY', 'BG']);
+        $type = $this->faker->randomElement(['AUDIO', 'GFX', 'KEY', 'BG', 'MIXER']);
         $bgType = $this->faker->randomElement(['SCREEN', 'MONITOR', 'GREEN-SCREEN']);       
         switch ($type){
             case 'AUDIO' : 
@@ -41,13 +41,16 @@ class Rundown_meta_rowsFactory extends Factory
                 $source = 'KEY-'.random_int(1, 4);
                 $type == $bgType;
             break;
+            case 'MIXER' ;
+                $title = 'CUT';
+                $source = 'Camera '.random_int(1,10);
         }
         return [
             'title'             => $title,
             'type'              => $type,
             'source'            => $source,
             'delay'             => random_int(0, 179),
-            'duration'          => random_int(1, 999999)
+            'duration'          => random_int(1, 100)
         ];
     }
 }

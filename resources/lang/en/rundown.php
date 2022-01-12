@@ -9,6 +9,7 @@ return [
     |
     |
     */
+    'rundown'               => 'Rundown',
     'scripts'               => 'Scripts',
     'script'                => 'script',
     'new'                   => 'New script',
@@ -26,6 +27,7 @@ return [
     'date'                  => 'Date',
     'start'                 => 'Start',
     'delay'                 => 'Delay',
+    'times'                 => 'Times',
     'stop'                  => 'Stop',
     'lenght'                => 'Lenght',
     'owner'                 => 'Owner',
@@ -50,6 +52,7 @@ return [
     'edit_script'           => 'Edit script',
     'edit_row'              => 'Edit row',
     'edit_meta'             => 'Edit meta row',
+    'notes'                 => 'Notes',
     'edit_camera_notes'     => 'Edit camera notes',
     'cancel'                => 'Cancel',
     'next'                  => 'Next',

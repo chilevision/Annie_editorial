@@ -44,6 +44,8 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/rundown/{id}/editcal', [Rundowns_controller::class, 'edit_calendar']);
 	Route::post('/rundown/updatecal', [Rundowns_controller::class, 'update_calendar']);
 	Route::get('/old/load/{id}', [Rundowns_controller::class, 'load']);
+	Route::get('/rundown/{id}/print', [Rundowns_controller::class, 'print']);
+	Route::get('/rundown/{id}/generatexml', [Rundowns_controller::class, 'generateXML']);
 });
 
 //Routes for administrator users: 
