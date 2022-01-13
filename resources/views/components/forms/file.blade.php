@@ -5,4 +5,5 @@
 @else
     <input type="file" @if ($wires != '') wire:model.lazy="{{ $wires }}" @endif name="{{ $name }}" class="shadow-none form-control-file" id="input-{{ $name }}" />
 @endif
+    @error($name) <span class="text-danger">{{ $message }}</span> @enderror
 </div>

@@ -50,7 +50,7 @@
 
 @section('content')
 <div class="container light-style flex-grow-1 container-p-y">
-  <form method="POST" action="{{ route('settings.update') }}">
+  <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="card overflow-hidden pb-5">

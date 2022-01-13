@@ -65,4 +65,24 @@ if (!function_exists('formatBytes'))
         $bytes  /= pow(1024, $pow);
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
-} 
+}
+/*
+|
+| Checks if site_logo folder is empty if not returns first file
+|
+*/
+if (!function_exists('get_custom_logo'))
+{
+    function get_custom_logo()
+    {
+        $dir = public_path('site_logo');
+        $q   = (count(glob("$dir/*")) === 0) ? 'Empty' : 'Not empty';
+            
+        if ($q=="Empty"){
+            return false;
+        }
+        else{
+            return (substr(glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0],21));
+        }
+    }
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Settings;
 use Illuminate\Http\Request;
+use Image;
 
 class Settings_controller extends Controller
 {
@@ -45,6 +46,11 @@ class Settings_controller extends Controller
      */
     public function update(Request $request)
     {
+        $request->validate([
+            'name'          => 'required|max:30',
+            'image'         => 'image|mimes:png,jpg,jpeg,gif|max:5048',
+            'showlenght'    => 'required|numeric|min:1',
+        ]);
         $colors         = [];
         $mixer_inputs   = [];
         $mixer_keys     = [];
@@ -74,6 +80,40 @@ class Settings_controller extends Controller
             'mixer_keys'                => serialize($mixer_keys)
         ]);
 
+        if($request->file('image')){
+            $filename = time() . '-logo.' . $request->image->extension();
+            $storage_folder = base_path().'/resources/uploads';
+            $public_folder  = public_path('site_logo');
+
+            $files = glob($storage_folder.'/*'); 
+            // Deleting all the files in the list
+            foreach($files as $file) {
+                if(is_file($file)) 
+                    // Delete the given file
+                    unlink($file); 
+            }
+            $files = glob($public_folder.'/*'); 
+            // Deleting all the files in the list
+            foreach($files as $file) {
+                if(is_file($file)) 
+                    // Delete the given file
+                    unlink($file); 
+            }
+            $request->image->move(base_path().'/resources/uploads', $filename);
+
+            // open an image file
+            $img = Image::make(base_path().'/resources/uploads/'.$filename);
+
+            // resize image instance
+            $img->resize(240, 60, function ($const) {
+                $const->aspectRatio();
+            })->save($public_folder.'/'.$filename);
+
+
+            Settings::where('id', 1)->update(['logo_path' => $filename]);
+        }
+
         return redirect(route('settings'));
     }
+    
 }

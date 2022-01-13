@@ -33,7 +33,11 @@
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ asset('css/img/annie_h_logo_sm.png') }}" alt="HDa" class="pull-left">
+                    @if (!get_custom_logo())
+                    <img src="{{ asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
+                    @else
+                    <img src="{{ asset(get_custom_logo()) }}" class="plull-left" />
+                    @endif
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -104,20 +108,6 @@
             </nav>
         </div>
         <main class="py-4">
-@if (count($errors) > 0)
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-@if (session('status'))
-	<div class="alert alert-success">
-		{!! session('status') !!}
-	</div>
-@endif
             @yield('content')
         </main>
     </div>
