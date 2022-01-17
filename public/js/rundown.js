@@ -29,8 +29,16 @@ $( document ).ready(function() {
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
             ['hr', ['hr']]
-        ]
+        ],
+        callbacks: {
+            onPaste: function (e) {
+                var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                e.preventDefault();
+                document.execCommand('insertText', false, bufferText);
+            }
+        }
     });
+
 });
 
 /*Sets duration value on rundown form duration input
@@ -251,15 +259,17 @@ function lock(data){
             edit_menu       = '.edit-script-menu';
             delete_menu     = '.delete-row-menu';
             disable_row     = 0;
+            break;
         case 'cam_notes'   :
             element         = '#rundown-row-'+data.id;
             edit_menu       = '.edit-cam-menu';
             delete_menu     = '.delete-row-menu';
             disable_row     = 0;
     }
-    (data.lock) ? disable_menu(element, edit_menu, delete_menu, disable_row, data) : enable_menu(element, edit_menu, delete_menu, disable_row);
+    (data.lock) ? disable_menu(element, edit_menu, delete_menu, disable_row) : enable_menu(element, edit_menu, delete_menu, disable_row);
 }
-function disable_menu(element, edit_menu, delete_menu, disable_row, data){
+function disable_menu(element, edit_menu, delete_menu, disable_row){
+    console.log(edit_menu);
     if (disable_row) $(element).css({'color': '#cccccc'});
     $(element).find('.dropdown-menu').find(delete_menu, edit_menu).addClass('disabled');
     $(element).find('.dropdown-menu').find(edit_menu).addClass('disabled');

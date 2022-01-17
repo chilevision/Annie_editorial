@@ -52,6 +52,10 @@ tr.rundown-break-row .dropdown-menu{
     background-color: #49a9d0!important;
     color: #fff;
 }
+.bg-custom-dark{
+    background-color: #257696!important;
+    color: #fff;
+}
 .table .thead-custom th {
     color: #fff;
     background-color: #49a9d0!important;

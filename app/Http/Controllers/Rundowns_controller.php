@@ -9,10 +9,9 @@ use App\Models\Rundown_rows;
 use App\Models\Settings;
 use App\Models\User;
 use App\Events\RundownEvent;
+use Hamcrest\Core\Set;
 use Illuminate\Support\Facades\Auth;
 use Mpdf;
-
-//date_default_timezone_set("Europe/Stockholm");
 
 class Rundowns_controller extends Controller
 {
@@ -26,11 +25,7 @@ class Rundowns_controller extends Controller
     	return view('rundown.index');
     }
 
-    /**
-     *    .--.      .-'.      .--.      .--.      .--.      .--.      .`-.      .--.
-     *  :::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\
-     * '      `--'      `.-'      `--'      `--'      `--'      `-.'      `--'      `
-     * 
+    /** 
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -43,10 +38,6 @@ class Rundowns_controller extends Controller
     }
 
     /**
-     *      *    .--.      .-'.      .--.      .--.      .--.      .--.      .`-.      .--.
-     *  :::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\
-     * '      `--'      `.-'      `--'      `--'      `--'      `-.'      `--'      `
-     * 
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,10 +75,6 @@ class Rundowns_controller extends Controller
     }
 
     /**
-     *    .--.      .-'.      .--.      .--.      .--.      .--.      .`-.      .--.
-     *  :::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\
-     * '      `--'      `.-'      `--'      `--'      `--'      `-.'      `--'      `
-     * 
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -201,54 +188,29 @@ class Rundowns_controller extends Controller
         return redirect(route('rundown.index'))->with('status', __('rundown.message_date_updated'));
 	}
 
-    //Validates timestamps
-    private function validateTimestamps($request) {
-        $starttime 	= $request->input('start-date') . ' ' . $request->input('start-time');
-        $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
-		if (strtotime($starttime)>strtotime($stoptime)) return (__('rundown.message_error_date1'));
-		if (strtotime($starttime) == strtotime($stoptime)) return (__('rundown.message_error_date2'));
-		
-		if (Rundowns::where([
-			['id', '!=', $request->input('id')],
-			['starttime', '<=', $starttime],
-			['stoptime', '>', $starttime],
-			])->orWhere([
-				['id', '!=', $request->input('id')],
-				['starttime', '<', $stoptime],
-				['stoptime', '>', $starttime],
-			])->exists()) {
-			return(__('rundown.message_error_date3'));
-   		}
-        return;
-    }
-
-    public function load($id)
+    /**
+     * Show the teleprompter for a specific rundow.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_prompter($id = null)
     {
-        Rundowns::where('loaded', 1)->update(['loaded' => 0]);
-        $rundown = Rundowns::where('id', $id)->first();
-        $rundown->loaded = 1;
-        $rundown->save();
-        return redirect(route('rundown.index'))->with('status', 'Rundown: <i>' . $rundown->title . '</i> ' . __('rundown.isLoaded'));
-    }
+        $pusher_channel     = Settings::where('id', 1)->value('pusher_channel');
 
-    public function old_api()
-    {
-        $loaded_id = Rundowns::where('loaded', 1)->first()->id;
-        $rows = Rundown_rows::where('rundown_id', $loaded_id)->get();
-        $sorted = sort_rows($rows)[0];
-        $filtered = $sorted->where('type', 'VB');
-        $output = [];
-        if (is_object($filtered) && !empty($filtered)){
-            foreach ($filtered as $file){
-                array_push($output, [
-                    'file'      => $file->source,
-                    'frames'    => $file->duration * $file->file_fps,
-                    'fps'       => $file->file_fps,
-                    'autoplay'  => $file->autotrigg
-                ]);
-            }
+        if ($id != null){
+            $rundown    = Rundowns::where('id', $id)->first();
+            $global     = false;
         }
-        echo(json_encode($output));
+        else {
+            $rundown    = Rundowns::where('loaded', 1)->first();
+            $global     = true;
+        }
+        return view('rundown.prompter')->with([
+            'rundown'           => $rundown,
+            'pusher_channel'    => $pusher_channel,
+            'global'            => $global
+        ]);
     }
 
     /**
@@ -262,18 +224,12 @@ class Rundowns_controller extends Controller
         $rundown = Rundowns::find($id);
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
+        
         $rows           = Rundown_rows::where('rundown_id', $id)->get();
         $rundownrows    = sort_rows($rows)[0];
         $timer          = strtotime($rundown->starttime);
-        $notes          = [];
         $filename 	    = 'HDA_Rundown'.sprintf("%06d", $id).'.pdf';
-        $mixer_source   = $rows->where('type', 'MIXER');
-        $cams = array_unique(Rundown_rows::where('rundown_id', $id)->where('type', 'MIXER')->orderBy('source', 'asc')->pluck('source')->toArray());
-        foreach ($cams as $cam){
-            $cam_notes = $mixer_source->where('source', $cam)->all();
-            $notes[$cam] = $cam_notes;
-        }
-        $mpdf = new \Mpdf\Mpdf([
+        $mpdf           = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
             'margin_header' => '3',
@@ -286,49 +242,22 @@ class Rundowns_controller extends Controller
         ]);
         $mpdf->showImageErrors = true;
         // Define the Headers before writing anything so they appear on the first page
-        $mpdf->SetHTMLHeader('
-        <div style="text-align: right; font-size: 7pt; color: #000000; font-weight: regular; font-family: serif;">
-            '.date('Y-m-d').'
-        </div>
-        <table class="head-table"><tr>
-            <td><img src="https://i.ibb.co/qC4nSnY/annie-h-logo-kopia.jpg" style="max-width: 140px; max-height: 80px;"/></td>
-            <td><h3>'. $rundown->title .'</h3></td>
-        </tr></table>
-        <table style="margin-bottom: 30px">
-            <tr>
-                <td style="text-align: right; font-weight: bold; padding-right: 10px">'.__('rundown.air_date').'</td>
-                <td>'.gmdate('Y-m-d', strtotime($rundown->starttime)).'</td>
-            </tr>
-            <tr>
-                <td style="text-align: right; font-weight: bold; padding-right: 10px">'. __('rundown.air_time') .':</td>
-                <td>'. date('H:i', strtotime($rundown->starttime)).' - '.date('H:i', strtotime($rundown->stoptime)) .'</td>
-            </tr>
-            <tr>
-                <td style="text-align: right; font-weight: bold; padding-right: 10px">'. __('rundown.lenght') .':</td>
-                <td>'. gmdate('H:i', $rundown->duration) .'</td>
-            </tr>
-        </table>','O');
+        $mpdf->SetHTMLHeader(view('rundown.print.header')->with(['rundown' => $rundown]),'O');
 
-        $mpdf->SetHTMLFooter('
-        <table width="100%" style="vertical-align: bottom; font-family: serif; 
-            font-size: 7pt; color: #000000; font-weight: regular;">
-            <tr>
-                <td width="33%">'.Settings::where('id', 1)->value('name').'</td>
-                <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-                <td width="33%" style="text-align: right; font-style: italic;">'.$rundown->title.'</td>
-            </tr>
-        </table>');  // Note that the second parameter is optional : default = 'O' for ODD
+        $mpdf->SetHTMLFooter(view('rundown.print.footer')->with([
+            'rundown'   => $rundown,
+            'name'      => Settings::where('id', 1)->value('name')
+        ]));
 
-        $mpdf->WriteHTML(view('rundown.print')->with([
+        $mpdf->WriteHTML(view('rundown.print.print')->with([
             'rundown'       => $rundown,
             'rundownrows'   => $rundownrows,
             'timer'         => $timer,
             'page'          => 'A',
-            'page_number'   => 1,
-            'notes'         => $notes
+            'page_number'   => 1
         ]));
+        
         $mpdf->Output($filename, 'I');
-
     }
     /**
      * Creates a XML-file for CasparCG rundown.
@@ -430,5 +359,57 @@ class Rundowns_controller extends Controller
 			readfile($temp_file);
 			unlink($temp_file);
 			exit;
+    }
+
+    //Validates timestamps
+    private function validateTimestamps($request) {
+        $starttime 	= $request->input('start-date') . ' ' . $request->input('start-time');
+        $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
+		if (strtotime($starttime)>strtotime($stoptime)) return (__('rundown.message_error_date1'));
+		if (strtotime($starttime) == strtotime($stoptime)) return (__('rundown.message_error_date2'));
+		
+		if (Rundowns::where([
+			['id', '!=', $request->input('id')],
+			['starttime', '<=', $starttime],
+			['stoptime', '>', $starttime],
+			])->orWhere([
+				['id', '!=', $request->input('id')],
+				['starttime', '<', $stoptime],
+				['stoptime', '>', $starttime],
+			])->exists()) {
+			return(__('rundown.message_error_date3'));
+   		}
+        return;
+    }
+
+    public function load($id)
+    {
+        Rundowns::where('loaded', 1)->update(['loaded' => 0]);
+        $rundown = Rundowns::where('id', $id)->first();
+        $rundown->loaded = 1;
+        $rundown->save();
+        return redirect(route('rundown.index'))->with('status', 'Rundown: <i>' . $rundown->title . '</i> ' . __('rundown.isLoaded'));
+    }
+
+    public function old_api()
+    {
+        $loaded = Rundowns::where('loaded', 1)->first();
+        if ($loaded != null){
+            $rows = Rundown_rows::where('rundown_id', $loaded->id)->get();
+            $sorted = sort_rows($rows)[0];
+            $filtered = $sorted->where('type', 'VB');
+            $output = [];
+            if (is_object($filtered) && !empty($filtered)){
+                foreach ($filtered as $file){
+                    array_push($output, [
+                        'file'      => $file->source,
+                        'frames'    => $file->duration * $file->file_fps,
+                        'fps'       => $file->file_fps,
+                        'autoplay'  => $file->autotrigg
+                    ]);
+                }
+            }
+            echo(json_encode($output));
+        }
     }
 }

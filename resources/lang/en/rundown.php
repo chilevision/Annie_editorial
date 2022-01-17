@@ -14,6 +14,7 @@ return [
     'script'                => 'script',
     'new'                   => 'New script',
     'edit'                  => 'Edit',
+    'edit_calendar'         => 'Edit calendar',
     'run'                   => 'Run',
     'save'                  => 'Save file',
     'select'                => 'Select',
@@ -74,6 +75,7 @@ return [
     'in_sync'               => 'Rundown is in sync',
     'schedule'              => 'Rundown schedule',
     'view-schedule'         => 'View schedule',
+    'teleprompter'          => 'Teleprompter',
 
     'mediafiles'            => 'Media Files',
     'templatefiles'         => 'Template Files',

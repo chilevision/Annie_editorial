@@ -28,10 +28,9 @@
                 <th>{{ __('rundown.page') }}</th>
                 <th></th>
                 <th style="padding: 10px;">{{ __('rundown.story') }}</th>
-                <th>{{ __('rundown.type') }}</th>
+                <th>{{ __('rundown.source') }}</th>
                 <th>{{ __('rundown.talent') }}</th>
                 <th>{{ __('rundown.cue') }}</th>
-                <th>{{ __('rundown.source') }}</th>
                 <th>{{ __('rundown.audio') }}</th>
                 <th>{{ __('rundown.duration') }}</th>
                 <th>{{ __('rundown.start') }}</th>
@@ -60,7 +59,6 @@
                             <td class="rundown-pre">{{ $row->story }}</td>
                             <td class="rundown-pre">{{ $row->type }}</td>
                             <td class="rundown-pre"></td>
-                            <td class="rundown-pre">{{ $row->source }}</td>
                             <td class="rundown-pre">{{ $row->audio }}</td>
                             <td class="rundown-pre"></td>
                             <td class="rundown-pre"></td>
@@ -75,7 +73,6 @@
                             <td class="rundown-break">{{ $row->type }}</td>
                             <td class="rundown-break"></td>
                             <td class="rundown-break"></td>
-                            <td class="rundown-break">{{ $row->source }}</td>
                             <td class="rundown-break"></td>
                             <td class="rundown-break">{{ gmdate('H:i:s', $row->duration) }}</td>
                             <td class="rundown-break">{{ date('H:i:s', $timer) }}</td>
@@ -93,16 +90,15 @@
                             <td style="width: 35px;">{{ $page.$page_number }}</td>
                             <td style="background: #{{ $row->color }}; width: 7px;"></td>
                             <td style="width: 150px;">{{ $row->story }}</td>
-                            <td>{{ $row->type }}</td>
+                            <td>
+                                @if ($row->type == 'MIXER')
+                                    {{ $row->source }} 
+                                @else 
+                                    CCG
+                                @endif
+                            </td>
                             <td>{{ $row->talent }}</td>
                             <td>{{ $row->cue }}</td>
-                            <td>
-                        @if ($row->type == 'MIXER')
-                                {{ $row->source }} 
-                        @else 
-                                FILE
-                        @endif
-                            </td>
                             <td>{{ $row->audio }}</td>
                             <td>{{ gmdate('H:i:s', $row->duration) }}</td>
                             <td>{{ date('H:i:s', $timer) }}</td>

@@ -7,7 +7,7 @@
 		});
 		var channel = pusher.subscribe('{{ $pusher_channel }}');
 		channel.bind('{{ $rundown->id }}', function(data) {
-			console.log(data.message.type);
+			console.log(data.message);
 			switch (data.message.type){
 				case 'render' 			: 
 					Livewire.emit('render');

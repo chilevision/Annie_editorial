@@ -52,7 +52,8 @@
                             <a href="/dashboard/old/load/{{$rundown->id}}" class="btn btn-custom" role="button"><i class="bi bi-box-arrow-right"></i></a>
     @elseif ($blocker->id == $rundown->id)
                             <a href="/dashboard/old/load/{{$rundown->id}}" class="btn btn-custom" role="button"><i class="bi bi-box-arrow-right"></i></a>
-    @endif										    
+    @endif
+                            <a href="/dashboard/rundown/{{ $rundown->id }}/teleprompter" class="btn btn-custom" role="button"><i class="bi bi-chat-square-text"></i></a>
                             @if(!$shared)<button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>@endif
                         </div>
                     </form>
@@ -61,6 +62,14 @@
             </tr>
         </tbody>
     </table>
-    <p class="text-center text-white bg-dark"><i class="bi bi-pencil"></i> = {{ __('rundown.edit') }} <i class="bi bi-box-arrow-right ml-4"></i> = {{ __('rundown.run') }} <i class="bi bi-save ml-4"></i> = {{ __('rundown.save') }} <i class="bi bi-printer ml-4"></i> = {{ __('rundown.print') }} <i class="bi bi-trash ml-4"></i> = {{ __('rundown.delete') }}</p>
+    <p class="text-center text-white bg-custom-dark">
+        <i class="bi bi-pencil"></i> = {{ __('rundown.edit') }}
+        <i class="bi bi-calendar-week ml-4"></i> = {{ __('rundown.edit_calendar') }}
+        <i class="bi bi-save ml-4"></i> = {{ __('rundown.save') }} 
+        <i class="bi bi-printer ml-4"></i> = {{ __('rundown.print') }}
+        <i class="bi bi-box-arrow-right ml-4"></i> = {{ __('rundown.run') }}
+        <i class="bi bi-chat-square-text ml-4"></i> = {{ __('rundown.teleprompter') }}
+        <i class="bi bi-trash ml-4"></i> = {{ __('rundown.delete') }}
+    </p>
     <div class="d-flex justify-content-center">{!! $rundowns->links() !!}</div>
 </div>

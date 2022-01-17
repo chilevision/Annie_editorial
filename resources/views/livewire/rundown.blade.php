@@ -109,7 +109,7 @@
                             <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
                             <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'script'])">{{ __('rundown.edit_script') }}</a>
                             <a class="dropdown-item edit-cam-menu @if ($row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'cam_notes'])">{{ __('rundown.edit_camera_notes') }}</a>
-                            <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}')">{{ __('rundown.new_meta') }}</a>
+                            <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}','{{ $row->type }}')">{{ __('rundown.new_meta') }}</a>
                             <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
             @if ($row->type == 'MIXER') 
                     {{ $row->source }} 
             @else 
-                    <p class="rundown-p" data-toggle="tooltip" data-placement="bottom" title="{{ $row->source }}">FILE <i class="bi bi-info-circle"></i></p>
+                    <p class="rundown-p" data-toggle="tooltip" data-placement="bottom" title="{{ $row->source }}">CCG <i class="bi bi-info-circle"></i></p>
             @endif
                 </td>
                 <td scope="col"><div class="overflow-hidden" style="width: 80px">{{ $row->audio }}</div></td>

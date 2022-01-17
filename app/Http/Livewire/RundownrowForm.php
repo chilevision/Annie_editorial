@@ -42,7 +42,7 @@ class RundownrowForm extends Component
         ['value' => 'PRE', 'title' => 'PRE'],
         ['value' => 'BREAK', 'title' => 'BREAK']
     ];
-    protected $MetaTypeOptions = [
+    public $metaTypeOptions = [
         ['value' => 'GFX', 'title' => 'GFX'],
         ['value' => 'MIXER', 'title' => 'MIXER'],
         ['value' => 'KEY', 'title' => 'KEY'],
@@ -87,7 +87,7 @@ class RundownrowForm extends Component
         return view('livewire.rundownrow-form')->with([
             'rundown'           => $this->rundown,
             'typeOptions'       => $this->typeOptions,
-            'MetaTypeOptions'   => $this->MetaTypeOptions,
+            'metaTypeOptions'   => $this->metaTypeOptions,
             'sourceOptions'     => $this->sourceOptions,
             'mixerKeys'         => $this->mixerKeys,
         ]);
@@ -201,8 +201,14 @@ class RundownrowForm extends Component
     |
     |
     /* Displays the form to create a new rundown_meta_row model. */
-    public function createMetaRow($id)
+    public function createMetaRow($id, $type)
     {
+        if ($type == 'VB'){
+            unset($this->metaTypeOptions[1]);
+        }
+        else{
+            $this->metaTypeOptions[1] = ['value' => 'MIXER', 'title' => 'MIXER'];
+        }
         $this->rundown_row_id   = $id;
         $this->formType         = 'meta';
         $this->type             = 'GFX';

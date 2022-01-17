@@ -28,6 +28,7 @@ Route::view('/', 'auth.first')->middleware('first_user');
 Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('first_user')->name('users.first');
 Auth::routes(['register' => false]);
 Route::get('/old/api', [Rundowns_controller::class, 'old_api']);
+Route::get('/teleprompter', [Rundowns_controller::class, 'show_prompter']);
 
 Route::get('/cas/login', [CasController::class, 'login'])->name('cas.login');
 Route::post('cas/logout', [CasController::class, 'logout'])->name('cas.logout');
@@ -46,6 +47,8 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/old/load/{id}', [Rundowns_controller::class, 'load']);
 	Route::get('/rundown/{id}/print', [Rundowns_controller::class, 'print']);
 	Route::get('/rundown/{id}/generatexml', [Rundowns_controller::class, 'generateXML']);
+	Route::get('/rundown/{id}/teleprompter', [Rundowns_controller::class, 'show_prompter']);
+	Route::post('/rundown/teleprompter', [Rundowns_controller::class, 'rule_prompter']);
 });
 
 //Routes for administrator users: 

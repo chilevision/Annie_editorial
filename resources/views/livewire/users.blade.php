@@ -40,6 +40,6 @@
             </tr>
         </tbody>
     </table>
-    <p class="text-center text-white bg-dark"><i class="bi bi-pencil"></i> = {{ __('rundown.edit') }} <i class="bi bi-trash ml-4"></i> = {{ __('rundown.delete') }}</p>
+    <p class="text-center text-white bg-custom-dark"><i class="bi bi-pencil"></i> = {{ __('rundown.edit') }} <i class="bi bi-trash ml-4"></i> = {{ __('rundown.delete') }}</p>
     <div class="d-flex justify-content-center">{!! $users->links() !!}</div>
 </div>

@@ -47,17 +47,17 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 @if (Auth::user())
-                        <li class="nav-item active">
+                        <li class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
                             <a class="nav-link" href="/">{{ __('app.home') }} <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item @if ( request()->is('dashboard/rundown/*') || request()->is('dashboard/rundown')) active @endif">
                           <a class="nav-link" href="/dashboard/rundown">{{ __('app.scripts') }}</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ request()->is('dashboard/templates') ? 'active' : '' }}">
                             <a class="nav-link" href="/dashboard/templates">{{ __('app.templates') }}</a>
                         </li>
     @if (Auth::user()->admin)
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown @if ( request()->is('dashboard/settings/*') || request()->is('dashboard/settings')) active @endif">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">Admin</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="nav-link" href="/dashboard/settings">{{ __('app.settings') }}</a>
