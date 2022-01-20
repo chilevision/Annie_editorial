@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Settings;
 
 class RundownEvent implements ShouldBroadcast
 {
@@ -25,7 +26,7 @@ class RundownEvent implements ShouldBroadcast
 
   public function broadcastOn()
   {
-      return ['rundown'];
+      return [Settings::where('id', 1)->value('pusher_channel')];
   }
 
   public function broadcastAs()

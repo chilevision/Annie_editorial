@@ -34,6 +34,9 @@
         if (data.message.type == 'script' && data.message.lock == 0){
           Livewire.emit('render');
         }
+        else if (data.message.type == 'prompter'){
+          console.log('prompter message');
+        }
       });
     </script>
   </head>

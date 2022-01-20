@@ -33,7 +33,7 @@
             <tr>
             <th scope="col">{{ __('rundown.air_date') }}</th>
             <th scope="col">{{ __('rundown.air_time') }}</th>
-            <th scope="col">{{ __('rundown.lenght') }}</th>
+            <th scope="col">{{ __('rundown.length') }}</th>
             </tr>
         </thead>
         <tbody>

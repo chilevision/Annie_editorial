@@ -56,12 +56,17 @@ tr.rundown-break-row .dropdown-menu{
     background-color: #257696!important;
     color: #fff;
 }
+#editor-menu .active{
+    background-color: #257696!important;
+}
 .table .thead-custom th {
     color: #fff;
     background-color: #49a9d0!important;
     border-color: #2176bd;
-  }
-
+}
+#rundown-editor{
+    height: 130px;
+}
 #rundown-edit-table-wrap{
     width: 1360px; overflow-x: scroll;
 }

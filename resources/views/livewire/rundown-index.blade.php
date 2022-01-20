@@ -19,7 +19,7 @@
                 <th><a href="#" wire:click="changeOrder('title')" class="text-light">{{ __('rundown.title') }}@if ($orderBy == 'title') {!! $arrow !!} @endif</a></th>
                 <th><a href="#" wire:click="changeOrder('starttime')" class="text-light">{{ __('rundown.air_date') }}@if ($orderBy == 'starttime') {!! $arrow !!} @endif</a></th>
                 <th>{{ __('rundown.start') }}</th>
-                <th>{{ __('rundown.lenght') }}</th>
+                <th>{{ __('rundown.length') }}</th>
                 @if($shared)<th>{{ __('rundown.owner') }}</th>@endif
                 <th>{{ __('rundown.manage') }}
                     <select wire:model="perPage" class="float-right">

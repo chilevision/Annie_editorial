@@ -66,9 +66,9 @@
     border: 2px solid transparent;
     cursor: pointer; }
     .calendar .day:hover {
-      border: 2px solid #6691CC; }
+      border: 2px solid #009ac5; }
     .calendar .day.today {
-      background: #6691CC;
+      background: #009ac5;
       color: white; }
       .calendar .day.today.has-event:after {
         background: white; }
@@ -84,7 +84,7 @@
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: #6691CC; }
+      background: #009ac5; }
     .calendar .day.disabled {
       cursor: default; }
       .calendar .day.disabled:hover {
@@ -126,7 +126,7 @@
       width: 100%;
       padding: 1em;
       margin-bottom: 1em;
-      background: #6691CC;
+      background: #009ac5;
       border-radius: 4px;
       box-sizing: border-box;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);

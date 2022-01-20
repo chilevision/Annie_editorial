@@ -21,7 +21,7 @@
 		</div>
 		<div class="card-body w-75 mx-auto">
 			<x-calendar/>
-			<div class="bg-dark text-white pt-2 pr-2 pb-2 pl-2"><div class="row"><h6 class="col-3">{{ __('dashboard.rundown_count') .' '. $rundowns}}</h6><h6 class="col">{{ __('dashboard.next_run') .' '. $nextRun}}</h6></div></div>
+			<div class="bg-custom text-white pt-2 pr-2 pb-2 pl-2"><div class="row"><h6 class="col-3">{{ __('dashboard.rundown_count') .' '. $rundowns}}</h6><h6 class="col">{{ __('dashboard.next_run') .' '. $nextRun}}</h6></div></div>
 		</div>
 	</div>
 	<div class="card mt-4">

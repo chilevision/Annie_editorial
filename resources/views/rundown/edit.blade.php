@@ -19,7 +19,8 @@
 					enable_menu(data.message.id);
 					Livewire.emit('render');
 					break;
-				default : lock(data.message); break;
+				case 'prompter'			: break;
+				default 				: lock(data.message); break;
 			}
 		});
 		function setNewTitle(title){
