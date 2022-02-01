@@ -15,13 +15,14 @@ class box extends Component
     public $label;
     public $template;
     public $snappy;
+    public $checked;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($name, $label, $value = '', $wrapClass = '', $wire = '', $inputClass = '', $snappy = '')
+    public function __construct($name, $label, $checked = '', $value = '', $wrapClass = '', $wire = '', $inputClass = '', $snappy = '')
     {
         $this->name         = $name;
         $this->value        = $value;
@@ -29,6 +30,7 @@ class box extends Component
         $this->inputClass   = $inputClass;
         $this->label        = $label;
         $this->snappy       = $snappy;
+        $this->checked      = $checked;
 
         if ($wire != '') $this->wires = $wire;
     }

@@ -18,6 +18,15 @@
                 padding: 5px;
                 border: 1px solid #aaa;
             }
+            .rundown-notes-table{
+                vertical-align: top; border-collapse: collapse; width: 100%; margin: 0px; padding: 0px;
+            }
+            .rundown-notes-table td{
+                border: 1px solid #eee; padding: 4px; margin: 0px; width: 50%
+            }
+            .table-notes-heading{
+                font-size: 8pt; text-transform: capitalize;
+            }
         </style>
     </head>
     <body>
@@ -99,19 +108,25 @@
                             </tr>
                             @if (array_key_exists('rundown_script', $pages) || array_key_exists('rundown_notes', $pages))
                                 </table>
-                                <table>
+                                <table class="rundown-notes-table">
                                     <tr>
                                         @if (array_key_exists('rundown_notes', $pages) && $row->cam_notes != null)
-                                            <td>{{ $row->notes }}</td>
+                                            <td>
+                                                <h3 class="table-notes-heading" style="border-left: 2px solid #{{ $row->color }}; border-top: 2px solid #{{ $row->color }}; padding: 5px;">&nbsp;{{ __('rundown.notes') }}</h3>
+                                                <p class="table-notes-text">{{ strip_tags($row->cam_notes) }}</p>
+                                            </td>
                                         @endif
                                         @if (array_key_exists('rundown_script', $pages) && $row->script != null)
-                                            <td>{{ $row->script }}</td>
+                                            <td>
+                                                <h3 class="table-notes-heading" style="border-left: 2px solid #{{ $row->color }}; border-top: 2px solid #{{ $row->color }};">&nbsp;{{ __('rundown.script') }}</h3>
+                                                <p class="table-notes-text">{{ strip_tags($row->script) }}</p>
+                                            </td>
                                         @endif
                                     </tr>
                                 </table>
                                 <table class="rundown">
                             @endif
-                            @if (!$row->Rundown_meta_rows->isEmpty())
+                            @if (array_key_exists('rundown_meta', $pages) && !$row->Rundown_meta_rows->isEmpty())
                                 </table>
                                 <table class="meta-table">
                                     <tr>

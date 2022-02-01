@@ -26,6 +26,7 @@ return [
     'presets'               => 'Presets',
     'shared'                => 'Shared with me',
     'upload'                => 'Upload',
+    'include'               => 'Rundown includes',
 
     'title'                 => 'Title',
     'date'                  => 'Date',
@@ -41,6 +42,7 @@ return [
 
     'new_row'               => 'Create new row',
     'new_meta'              => 'Add new meta row',
+    'meta'                  => 'Meta rows',
     'air_date'              => 'Air date',
     'air_time'              => 'Air time',
     'team'                  => 'Team',
@@ -95,6 +97,7 @@ return [
     'message_error_date1'   => 'The rundown date contains an error: Your rundown cannot start before it begins.',
     'message_error_date2'   => 'The rundown date contains an error: Your rundown cannot start where it begins.',
     'message_error_date3'   => 'The rundown date contains an error: There is allready a planned show during the selected date and time.',
+    'message_error_box'     => 'No boxes have been checked.',
     'message_warning1'      => 'Are you sure you want to delete this rundown?',
     'caspar_error_1'        => 'Could not connect to CasparCG server.',
     'Caspar_error_2'        => 'An error occurred during media retrieval. The server responded with:',

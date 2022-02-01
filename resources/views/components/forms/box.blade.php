@@ -1,8 +1,14 @@
 <div class="form-check {{ $wrapClass }}">
 @if ($snappy != '')
-    <input type="checkbox" value="{{ $value }}" @if ($wires != '') wire:model="{{ $wires }}" @endif name="{{ $name }}" class="form-check-input {{ $inputClass }}" id="input-{{ $name }}" />
+    <input type="checkbox" value="{{ $value }}" name="{{ $name }}" class="form-check-input {{ $inputClass }}" id="input-{{ $name }}" 
+        @if ($wires != '') wire:model="{{ $wires }}" @endif
+        @if ($checked != '') checked @endif
+    />
 @else
-    <input type="checkbox" value="{{ $value }}" @if ($wires != '') wire:model.lazy="{{ $wires }}" @endif name="{{ $name }}" class="form-check-input {{ $inputClass }}" id="input-{{ $name }}" />
+    <input type="checkbox" value="{{ $value }}" name="{{ $name }}" class="form-check-input {{ $inputClass }}" id="input-{{ $name }}" 
+        @if ($wires != '') wire:model.lazy="{{ $wires }}" @endif
+        @if ($checked != '') checked @endif
+    />
 @endif
     <label class="form-check-label" for="input-{{ $name }}">{{ __($label) }}</label>
     @error($name) <span class="text-danger">{{ $message }}</span> @enderror

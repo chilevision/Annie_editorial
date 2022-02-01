@@ -58,12 +58,13 @@
                                     <i class="bi bi-printer"></i></a>
                                 </button>
                                 <div class="dropdown-menu" id="print-menu-{{ $rundown->id }}" aria-labelledby="btnGroupDrop1">
-                                    <x-Forms.box name="rundown" label="rundown.rundown" wrapClass="ml-2" />
-                                    <x-Forms.box name="script" label="rundown.script" wrapClass="ml-2" />
-                                    <x-Forms.box name="notes" label="rundown.notes" wrapClass="ml-2" />
-                                    <div class="dropdown-divider"></div>
-                                    <x-Forms.box name="rundown_notes" label="Rundown include notes" wrapClass="ml-2" />
-                                    <x-Forms.box name="rundown_script" label="Rundown include script" wrapClass="ml-2" />
+                                    <x-Forms.box name="rundown" label="rundown.rundown" wrapClass="ml-2" checked="checked" />
+                                    <x-Forms.box name="script" label="rundown.script" wrapClass="ml-2" checked="checked"/>
+                                    <x-Forms.box name="notes" label="rundown.notes" wrapClass="ml-2" checked="checked"/>
+                                    <h6 class="ml-2 mt-2 mb-n1 text-secondary"><u>{{ __('rundown.include') }}:</u></h6>
+                                    <x-Forms.box name="rundown_meta" label="{{ __('rundown.meta') }}" wrapClass="ml-2 mt-1" checked="checked"/>
+                                    <x-Forms.box name="rundown_notes" label="{{ __('rundown.notes') }}" wrapClass="ml-2" checked=""/>
+                                    <x-Forms.box name="rundown_script" label="{{ __('rundown.script') }}" wrapClass="ml-2" checked=""/>
                                     <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i></button>
                                 </div>
                               </div>
@@ -98,14 +99,21 @@
         });
         function printRundown(id){
             $('#print-rundown-form-values').empty();
-            $('#print-rundown-form-values').append('<input type="hidden" name="id" value="'+id+'"/>');
-            if ($('#print-menu-'+id).find('input[name="rundown"]').is(':checked')) $('#print-rundown-form-values').append('<input type="hidden" name="rundown" value="1"/>');
-            if ($('#print-menu-'+id).find('input[name="script"]').is(':checked')) $('#print-rundown-form-values').append('<input type="hidden" name="script" value="1"/>');
-            if ($('#print-menu-'+id).find('input[name="notes"]').is(':checked')) $('#print-rundown-form-values').append('<input type="hidden" name="notes" value="1"/>');
-            if ($('#print-menu-'+id).find('input[name="rundown_notes"]').is(':checked')) $('#print-rundown-form-values').append('<input type="hidden" name="rundown_notes" value="1"/>');
-            if ($('#print-menu-'+id).find('input[name="rundown_script"]').is(':checked')) $('#print-rundown-form-values').append('<input type="hidden" name="rundown_script" value="1"/>');
-            
-            $('#print-rundown-form').submit();
+            var boxCount = 0;
+            $('#print-menu-'+id+' input').each(function(index){
+                if( $(this).is(':checked')){
+                    boxCount ++;
+                    var name = $(this).attr('name');
+                    $('#print-rundown-form-values').append('<input type="hidden" name="'+name+'" value="1"/>');
+                }
+            })
+            if(boxCount>0){
+                $('#print-rundown-form-values').append('<input type="hidden" name="id" value="'+id+'"/>');
+                $('#print-rundown-form').submit();
+            }
+            else{
+                alert("{{ __('rundown.message_error_box') }}");
+            }
         }
     </script>
 </div>
