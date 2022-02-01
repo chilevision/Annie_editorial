@@ -12,7 +12,7 @@ return [
     'rundown'               => 'Rundown',
     'scripts'               => 'Scripts',
     'script'                => 'script',
-    'new'                   => 'New script',
+    'new'                   => 'New rundown',
     'edit'                  => 'Edit',
     'editor'                => 'Editor',
     'edit_calendar'         => 'Edit calendar',

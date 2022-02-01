@@ -36,7 +36,7 @@ class Rundown extends Component
         ['style' => 'width: 60px;', 'text' => 'rundown.type'],
         ['style' => 'width: 150px;', 'text' => 'rundown.talent'],
         ['style' => 'width: 200px;', 'text' => 'rundown.cue'],
-        ['style' => 'width: 80px;', 'text' => 'rundown.source'],
+        ['style' => 'width: 90px;', 'text' => 'rundown.source'],
         ['style' => 'width: 80px;', 'text' => 'rundown.audio'],
         ['style' => 'width: 90px;', 'text' => 'rundown.duration'],
         ['style' => 'width: 90px;', 'text' => 'rundown.start'],

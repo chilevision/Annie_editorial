@@ -13,10 +13,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
 @yield('add_scripts')
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('css/favicon_io/favicon-32x32.png') }}" type="image/png" />
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
@@ -100,6 +96,11 @@
                                         @csrf
                                     </form>
                                     @endif
+                                    <form action="{{ route('app.setlang') }}" method="POST" id="setLangForm">
+                                        @csrf
+                                        <input type="hidden" name="locale" value="en">
+                                    </form>
+                                    <a class="flag ml-4" href="#" onclick="setLanguage('en');">!</a><a class="flag ml-1" href="#" onclick="setLanguage('sv');">w</a>
                                 </div>
                             </li>
                         @endguest
@@ -112,6 +113,12 @@
         </main>
     </div>
     @livewireScripts
+    <script>
+        function setLanguage(locale){
+            $('#setLangForm input[name=locale]').val(locale);
+            $('#setLangForm').submit();
+        }
+</script>
     @yield('footer_scripts')
 </body>
 </html>

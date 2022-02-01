@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\App;
 use App\Http\Livewire\Rundown;
 use Illuminate\Http\Request;
 use App\Models\Rundowns;
@@ -30,5 +31,18 @@ class Dashboard_controller extends Controller
 			]);
 		}
 		echo json_encode($calendar);
+	}
+
+	public function setlang(Request $request)
+	{
+		if (!in_array($request->input('locale'), ['en', 'sv'])) {        
+			abort(404);
+		}
+	
+		App::setLocale($request->input('locale'));
+		// Session
+		session()->put('locale', $request->input('locale'));
+	
+		return redirect()->back();
 	}
 }

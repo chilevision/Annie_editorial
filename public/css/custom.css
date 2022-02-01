@@ -2,6 +2,16 @@
     font-family: ZillaSlab;
     src: url('/fonts/Zilla_Slab/ZillaSlab-Medium.ttf');
 }
+@font-face {
+    font-family: flags;
+    src: url('/fonts/FlagsColorWorld-6YnRM.ttf');
+}
+.flag{
+    font-family: flags; font-size: 18pt;
+}
+a.flag{
+    text-decoration: none;
+}
 h1,h2,h3{
     font-family: ZillaSlabBold;
 }

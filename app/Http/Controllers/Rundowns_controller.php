@@ -219,16 +219,15 @@ class Rundowns_controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function print($id)
+    public function print(Request $request)
     {
-        $rundown = Rundowns::find($id);
+        $rundown = Rundowns::find($request->input('id'));
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
-        
-        $rows           = Rundown_rows::where('rundown_id', $id)->get();
+        $rows           = Rundown_rows::where('rundown_id', $request->input('id'))->get();
         $rundownrows    = sort_rows($rows)[0];
         $timer          = strtotime($rundown->starttime);
-        $filename 	    = 'HDA_Rundown'.sprintf("%06d", $id).'.pdf';
+        $filename 	    = 'HDA_Rundown'.sprintf("%06d", $request->input('id')).'.pdf';
         $mpdf           = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
@@ -254,7 +253,8 @@ class Rundowns_controller extends Controller
             'rundownrows'   => $rundownrows,
             'timer'         => $timer,
             'page'          => 'A',
-            'page_number'   => 1
+            'page_number'   => 1,
+            'pages'         => $request->input()
         ]));
         
         $mpdf->Output($filename, 'I');

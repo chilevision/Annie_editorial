@@ -14,10 +14,13 @@
           <i class="icon-chevron-right"></i>
           {{ $row->talent }}
           @if ($row->talent != null)<i class="icon-chevron-right"></i>@endif
+          <p>
+            {{ $row->story }}
+            @if ($row->story != null)<i class="icon-chevron-right"></i>@endif
+          <p>
         </div>
-        <hr />
         <div class="story">
-        {!! $row->script !!}
+        <p>{!! $row->script !!}</p>
       </div>
       @endif
     @endforeach

@@ -36,6 +36,9 @@ Route::get('/cas/callback', [CasController::class, 'callback'])->name('cas.callb
 
 Auth::routes();
 
+
+Route::post('/setlang', [Dashboard_controller::class, 'setlang'])->name('app.setlang');
+
 //Routes for authenticated users:
 Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/', [Dashboard_controller::class, 'index'])->name('dashboard');
@@ -45,7 +48,7 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/rundown/{id}/editcal', [Rundowns_controller::class, 'edit_calendar']);
 	Route::post('/rundown/updatecal', [Rundowns_controller::class, 'update_calendar']);
 	Route::get('/old/load/{id}', [Rundowns_controller::class, 'load']);
-	Route::get('/rundown/{id}/print', [Rundowns_controller::class, 'print']);
+	Route::post('/rundown/print', [Rundowns_controller::class, 'print'])->name('rundown.print');
 	Route::get('/rundown/{id}/generatexml', [Rundowns_controller::class, 'generateXML']);
 	Route::get('/rundown/{id}/teleprompter', [Rundowns_controller::class, 'show_prompter']);
 	Route::post('/rundown/teleprompter', [Rundowns_controller::class, 'rule_prompter']);
