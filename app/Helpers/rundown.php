@@ -86,3 +86,20 @@ if (!function_exists('get_custom_logo'))
         }
     }
 }
+/*
+|
+| Replaces font style unit from px to em
+|
+*/
+if (!function_exists('font_size_replace'))
+{
+    function font_size_replace($string, $reference = 14)
+    {
+        preg_match_all('/style="font-size: *(200|[1-9]?[0-9])*px;"/', $string, $fontstyles);
+        foreach ($fontstyles[1] as $key => $fontsize){
+            $em = 'style="font-size: '.round($fontsize/$reference, 1).'em";';
+            $string = str_replace($fontstyles[0][$key], $em, $string);
+        }
+        return $string;
+    }
+}
