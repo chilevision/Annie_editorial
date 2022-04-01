@@ -17,8 +17,8 @@ class CreateMediafilesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
-            $table->integer('size');
-            $table->integer('duration');
+            $table->bigInteger('size');
+            $table->bigInteger('duration');
             $table->integer('fps');
             $table->timestamp('modified_at');
             $table->timestamps();
