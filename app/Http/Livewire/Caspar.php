@@ -122,16 +122,23 @@ class Caspar extends Component
                     if ($arr[0] == ' ') $arr = ltrim($arr, ' ');
                     $arr        = explode(' ', $arr);
                     $type       = $arr[0];
-                    $divider    = explode('/', $arr[4]);
-                    if ($type == 'MOVIE'){
-                        if($divider[0] == null || $divider[1] == null){
-                            dd($arr);
-                        }
-                        $fps = $divider[1]/$divider[0];
-                        if (floor($fps) != $fps) $fps = number_format((float)$fps, 2, '.', '');
-                        $duration = $arr[3]*$divider[0]/$divider[1];
+                    if (isset($arr[4])){
+                        $divider    = explode('/', $arr[4]);
                     }
-                    if ($type == 'AUDIO') $duration = $arr[3]*$divider[0]/$divider[1];
+                    if ($type == 'MOVIE'){
+                        if (isset($arr[4])){
+                            $fps = $divider[1]/$divider[0];
+                            if (floor($fps) != $fps) $fps = number_format((float)$fps, 2, '.', '');
+                        }
+                        if (isset($arr[3])){
+                            $duration = $arr[3]*$divider[0]/$divider[1];
+                        }
+                    }
+                    if ($type == 'AUDIO'){
+                        if (isset($arr[3]) && isset($arr[4])){
+                            $duration = $arr[3]*$divider[0]/$divider[1];
+                        }
+                    } 
                     Mediafiles::create([
                         'name'          => $name,
                         'type'          => $type,
