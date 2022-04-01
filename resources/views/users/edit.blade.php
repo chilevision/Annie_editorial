@@ -10,10 +10,10 @@
                 @method('PUT')
                 @csrf
 @if (!$user->cas)
-                <x-Forms.input type="text" name="name" wrapClass="col" value="{{old('name', $user->name)}}" label="{{ __('settings.name') }}" inputClass="form-control" />
-                <x-Forms.input type="text" name="email" wrapClass="col" value="{{old('email', $user->email)}}" label="{{ __('settings.email') }}" inputClass="form-control" />
-                <x-Forms.input type="password" name="password" wrapClass="col" label="{{ __('settings.password') }}" inputClass="form-control" />
-                <x-Forms.input type="password" name="password_confirmation" wrapClass="col" label="{{ __('settings.password-confirm') }}" inputClass="form-control" />
+                <x-forms.input type="text" name="name" wrapClass="col" value="{{old('name', $user->name)}}" label="{{ __('settings.name') }}" inputClass="form-control" />
+                <x-forms.input type="text" name="email" wrapClass="col" value="{{old('email', $user->email)}}" label="{{ __('settings.email') }}" inputClass="form-control" />
+                <x-forms.input type="password" name="password" wrapClass="col" label="{{ __('settings.password') }}" inputClass="form-control" />
+                <x-forms.input type="password" name="password_confirmation" wrapClass="col" label="{{ __('settings.password-confirm') }}" inputClass="form-control" />
 @else 
                 <input type="hidden" name="name" value="{{ $user->name }}" />
                 <input type="hidden" name="email" value="{{ $user->email }}" />

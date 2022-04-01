@@ -71,40 +71,40 @@
           <div class="tab-content">
             <div class="tab-pane fade active show" id="settings-general">
               <div class="card-body pb-2"> 
-                <x-Forms.input type="text" name="name" value="{{ $settings->name }}" wrapClass="col" wire="" label="settings.site_name" inputClass="form-control" />
-                <x-Forms.input type="file" name="image" value="" wrapClass="col" wire="" label="settings.image" inputClass="form-control-file" />
+                <x-forms.input type="text" name="name" value="{{ $settings->name }}" wrapClass="col" wire="" label="settings.site_name" inputClass="form-control" />
+                <x-forms.input type="file" name="image" value="" wrapClass="col" wire="" label="settings.image" inputClass="form-control-file" />
                 <div class="row pl-3">  
-                  <x-Forms.input type="number" name="showlenght" value="{{ $settings->max_rundown_lenght }}" wrapClass="col-3" wire="" label="settings.show_lenght" inputClass="form-control" />
+                  <x-forms.input type="number" name="showlenght" value="{{ $settings->max_rundown_lenght }}" wrapClass="col-3" wire="" label="settings.show_lenght" inputClass="form-control" />
                   <div class="col form-unit">Minutes</div>
                 </div>
                 <hr/>
                 <h5 class="pl-3 pb-3">Pusher:</h5>
                 <div class="row pl-3">
-                  <x-Forms.input type="text" name="pusher_id" value="{{ env('PUSHER_APP_ID') }}" wrapClass="col-4" wire="" label="ID" inputClass="form-control" />
-                  <x-Forms.input type="text" name="pusher_cluster" value="{{ env('PUSHER_APP_CLUSTER') }}" wrapClass="col-2" wire="" label="Cluster" inputClass="form-control" />
-                  <x-Forms.input type="text" name="pusher_channel" value="{{ $settings->pusher_channel }}" wrapClass="col" wire="" label="settings.pusher_channel" inputClass="form-control" />
+                  <x-forms.input type="text" name="pusher_id" value="{{ env('PUSHER_APP_ID') }}" wrapClass="col-4" wire="" label="ID" inputClass="form-control" />
+                  <x-forms.input type="text" name="pusher_cluster" value="{{ env('PUSHER_APP_CLUSTER') }}" wrapClass="col-2" wire="" label="Cluster" inputClass="form-control" />
+                  <x-forms.input type="text" name="pusher_channel" value="{{ $settings->pusher_channel }}" wrapClass="col" wire="" label="settings.pusher_channel" inputClass="form-control" />
                 </div>
                 <div class="row pl-3">
-                  <x-Forms.input type="text" name="pusher_secret" value="{{ env('PUSHER_APP_SECRET') }}" wrapClass="col" wire="" label="Secret" inputClass="form-control" />
-                  <x-Forms.input type="text" name="pusher_key" value="{{ env('PUSHER_APP_KEY') }}" wrapClass="col" wire="" label="Key" inputClass="form-control" />
+                  <x-forms.input type="text" name="pusher_secret" value="{{ env('PUSHER_APP_SECRET') }}" wrapClass="col" wire="" label="Secret" inputClass="form-control" />
+                  <x-forms.input type="text" name="pusher_key" value="{{ env('PUSHER_APP_KEY') }}" wrapClass="col" wire="" label="Key" inputClass="form-control" />
                 </div>
                 <hr/>
                 <div class="form-group">
                   <h5 class="pl-3 pb-3">{{ __('settings.color') }}</h6>
                   <div class="row">
                     <div class="col">
-                      <x-Forms.input type="text" name="color1" value="{{ $colors[0] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color2" value="{{ $colors[1] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color3" value="{{ $colors[2] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color4" value="{{ $colors[3] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color5" value="{{ $colors[4] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color1" value="{{ $colors[0] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color2" value="{{ $colors[1] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color3" value="{{ $colors[2] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color4" value="{{ $colors[3] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color5" value="{{ $colors[4] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
                     </div>
                     <div class="col">
-                      <x-Forms.input type="text" name="color6" value="{{ $colors[5] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color7" value="{{ $colors[6] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color8" value="{{ $colors[7] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color9" value="{{ $colors[8] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
-                      <x-Forms.input type="text" name="color10" value="{{ $colors[9] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color6" value="{{ $colors[5] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color7" value="{{ $colors[6] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color8" value="{{ $colors[7] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color9" value="{{ $colors[8] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
+                      <x-forms.input type="text" name="color10" value="{{ $colors[9] }}" wrapClass="col" wire="" label="" inputClass="form-control colorpicker" />
                     </div>
                   </div>
                 </div>
@@ -117,15 +117,15 @@
                   <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
                 </div>
                 <div class="row">
-                  <x-Forms.input type="text" name="sso_hostname" wrapClass="col" wire="" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
-                  <x-Forms.input type="text" name="sso_validation" wrapClass="col" wire="" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
+                  <x-forms.input type="text" name="sso_hostname" wrapClass="col" wire="" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
+                  <x-forms.input type="text" name="sso_validation" wrapClass="col" wire="" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
                 </div>
                 <div class="row">
-                    <x-Forms.input type="text" name="sso_version" wrapClass="col" wire="" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
-                    <x-Forms.input type="text" name="sso_logout" wrapClass="col" wire="" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
+                    <x-forms.input type="text" name="sso_version" wrapClass="col" wire="" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
+                    <x-forms.input type="text" name="sso_logout" wrapClass="col" wire="" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
                 </div>
                 <div class="form-row">
-                  <x-Forms.select name="ttl" wrapClass="col-auto" selected="{{ $settings->user_ttl }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL" />
+                  <x-forms.select name="ttl" wrapClass="col-auto" selected="{{ $settings->user_ttl }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL" />
                 </div>
               </div>
             </div>
@@ -181,18 +181,18 @@
             </div>
             <div class="tab-pane fade" id="settings-vserver">
               <div class="card-body pb-2">
-                <x-Forms.input type="text" name="vserver_name" value="{{ $settings->videoserver_name }}" wrapClass="col" wire="" label="settings.vservername" inputClass="form-control" />
-                <x-Forms.input type="text" name="vserver_ip" value="{{ $settings->videoserver_ip }}" wrapClass="col" wire="" label="settings.vserverip" inputClass="form-control" />
-                <x-Forms.input type="number" name="vserver_port" value="{{ $settings->videoserver_port }}" wrapClass="col" wire="" label="settings.vserverport" inputClass="form-control" />
-                <x-Forms.input type="number" name="vserver_channel" value="{{ $settings->videoserver_channel }}" wrapClass="col" wire="" label="settings.vserverchannel" inputClass="form-control" />
+                <x-forms.input type="text" name="vserver_name" value="{{ $settings->videoserver_name }}" wrapClass="col" wire="" label="settings.vservername" inputClass="form-control" />
+                <x-forms.input type="text" name="vserver_ip" value="{{ $settings->videoserver_ip }}" wrapClass="col" wire="" label="settings.vserverip" inputClass="form-control" />
+                <x-forms.input type="number" name="vserver_port" value="{{ $settings->videoserver_port }}" wrapClass="col" wire="" label="settings.vserverport" inputClass="form-control" />
+                <x-forms.input type="number" name="vserver_channel" value="{{ $settings->videoserver_channel }}" wrapClass="col" wire="" label="settings.vserverchannel" inputClass="form-control" />
               </div>
             </div>
             <div class="tab-pane fade" id="settings-gfxserver">
               <div class="card-body pb-2">
-                <x-Forms.input type="text" name="gfxserver_name" value="{{ $settings->templateserver_name }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
-                <x-Forms.input type="text" name="gfxserver_ip" value="{{ $settings->templateserver_ip }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
-                <x-Forms.input type="number" name="gfxserver_port" value="{{ $settings->templateserver_port }}" wrapClass="col" wire="" label="settings.gfxserverport" inputClass="form-control" />
-                <x-Forms.input type="number" name="gfxserver_channel" value="{{ $settings->templateserver_channel }}" wrapClass="col" wire="" label="settings.gfxserverchannel" inputClass="form-control" />
+                <x-forms.input type="text" name="gfxserver_name" value="{{ $settings->templateserver_name }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
+                <x-forms.input type="text" name="gfxserver_ip" value="{{ $settings->templateserver_ip }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
+                <x-forms.input type="number" name="gfxserver_port" value="{{ $settings->templateserver_port }}" wrapClass="col" wire="" label="settings.gfxserverport" inputClass="form-control" />
+                <x-forms.input type="number" name="gfxserver_channel" value="{{ $settings->templateserver_channel }}" wrapClass="col" wire="" label="settings.gfxserverchannel" inputClass="form-control" />
               </div>
             </div>
           </div>

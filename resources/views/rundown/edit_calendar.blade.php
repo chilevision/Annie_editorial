@@ -17,10 +17,10 @@
 						@csrf
 						<input type="hidden" name="id" value="{{ $rundown->id }}" />
 						@if (substr(url()->previous(), -4) == 'edit') <input type="hidden" name="redirect" value="{{url()->previous()}}" />@endif 
-						<x-Forms.input type="text" name="rundown-title" value="{{old('rundown-title', $rundown->title)}}" wrapClass="mb-3" wire="" label="rundown.new_title" inputClass="" />
+						<x-forms.input type="text" name="rundown-title" value="{{old('rundown-title', $rundown->title)}}" wrapClass="mb-3" wire="" label="rundown.new_title" inputClass="" />
 						<div class="form-row mb-3">
-							<x-Forms.input type="date" name="start-date" value="{{old('start-date', $startdate)}}" wrapClass="" wire="" label="rundown.new_start" inputClass="customDatePicker"/>
-							<x-Forms.time type="time" name="start-time" value="{{old('start-time', $starttime)}}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
+							<x-forms.input type="date" name="start-date" value="{{old('start-date', $startdate)}}" wrapClass="" wire="" label="rundown.new_start" inputClass="customDatePicker"/>
+							<x-forms.time type="time" name="start-time" value="{{old('start-time', $starttime)}}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
 							<div class="col">
 								<button type="button" class="btn btn-custom float-right mt-4" data-toggle="modal" data-target="#scheduleModal">
 									{{ __('rundown.view-schedule') }}
@@ -28,8 +28,8 @@
 							</div>
 						</div>
 						<div class="form-row mb-3">
-							<x-Forms.input type="date" name="stop-date" value="{{old('stop-date', $stopdate)}}" wrapClass="" wire="" label="rundown.new_stop" inputClass="customDatePicker" />
-							<x-Forms.time type="time" name="stop-time" value="{{old('stop-time', $stoptime)}}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
+							<x-forms.input type="date" name="stop-date" value="{{old('stop-date', $stopdate)}}" wrapClass="" wire="" label="rundown.new_stop" inputClass="customDatePicker" />
+							<x-forms.time type="time" name="stop-time" value="{{old('stop-time', $stoptime)}}" wrapClass="" wire="" label="" inputClass="ml-2 mt-2" step="0"/>
 						</div>
 						<div class="form-group">
 							<label for="rundownUsers">{{ __('rundown.users') }}:</label>

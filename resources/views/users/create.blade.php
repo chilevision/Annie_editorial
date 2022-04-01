@@ -8,10 +8,10 @@
         <div class="card-body">
             <form action="{{ route('users.store') }}" method="POST">
                 @csrf
-                <x-Forms.input type="text" name="name" wrapClass="col" value="{{old('name')}}" label="{{ __('settings.name') }}" inputClass="form-control" />
-                <x-Forms.input type="text" name="email" wrapClass="col" value="{{old('email')}}" label="{{ __('settings.email') }}" inputClass="form-control" />
-                <x-Forms.input type="password" name="password" wrapClass="col" label="{{ __('settings.password') }}" inputClass="form-control" />
-                <x-Forms.input type="password" name="password_confirmation" wrapClass="col" label="{{ __('settings.password-confirm') }}" inputClass="form-control" />
+                <x-forms.input type="text" name="name" wrapClass="col" value="{{old('name')}}" label="{{ __('settings.name') }}" inputClass="form-control" />
+                <x-forms.input type="text" name="email" wrapClass="col" value="{{old('email')}}" label="{{ __('settings.email') }}" inputClass="form-control" />
+                <x-forms.input type="password" name="password" wrapClass="col" label="{{ __('settings.password') }}" inputClass="form-control" />
+                <x-forms.input type="password" name="password_confirmation" wrapClass="col" label="{{ __('settings.password-confirm') }}" inputClass="form-control" />
                 <div class="form-check col">
                     <input type="checkbox" name="admin" value="1" id="input-admin" />
                     <label for="input-admin">{{ __('settings.admin') }}</label>

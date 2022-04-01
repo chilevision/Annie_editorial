@@ -45,7 +45,7 @@
         </tbody>
     </table>
     <div id="rundown-edit-table-wrap">
-        <x-Table.table class="table-striped table-bordered table-sm mt-1" id="rundown-edit-table" headClass="thead-dark" headId="" headRowClass="rundown-row" :th="$cells" bodyClass="" bodyId="rundown-body">
+        <x-table.table class="table-striped table-bordered table-sm mt-1" id="rundown-edit-table" headClass="thead-dark" headId="" headRowClass="rundown-row" :th="$cells" bodyClass="" bodyId="rundown-body">
     @foreach ($rundownrows as $row)
         @switch($row->type)
         @case('PRE')
@@ -136,7 +136,7 @@
             <tr class="meta-row">
                 <td colspan="12" class="hiddenRow">
                     <div class="accordian-body collapse meta-container @if ($row->id == $show_meta)show @endif" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
-                        <x-Table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
+                        <x-table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
             @php $i = 1; @endphp
             @foreach ($row->Rundown_meta_rows as $meta_row )
                             <tr id="rundown-meta-row-{{ $meta_row->id }}" @if($meta_row->locked_by != NULL) style="color: #cccccc" @endif>
