@@ -1,5 +1,5 @@
 <div class="form-check {{ $wrapClass }}">
-@if ($snappy != '')
+@if (!isset($snappy) || $snappy != '')
     <input type="checkbox" value="{{ $value }}" name="{{ $name }}" class="form-check-input {{ $inputClass }}" id="input-{{ $name }}" 
         @if ($wires != '') wire:model="{{ $wires }}" @endif
         @if ($checked != '') checked @endif
