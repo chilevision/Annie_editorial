@@ -125,7 +125,7 @@ class Caspar extends Component
                     $divider    = explode('/', $arr[4]);
                     if ($type == 'MOVIE'){
                         if($divider[0] == null || $divider[1] == null){
-                            dd('null');
+                            dd($arr);
                         }
                         $fps = $divider[1]/$divider[0];
                         if (floor($fps) != $fps) $fps = number_format((float)$fps, 2, '.', '');
