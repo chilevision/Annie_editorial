@@ -58,13 +58,13 @@
                                     <i class="bi bi-printer"></i></a>
                                 </button>
                                 <div class="dropdown-menu" id="print-menu-{{ $rundown->id }}" aria-labelledby="btnGroupDrop1">
-                                    <x-Forms.box name="rundown" label="rundown.rundown" wrapClass="ml-2" checked="checked" />
-                                    <x-Forms.box name="script" label="rundown.script" wrapClass="ml-2" checked="checked"/>
-                                    <x-Forms.box name="notes" label="rundown.notes" wrapClass="ml-2" checked="checked"/>
+                                    <x-forms.box name="rundown" label="rundown.rundown" wrapClass="ml-2" checked="checked" />
+                                    <x-forms.box name="script" label="rundown.script" wrapClass="ml-2" checked="checked"/>
+                                    <x-forms.box name="notes" label="rundown.notes" wrapClass="ml-2" checked="checked"/>
                                     <h6 class="ml-2 mt-2 mb-n1 text-secondary"><u>{{ __('rundown.include') }}:</u></h6>
-                                    <x-Forms.box name="rundown_meta" label="{{ __('rundown.meta') }}" wrapClass="ml-2 mt-1" checked="checked"/>
-                                    <x-Forms.box name="rundown_notes" label="{{ __('rundown.notes') }}" wrapClass="ml-2" checked=""/>
-                                    <x-Forms.box name="rundown_script" label="{{ __('rundown.script') }}" wrapClass="ml-2" checked=""/>
+                                    <x-forms.box name="rundown_meta" label="{{ __('rundown.meta') }}" wrapClass="ml-2 mt-1" checked="checked"/>
+                                    <x-forms.box name="rundown_notes" label="{{ __('rundown.notes') }}" wrapClass="ml-2" checked=""/>
+                                    <x-forms.box name="rundown_script" label="{{ __('rundown.script') }}" wrapClass="ml-2" checked=""/>
                                     <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i></button>
                                 </div>
                               </div>
