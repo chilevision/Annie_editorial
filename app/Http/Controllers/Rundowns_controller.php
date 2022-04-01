@@ -46,12 +46,15 @@ class Rundowns_controller extends Controller
     public function store(Request $request)
     {
         $user_ids = [Auth::user()->id];
-        $users = explode (",", $request->input('users'));
-        foreach ($users as $user){
-            $user_id = User::where('name', $user)->first();
-            if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
-            else{
-                array_push($user_ids, $user_id->id);
+        $users = $request->input('users');
+        if($users){
+            $users = explode (",", $request->input('users'));
+            foreach ($users as $user){
+                $user_id = User::where('name', $user)->first();
+                if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
+                else{
+                    array_push($user_ids, $user_id->id);
+                }
             }
         }
         $validator = $this->validateTimestamps($request);
@@ -69,8 +72,8 @@ class Rundowns_controller extends Controller
             'stoptime'		=> $stoptime,
             'duration'      => $duration,
         ]);
-        $newrundown->users()->attach($user_ids);
 
+        $newrundown->users()->attach($user_ids);   
         return redirect('dashboard/rundown/'.$newrundown->id.'/edit');
     }
 
