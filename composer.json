@@ -16,6 +16,7 @@
         "laravel/ui": "^3.3",
         "livewire/livewire": "^2.6",
         "mpdf/mpdf": "^8.0",
+        "phpmailer/phpmailer": "^6.6",
         "pusher/pusher-php-server": "^7.0",
         "subfission/cas": "dev-master"
     },
