@@ -82,7 +82,7 @@ if (!function_exists('get_custom_logo'))
             return false;
         }
         else{
-            return (substr(glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0],21));
+            return (glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0]);
         }
     }
 }
