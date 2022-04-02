@@ -4,7 +4,7 @@ namespace App\View\Components\Forms;
 
 use Illuminate\View\Component;
 
-class box extends Component
+class Box extends Component
 {
     public $name;
     public $value;

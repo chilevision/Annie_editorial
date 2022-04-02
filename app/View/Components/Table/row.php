@@ -4,7 +4,7 @@ namespace App\View\Components\Table;
 
 use Illuminate\View\Component;
 
-class row extends Component
+class Row extends Component
 {
     public $class;
     public $id;

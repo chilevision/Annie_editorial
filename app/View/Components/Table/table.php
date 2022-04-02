@@ -4,7 +4,7 @@ namespace App\View\Components\Table;
 
 use Illuminate\View\Component;
 
-class table extends Component
+class Table extends Component
 {
 
     public $class;
