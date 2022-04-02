@@ -22,18 +22,17 @@ class box extends Component
      *
      * @return void
      */
-    public function __construct($name, $label, $checked = null, $value = null, $wrapClass = null, $wire = null, $inputClass = null, $snappy = null)
+    public function __construct($name, $label, $checked = '', $value = '', $wrapClass = '', $wire = '', $inputClass = '', $snappy = '')
     {
         $this->name         = $name;
+        $this->value        = $value;
+        $this->wrapClass    = $wrapClass;
+        $this->inputClass   = $inputClass;
         $this->label        = $label;
+        $this->snappy       = $snappy;
+        $this->checked      = $checked;
 
-        isset($checked)     ? $this->checked    = $checked      : $this->checked    = null;
-        isset($value)       ? $this->value      = $value        : $this->value      = null;
-        isset($wrapClass)   ? $this->wrapClass  = $wrapClass    : $this->wrapClass  = null;
-        isset($wire)        ? $this->wires      = $wire         : $this->wires      = null;
-        isset($inputClass)  ? $this->inputClass = $inputClass   : $this->inputClass = null;
-        isset($snappy)      ? $this->snappy     = $snappy       : $this->$snappy    = null;
-
+        if ($wire != '') $this->wires = $wire;
     }
 
     /**
