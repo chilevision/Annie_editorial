@@ -77,12 +77,13 @@ if (!function_exists('get_custom_logo'))
     {
         $dir = public_path('site_logo');
         $q   = (count(glob("$dir/*")) === 0) ? 'Empty' : 'Not empty';
-            
+        
         if ($q=="Empty"){
             return false;
         }
         else{
-            return (glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0]);
+            $file = substr(glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0], strrpos(glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0], '/') + 1);
+            return ('site_logo/'.$file);
         }
     }
 }
