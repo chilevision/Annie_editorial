@@ -244,7 +244,12 @@ class Rundowns_controller extends Controller
         ]);
         $mpdf->showImageErrors = true;
         // Define the Headers before writing anything so they appear on the first page
-        $mpdf->SetHTMLHeader(view('rundown.print.header')->with(['rundown' => $rundown]),'O');
+        $logo = resource_path() . '/uploads/annie-h-logo.jpg';
+
+        if (get_custom_logo()){
+            $logo = resource_path() . '/uploads/' . get_custom_logo();
+        }
+        $mpdf->SetHTMLHeader(view('rundown.print.header')->with(['rundown' => $rundown, 'logo' => $logo]),'O');
 
         $mpdf->SetHTMLFooter(view('rundown.print.footer')->with([
             'rundown'   => $rundown,

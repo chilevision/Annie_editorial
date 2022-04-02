@@ -32,7 +32,7 @@
                     @if (!get_custom_logo())
                     <img src="{{ asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
                     @else
-                    <img src="{{ asset(get_custom_logo()) }}" class="plull-left" />
+                    <img src="{{ asset('site_logo/'.get_custom_logo()) }}" class="plull-left" />
                     @endif
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

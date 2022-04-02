@@ -83,7 +83,7 @@ if (!function_exists('get_custom_logo'))
         }
         else{
             $file = substr(glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0], strrpos(glob("$dir/*.{jpg,png,jpeg}", GLOB_BRACE)[0], '/') + 1);
-            return ('site_logo/'.$file);
+            return ($file);
         }
     }
 }

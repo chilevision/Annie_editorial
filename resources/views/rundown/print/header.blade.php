@@ -2,7 +2,7 @@
     {{ date('Y-m-d') }}
 </div>
 <table class="head-table"><tr>
-    <td><img src="https://i.ibb.co/qC4nSnY/annie-h-logo-kopia.jpg" style="max-width: 140px; max-height: 80px;"/></td>
+    <td><img src="{{ $logo }}" style="max-width: 140px; max-height: 80px;"/></td>
     <td><h3>{{ $rundown->title }}</h3></td>
 </tr></table>
 <table style="margin-bottom: 30px">
