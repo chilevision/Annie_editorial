@@ -22,7 +22,7 @@ class box extends Component
      *
      * @return void
      */
-    public function __construct($name, $label, $checked = '', $value = '', $wrapClass = '', $wire = '', $inputClass = '', $snappy = '')
+    public function __construct($name, $label, $checked = null, $value = null, $wrapClass = null, $wire = null, $inputClass = null, $snappy = null)
     {
         $this->name         = $name;
         $this->value        = $value;
