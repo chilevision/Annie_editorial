@@ -27,6 +27,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('unlock:unlock')
             ->everyFiveMinutes()
             ->appendOutputTo('unlock.log');
+        $schedule->command('users:maintain')
+            ->daily()
+            ->appendOutputTo('deleted-users.log');
     }
 
     /**
