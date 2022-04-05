@@ -12,4 +12,5 @@
 @endif
     <label class="form-check-label" for="input-{{ $name }}">{{ __($label) }}</label>
     @error($name) <span class="text-danger">{{ $message ?? '' }}</span> @enderror
+    {{ $slot }}
 </div>

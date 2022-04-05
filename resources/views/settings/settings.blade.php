@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('add_styles')
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
+  <link rel="stylesheet" href="{{ asset('css/summernote.min.css') }}" />
 @endsection
 @section('add_scripts')
 <script>
@@ -13,6 +14,26 @@
         allowEmpty: false
       });
     });
+
+
+    $('#selectttl').on('change', function(){
+      if(this.value == 0){
+        $('#collapseEmail').collapse('hide');
+      }
+      else{
+        $('#collapseEmail').collapse('show');
+      }
+    });
+
+    @if ($errors->any())
+      @if (in_array(array_key_first($errors->getMessages()), $settings->userValPage))
+      $('#settings-links a[href="#settings-users"]').tab('show');
+      @endif
+    @endif
+
+    $('#pusher-help').popover({
+    container: 'body'
+  })
   });
 
   var input_count = {{ count($inputs) }};
@@ -46,9 +67,11 @@
     if (key_count == 0) $('#remove-key-btn').addClass('d-none');
   }
 </script>
+<script src="{{ asset('js/summernote.min.js') }}"></script>
 @endsection
 
 @section('content')
+
 <div class="container light-style flex-grow-1 container-p-y">
   <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
     @csrf
@@ -59,9 +82,9 @@
       </div>
       <div class="row no-gutters row-bordered row-border-light">
         <div class="col-md-3 pt-0">
-          <div class="list-group list-group-flush settings-links">
+          <div class="list-group list-group-flush settings-links" id="settings-links">
             <a class="list-group-item list-group-item-action active" data-toggle="list" href="#settings-general">{{ __('settings.general') }}</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-users">{{ __('settings.auth') }}</a>
+            <a class="list-group-item list-group-item-action" id="a-settings-user" data-toggle="list" href="#settings-users">{{ __('settings.users') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-mixer">{{ __('settings.mixer') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-vserver">{{ __('settings.vserver') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-gfxserver">{{ __('settings.gfxserver') }}</a>
@@ -72,6 +95,15 @@
             <div class="tab-pane fade active show" id="settings-general">
               <div class="card-body pb-2"> 
                 <x-forms.input type="text" name="name" value="{{ $settings->name }}" wrapClass="col" wire="" label="settings.site_name" inputClass="form-control" />
+                <x-forms.input type="text" name="company" value="{{ $settings->company }}" wrapClass="col" wire="" label="settings.company-name" inputClass="form-control" />
+                <div class="row pl-3 pr-3">
+                  <x-forms.input type="text" name="company_address" value="{{ $settings->company_address }}" wrapClass="col" wire="" label="settings.company-address" inputClass="form-control" />
+                  <x-forms.input type="text" name="company_country" value="{{ $settings->company_country }}" wrapClass="col" wire="" label="settings.company-country" inputClass="form-control" />
+                </div>
+                <div class="row pl-3 pr-3">
+                  <x-forms.input type="text" name="company_phone" value="{{ $settings->company_phone }}" wrapClass="col" wire="" label="settings.company-phone" inputClass="form-control" />
+                  <x-forms.input type="text" name="company_email" value="{{ $settings->company_email }}" wrapClass="col" wire="" label="settings.company-email" inputClass="form-control" />
+                </div>
                 <x-forms.input type="file" name="image" value="" wrapClass="col" wire="" label="settings.image" inputClass="form-control-file" />
                 <div class="row pl-3">  
                   <x-forms.input type="number" name="showlenght" value="{{ $settings->max_rundown_lenght }}" wrapClass="col-3" wire="" label="settings.show_lenght" inputClass="form-control" />
@@ -79,15 +111,16 @@
                 </div>
                 <hr/>
                 <h5 class="pl-3 pb-3">Pusher:</h5>
-                <div class="row pl-3">
-                  <x-forms.input type="text" name="pusher_id" value="{{ env('PUSHER_APP_ID') }}" wrapClass="col-4" wire="" label="ID" inputClass="form-control" />
-                  <x-forms.input type="text" name="pusher_cluster" value="{{ env('PUSHER_APP_CLUSTER') }}" wrapClass="col-2" wire="" label="Cluster" inputClass="form-control" />
-                  <x-forms.input type="text" name="pusher_channel" value="{{ $settings->pusher_channel }}" wrapClass="col" wire="" label="settings.pusher_channel" inputClass="form-control" />
-                </div>
-                <div class="row pl-3">
-                  <x-forms.input type="text" name="pusher_secret" value="{{ env('PUSHER_APP_SECRET') }}" wrapClass="col" wire="" label="Secret" inputClass="form-control" />
-                  <x-forms.input type="text" name="pusher_key" value="{{ env('PUSHER_APP_KEY') }}" wrapClass="col" wire="" label="Key" inputClass="form-control" />
-                </div>
+                <x-forms.input type="text" name="pusher_channel" value="{{ $settings->pusher_channel }}" wrapClass="col" wire="" label="settings.pusher_channel" inputClass="form-control">
+                @if(!$settings->pusherEnv)
+                  <small id="ttlHelp" class="form-text text-muted">
+                    <span class="align-middley">
+                      {{ __('settings.pusher-help') }}.
+                      <button type="button" class="btn btn-sm btn-default" id="pusher-help" data-toggle="popover" title="{{ __('settings.pusher_help_title') }}" data-html="true" data-content="{!! __('settings.pusher_help_content') !!}"><i class="bi bi-info-circle"></i></button>
+                    </span>
+                  </small>  
+                @endif
+                </x-forms.input> 
                 <hr/>
                 <div class="form-group">
                   <h5 class="pl-3 pb-3">{{ __('settings.color') }}</h6>
@@ -112,20 +145,27 @@
             </div>
             <div class="tab-pane fade" id="settings-users">
               <div class="card-body pb-2">
-                <div class="form-check">
+                <div class="form-check mb-4">
                   <input class="form-check-input" type="checkbox" id="sso" name="sso" value="1" @if ($settings->sso)checked @endif>
                   <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
+                  <small id="ssoHelp" class="form-text text-muted ml-n4">{{ __('settings.sso-help') }}</small>
                 </div>
-                <div class="row">
-                  <x-forms.input type="text" name="sso_hostname" wrapClass="col" wire="" label="{{ __('settings.sso-host') }}" inputClass="form-control" />
-                  <x-forms.input type="text" name="sso_validation" wrapClass="col" wire="" label="{{ __('settings.sso-validation') }}" inputClass="form-control" />
+                  
+                <div class="form-row mb-4">
+                  <x-forms.select name="ttl" wrapClass="col-auto" selected="{{ $settings->user_ttl }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL">
+                    <small id="ttlHelp" class="form-text text-muted">{{ __('settings.users-help') }}</small>
+                  </x-forms.select>
                 </div>
-                <div class="row">
-                    <x-forms.input type="text" name="sso_version" wrapClass="col" wire="" label="{{ __('settings.sso-version') }}" inputClass="form-control" />
-                    <x-forms.input type="text" name="sso_logout" wrapClass="col" wire="" label="{{ __('settings.sso-logout') }}" inputClass="form-control" />
-                </div>
-                <div class="form-row">
-                  <x-forms.select name="ttl" wrapClass="col-auto" selected="{{ $settings->user_ttl }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL" />
+                <div class="collapse @if($settings->user_ttl)show @endif" id="collapseEmail">
+                  <x-forms.input type="email" name="senderEmail" value="{{old('senderEmail', $settings->email_address)}}" wrapClass="col ml-n3" wire="" label="settings.mailemail" inputClass="form-control" />
+                  <x-forms.input type="text" name="senderName" value="{{old('port', $settings->email_name)}}" wrapClass="col ml-n3" wire="" label="settings.mailname" inputClass="form-control" />
+                  <x-forms.input type="text" name="subject" value="{{old('port', $settings->email_subject)}}" wrapClass="col ml-n3" wire="" label="settings.subject" inputClass="form-control" />
+                  <label for="summernote">{{ __('settings.users-message') }}</label>
+                  <textarea id="summernote" name="emailBody">
+                    @php $settings->removal_email ? $body = $settings->removal_email : $body = __('settings.removal-email-example') @endphp
+                    {{old('emailBody', $body)}}
+                  </textarea>
+                  @error('emailBody') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
               </div>
             </div>
@@ -205,4 +245,78 @@
     </div>
   </form>
 </div>
+<div class="modal" tabindex="-1" id="preview-email-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        @include('email.notification', ['settings' => $settings, 'preview' => 1])
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endsection
+
+@section('footer_scripts')
+  <script type="text/javascript">
+
+      var PreviewButton = function (context) {
+        var ui = $.summernote.ui;
+
+        // create button
+        var button = ui.button({
+          contents: '<i class="bi bi-eye-fill"></i>',
+          tooltip: 'Preview e-mail',
+          click: function () {
+            // invoke insertText method with 'hello' on editor module.
+            previewEmail();
+          }
+        });
+
+        return button.render();   // return button as jquery object
+      }
+
+      $('#summernote').summernote({
+        minHeight: 300,             // set minimum height of editor
+        maxHeight: 600,             // set maximum height of editor
+        
+        focus: true,
+        disableDragAndDrop: true,
+        toolbar: [
+        // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['hr', ['hr']],
+            ['preview', ['preview']]
+        ],
+        buttons: {  
+          preview: PreviewButton,  
+        }, 
+        callbacks: {
+            onPaste: function (e) {
+                var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                e.preventDefault();
+                document.execCommand('insertText', false, bufferText);
+            }
+        }
+    });
+
+    function previewEmail(){
+      var emailText = $('#summernote').val();
+      $('#email_body_data').empty().append(emailText);
+      $('#preview-email-modal').modal('show');
+    }
+  </script>
 @endsection

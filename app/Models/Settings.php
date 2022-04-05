@@ -17,6 +17,11 @@ class Settings extends Model
 
     protected $fillable = [
         'name',
+        'company',
+        'company_address',
+        'company_country',
+        'company_phone',
+        'company_email',
         'max_rundown_lenght',
         'videoserver_name',
         'videoserver_ip',
@@ -33,6 +38,10 @@ class Settings extends Model
         'mixer_keys',
         'sso',
         'user_ttl',
+        'email_address',
+        'email_name',
+        'email_subject',
+        'removal_email_body',
         'media_updated',
         'templates_updated',
     ];

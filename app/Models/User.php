@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'admin',
         'cas',
+        'email_token',
         'last_signed_in',
         'notified_at',
     ];

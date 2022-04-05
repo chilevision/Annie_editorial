@@ -6,4 +6,5 @@
             <button class="btn btn-sm btn-dark" type="button" id="source-search" onclick="mediabrowser('{{ $sourceQuery }}')" data-toggle="modal" data-target="#{{ $modalTarget }}"><i class="bi bi-search"></i></button>
         </div>
     </div>
+    {{ $slot }}
 </div>

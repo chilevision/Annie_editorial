@@ -28,6 +28,9 @@ class UserLogin
      */
     public function handle($event)
     {
-        User::where('id', $event->user->id)->update(['last_signed_in' => Carbon::now()->toDateTimeString()]);
+        User::where('id', $event->user->id)->update([
+            'last_signed_in'    => Carbon::now()->toDateTimeString(),
+            'notified_at'       => null
+        ]);
     }
 }

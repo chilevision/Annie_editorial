@@ -58,8 +58,6 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="nav-link" href="/dashboard/settings">{{ __('app.settings') }}</a>
                                 <a class="nav-link" href="/dashboard/settings/users">{{ __('app.users') }}</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="nav-link" href="/dashboard/videohub">{{ __('app.videohub') }}</a>
                             </div>
                         </li>
     @endif

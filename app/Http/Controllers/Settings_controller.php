@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Settings;
 use Illuminate\Http\Request;
 use Image;
+use Illuminate\Support\Facades\Hash;
 
 class Settings_controller extends Controller
 {
@@ -15,7 +16,13 @@ class Settings_controller extends Controller
      */
     public function index()
     {
-        $settings       = Settings::where('id', 1)->first();
+        $settings               = Settings::where('id', 1)->first();
+        $settings->userValPage  = ['subject', 'emailBody'];
+        $settings->pusherEnv = 0;
+        if (env('PUSHER_APP_ID') && env('PUSHER_APP_KEY') && env('PUSHER_APP_SECRET') && env('PUSHER_APP_CLUSTER')){
+            $settings->pusherEnv = 1;
+        }
+
         $ttlOptions = [
             ['value' => '0', 'title' => __('settings.never')],
             ['value' => '6', 'title' => '6 '.__('settings.months')],
@@ -54,15 +61,27 @@ class Settings_controller extends Controller
         $colors         = [];
         $mixer_inputs   = [];
         $mixer_keys     = [];
-        $sso            = 0;
-        if ($request->input('sso')) $sso = 1;
+        $request->input('sso') ? $sso = 1 : $sso = 0;
+        $request->input('tls') ? $tls = 1 : $tls = 0;
         foreach ($request->input() as $key=>$input){
             if (strpos($key, 'color') === 0)        array_push($colors, substr($input, -6));
             if (strpos($key, 'mixer_input') === 0)  array_push($mixer_inputs, $input);
             if (strpos($key, 'mixer_key') === 0)    array_push($mixer_keys, $input);
         }
+
+        if ($request->input('ttl')){
+            $request->validate([
+                'subject'       => 'required',
+                'emailBody'     => 'required',
+            ]);
+        }
         Settings::where('id', 1)->update([
             'name'                      => $request->input('name'),
+            'company'                   => $request->input('company'),
+            'company_address'           => $request->input('company_address'),
+            'company_country'           => $request->input('company_country'),
+            'company_phone'             => $request->input('company_phone'),
+            'company_email'             => $request->input('company_email'),
             'max_rundown_lenght'        => $request->input('showlenght'),
             'videoserver_name'          => $request->input('vserver_name'),
             'videoserver_ip'            => $request->input('vserver_ip'),
@@ -77,7 +96,11 @@ class Settings_controller extends Controller
             'sso'                       => $sso,
             'user_ttl'                  => $request->input('ttl'),
             'mixer_inputs'              => serialize($mixer_inputs),
-            'mixer_keys'                => serialize($mixer_keys)
+            'mixer_keys'                => serialize($mixer_keys),
+            'email_address'             => $request->input('senderEmail'),
+            'email_name'                => $request->input('senderName'),
+            'email_subject'             => $request->input('subject'),
+            'removal_email_body'        => $request->input('emailBody'),
         ]);
 
         if($request->file('image')){
@@ -115,5 +138,4 @@ class Settings_controller extends Controller
 
         return redirect(route('settings'));
     }
-    
 }

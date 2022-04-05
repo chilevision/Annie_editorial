@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->boolean('admin')->default(0);
             $table->boolean('cas')->default(0);
             $table->rememberToken();
+            $table->string('email_token');
             $table->timestamp('last_signed_in')->nullable();
             $table->timestamp('notified_at')->nullable();
             $table->timestamps();

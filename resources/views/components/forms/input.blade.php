@@ -6,4 +6,5 @@
     <input type="{{ $type }}" value="{{ $value ?? ''}}" @if (isset($wires) || $wires != '') wire:model.lazy="{{ $wires ?? '' }}" @endif name="{{ $name }}" class="@if($type != 'checkbox') form-control shadow-none @endif{{ $inputClass ?? '' }}" id="input-{{ $name }}" />
 @endif
     @error($name) <span class="text-danger">{{ $message }}</span> @enderror
+    {{ $slot }}
 </div>

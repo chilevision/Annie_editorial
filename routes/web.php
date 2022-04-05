@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Users_controller;
 use App\Http\Controllers\CasController;
 use App\Http\Controllers\Dashboard_controller;
+use App\Http\Controllers\Email_controller;
 use App\Http\Controllers\Rundowns_controller;
 use App\Http\Controllers\Settings_controller;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,7 +25,7 @@ use App\Http\Controllers\Settings_controller;
 */
 
 //Routes to create the first user:
-Route::view('/', 'auth.first')->middleware('first_user');
+Route::view('/', 'auth.first')->middleware('first_user')->name('home');
 Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('first_user')->name('users.first');
 Auth::routes(['register' => false]);
 Route::get('/old/api', [Rundowns_controller::class, 'old_api']);
@@ -34,8 +35,8 @@ Route::get('/cas/login', [CasController::class, 'login'])->name('cas.login');
 Route::post('cas/logout', [CasController::class, 'logout'])->name('cas.logout');
 Route::get('/cas/callback', [CasController::class, 'callback'])->name('cas.callback');
 
-Auth::routes();
-
+Route::get('/email', [Email_controller::class, 'test']);
+Route::get('/email/{id}/{token}', [Email_controller::class, 'view']);
 
 Route::post('/setlang', [Dashboard_controller::class, 'setlang'])->name('app.setlang');
 

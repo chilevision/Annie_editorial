@@ -224,7 +224,8 @@ class Rundowns_controller extends Controller
      */
     public function print(Request $request)
     {
-        $rundown = Rundowns::find($request->input('id'));
+        $rundown    = Rundowns::find($request->input('id'));
+        $settings   = Settings::where('id', 1)->first();
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         $rows           = Rundown_rows::where('rundown_id', $request->input('id'))->get();
@@ -244,16 +245,20 @@ class Rundowns_controller extends Controller
         ]);
         $mpdf->showImageErrors = true;
         // Define the Headers before writing anything so they appear on the first page
-        $logo = resource_path() . '/uploads/annie-h-logo.jpg';
 
-        if (get_custom_logo()){
-            $logo = resource_path() . '/uploads/' . get_custom_logo();
+        $logo = 'https://i.ibb.co/qC4nSnY/annie-h-logo-kopia.jpg';
+        if (env('APP_ENV') == 'production'){
+            $logo = resource_path() . '/uploads/annie-h-logo.jpg';
+            if (get_custom_logo()){
+                $logo = resource_path() . '/uploads/' . get_custom_logo();
+            }
         }
+        
         $mpdf->SetHTMLHeader(view('rundown.print.header')->with(['rundown' => $rundown, 'logo' => $logo]),'O');
 
         $mpdf->SetHTMLFooter(view('rundown.print.footer')->with([
             'rundown'   => $rundown,
-            'name'      => Settings::where('id', 1)->value('name')
+            'settings'  => $settings
         ]));
 
         $mpdf->WriteHTML(view('rundown.print.print')->with([
