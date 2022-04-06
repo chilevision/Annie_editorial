@@ -121,7 +121,7 @@ return [
     | page in which the call was initiated.  You can override this method
     | and force the user to be redirected to a specific URL here.
     */
-    'cas_redirect_path'   => env('CAS_REDIRECT_PATH', 'http://annie.amedia.nu/cas/callback'),
+    'cas_redirect_path'   => env('CAS_REDIRECT_PATH', ''),
 
     /*
     |--------------------------------------------------------------------------
