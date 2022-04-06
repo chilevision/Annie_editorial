@@ -32,12 +32,14 @@ class Notification extends Mailable
     public function build()
     {
         $settings = Settings::where('id', 1)->first();
-        return $this
+        if ($settings->email_address && $settings->email_name){
+            return $this
             ->from($settings->email_address, $settings->email_name)
             ->subject($settings->email_subject)
             ->view('email.notification', [
                 'settings' => $settings,
                 'user' => $this->user
             ]);
+        }
     }
 }
