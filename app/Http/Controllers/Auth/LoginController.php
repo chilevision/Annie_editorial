@@ -42,13 +42,13 @@ class LoginController extends Controller
     //Change login credentials from e-mail to username
     public function username()
     {
-        return 'name';
+        return 'username';
     }
 
     public function showLoginForm()
     {
-    $sso = Settings::where('id', 1)->first()->sso;
+        $sso = Settings::where('id', 1)->first()->sso;
 
-    return view('auth.login', compact('sso'));
+        return view('auth.login', compact('sso'));
     }
 }

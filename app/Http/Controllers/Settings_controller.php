@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Settings;
 use Illuminate\Http\Request;
 use Image;
-use Illuminate\Support\Facades\Hash;
 
 class Settings_controller extends Controller
 {

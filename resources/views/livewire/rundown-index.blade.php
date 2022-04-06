@@ -36,7 +36,7 @@
                 <td><div class="overflow-hidden" style="width: {{ $width }}px">{{$rundown->title}}</td>
                 <td><div class="overflow-hidden" style="width: 130px">{{ date('Y-m-d H:i',strtotime($rundown->starttime)) }}</td>
                 <td>{{ gmdate("H:i", $rundown->duration) }}</td>
-                @if($shared)<td><div class="overflow-hidden" style="width: 130px">{{ $rundown->users->where('id', $rundown->owner)->first()->name }}</div></td>@endif
+                @if($shared)<td><div class="overflow-hidden" style="width: 130px">{{ $rundown->users->where('id', $rundown->owner)->first()->name ? $rundown->users->where('id', $rundown->owner)->first()->name : $rundown->users->where('id', $rundown->owner)->first()->username }}</div></td>@endif
                 <td>
                     <form name="delete-rundown-form" onsubmit="return confirm('{{ __('rundown.message_warning1') }}');" method="POST" action="rundown/{{ $rundown->id }}">
                         @csrf

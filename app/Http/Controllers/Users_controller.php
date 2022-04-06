@@ -7,18 +7,28 @@ use App\Models\User;
 use App\Models\Settings;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-use OCILob;
+use Illuminate\Support\Facades\Session;
 
 class Users_controller extends Controller
 {
     public function index()
     {
-        return view('users.index');
+        if (Auth::user()->admin){
+            return view('users.index');
+        }
+        else{
+            return redirect(route('dashboard'));
+        }
     }
 
     public function create()
     {
-        return view('users.create');
+        if (Auth::user()->admin){
+            return view('users.create');
+        }
+        else{
+            return redirect(route('dashboard'));
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -31,13 +41,16 @@ class Users_controller extends Controller
         $admin = 0;
         if ($request->exists('admin')) $admin = 1;
     	$request->validate([
-        	'name' 		=> 'required|max:10|min:3|unique:users|alpha_num',
+        	'username' 	=> 'required|max:10|min:3|unique:users|alpha_num',
 			'email' 	=> 'required|email|max:255|unique:users',
 			'password' 	=> 'required|min:6|confirmed',
 		]);
 		$user = User::create([
 	        'name' 		=> $request->input('name'),
+            'username'  => $request->input('username'),
+            'phone'     => $request->input('phone'),
 	        'email' 	=> $request->input('email'),
+            'role'      => $request->input('role'),
 	        'password' 	=> bcrypt($request->input('password')),
 	        'admin' 	=> $admin,
 		]);
@@ -53,37 +66,53 @@ class Users_controller extends Controller
 
     public function edit($id)
     {
-        $user = User::find($id);
-        return view('users.edit')->with('user', $user);
+        if (Auth::user()->admin || Auth::user()->id == $id){
+            $user = User::find($id);
+            return view('users.edit')->with('user', $user);
+        }
+        else{
+            return redirect(route('dashboard'));
+        }
     }
 
     public function update(Request $request, $id)
     {
-        $admin = 0;
-        if ($request->exists('admin')) $admin = 1;
-        $request->validate([
-        	'name' 		=> 'required|max:10|min:3|unique:users,name,'.$id.'|alpha_num',
-			'email' 	=> 'required|email|max:255|unique:users,email,'.$id,
-		]);
-        if ($request->input('password') !=null){
+        if (Auth::user()->admin || Auth::user()->id == $id){
+            $admin = 0;
+            if ($request->exists('admin')) $admin = 1;
             $request->validate([
-                'password' 	=> 'required|min:6|confirmed',
+                'username' 	=> 'required|max:10|min:3|unique:users,name,'.$id.'|alpha_num',
+                'email' 	=> 'required|email|max:255|unique:users,email,'.$id,
             ]);
-            User::find($id)->update([
-                'name'      => $request->input('name'),
-                'email'     => $request->input('email'),
-                'password'  => bcrypt($request->input('password')),
-                'admin'     => $admin
-            ]);
+            if ($request->input('password') !=null){
+                $request->validate([
+                    'password' 	=> 'required|min:6|confirmed',
+                ]);
+                User::find($id)->update([
+                    'name'      => $request->input('name'),
+                    'username'  => $request->input('username'),
+                    'phone'     => $request->input('phone'),
+                    'email'     => $request->input('email'),
+                    'role'      => $request->input('role'),
+                    'password'  => bcrypt($request->input('password')),
+                    'admin'     => $admin
+                ]);
+            }
+            else{
+                User::find($id)->update([
+                    'name'      => $request->input('name'),
+                    'username'  => $request->input('username'),
+                    'phone'     => $request->input('phone'),
+                    'email'     => $request->input('email'),
+                    'role'      => $request->input('role'),
+                    'admin'     => $admin
+                ]);
+            }
+            return redirect(route('users.index'))->with('status', __('app.user').' "'.$request->input('name').'"'.__('app.user-updated'));
         }
         else{
-            User::find($id)->update([
-                'name'      => $request->input('name'),
-                'email'     => $request->input('email'),
-                'admin'     => $admin
-            ]);
+            return redirect(route('dashboard'));
         }
-        return redirect(route('users.index'))->with('status', __('app.user').' "'.$request->input('name').'"'.__('app.user-updated'));
     }
 
     /**
@@ -94,7 +123,20 @@ class Users_controller extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect(route('users.index'));
+        if (Auth::user()->id == $id) $myselfe = 1;
+        if (Auth::user()->admin || isset($myselfe)){
+            User::find($id)->delete();
+            if (isset($myselfe)){
+                Session::flush();
+                Auth::logout();
+                return redirect('login');
+            }
+            else{
+                return redirect(route('users.index'));
+            }
+        }
+        else{
+            return redirect(route('dashboard'));
+        }
     }
 }

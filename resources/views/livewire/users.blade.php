@@ -3,6 +3,7 @@
         <thead class="thead-custom">
             <tr>
                 <th><a href="#" wire:click="changeOrder('id')" class="text-light">{{ __('settings.id') }}@if ($orderBy == 'id') {!! $arrow !!} @endif</a></th>
+                <th><a href="#" wire:click="changeOrder('username')" class="text-light">{{ __('settings.username') }}@if ($orderBy == 'username') {!! $arrow !!} @endif</a></th>
                 <th><a href="#" wire:click="changeOrder('name')" class="text-light">{{ __('settings.name') }}@if ($orderBy == 'name') {!! $arrow !!} @endif</a></th>
                 <th><a href="#" wire:click="changeOrder('email')" class="text-light">{{ __('settings.email') }}@if ($orderBy == 'email') {!! $arrow !!} @endif</a></th>
                 <th><a href="#" wire:click="changeOrder('created_at')" class="text-light">{{ __('settings.created') }}@if ($orderBy == 'created_at') {!! $arrow !!} @endif</a></th>
@@ -20,12 +21,13 @@
     @foreach ($users as $user)
             <tr>
                 <td>{{$user->id}}</td>
+                <td>{{ $user->username }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ gmdate('Y-m-d', strtotime($user->created_at)) }}</td>
                 <td>{{ $user->admin }}</td>
                 <td width="150px">
-                    <form name="delete-user-form" onsubmit="return confirm('{{ __('settings.message_warning1') }} {{ $user->name }}?');" method="POST" action="users/{{ $user->id }}">
+                    <form name="delete-user-form" onsubmit="return confirm('{{ __('settings.message_warning1') }} {{ $user->name }}?');" method="POST" action="{{ route('users.destroy', $user->id) }}">
                         @csrf
                         @method('DELETE')
                         <div class="btn-group btn-group float-right">

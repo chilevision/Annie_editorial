@@ -53,11 +53,11 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/rundown/{id}/generatexml', [Rundowns_controller::class, 'generateXML']);
 	Route::get('/rundown/{id}/teleprompter', [Rundowns_controller::class, 'show_prompter']);
 	Route::post('/rundown/teleprompter', [Rundowns_controller::class, 'rule_prompter']);
+	Route::resource('/users', Users_controller::class);
 });
 
 //Routes for administrator users: 
 Route::group(['prefix' => 'dashboard/settings', 'middleware' => 'is_admin'], function () {
 	Route::get('/', [Settings_controller::class, 'index'])->name('settings');
 	Route::put('/update', [Settings_controller::class, 'update'])->name('settings.update');
-	Route::resource('/users', Users_controller::class);
 });

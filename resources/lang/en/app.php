@@ -17,6 +17,7 @@ return [
     'settings'      => 'Settings',
     'user'          => 'User',
     'users'         => 'Users',
+    'account'       => 'My account',
     'user-created'  => 'Has been created',
     'user-updated'  => 'Has been updated',
     'videohub'      => 'Video router',

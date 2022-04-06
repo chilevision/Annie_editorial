@@ -135,7 +135,7 @@ a[x-apple-data-detectors] {
                    <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:3px;background-color:#ffafa" width="100%" cellspacing="0" cellpadding="0" bgcolor="#f8f8f8" role="presentation"> 
                      <tr style="border-collapse:collapse"> 
                       <td class="es-m-txt-l" align="left" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-top:30px">
-                        <h2 style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:26px;font-style:normal;font-weight:normal;color:#333333">{{ __('email.hello') }} @if(isset($user)){{ $user->name }}! @else xxxxxxx!@endif</h2></td> 
+                        <h2 style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:26px;font-style:normal;font-weight:normal;color:#333333">{{ __('email.hello') }} @if(isset($user)){{ $user->name ? $user->name : $user->username }}! @else xxxxxxx!@endif</h2></td> 
                      </tr> 
                      <tr style="border-collapse:collapse"> 
                       <td bgcolor="#f8f8f8" align="left" style="padding:0;Margin:0;padding-top:10px;padding-left:20px;padding-right:20px">

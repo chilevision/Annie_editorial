@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Annie Editorial') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
@@ -47,7 +47,7 @@
                             <a class="nav-link" href="/">{{ __('app.home') }} <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item @if ( request()->is('dashboard/rundown/*') || request()->is('dashboard/rundown')) active @endif">
-                          <a class="nav-link" href="/dashboard/rundown">{{ __('app.scripts') }}</a>
+                          <a class="nav-link" href="{{ route('rundown.index') }}">{{ __('app.scripts') }}</a>
                         </li>
                         <li class="nav-item {{ request()->is('dashboard/templates') ? 'active' : '' }}">
                             <a class="nav-link" href="/dashboard/templates">{{ __('app.templates') }}</a>
@@ -56,8 +56,8 @@
                         <li class="nav-item dropdown @if ( request()->is('dashboard/settings/*') || request()->is('dashboard/settings')) active @endif">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">Admin</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link" href="/dashboard/settings">{{ __('app.settings') }}</a>
-                                <a class="nav-link" href="/dashboard/settings/users">{{ __('app.users') }}</a>
+                                <a class="nav-link" href="{{ route('settings') }}">{{ __('app.settings') }}</a>
+                                <a class="nav-link" href="{{ route('users.index') }}">{{ __('app.users') }}</a>
                             </div>
                         </li>
     @endif
@@ -67,41 +67,41 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-                            @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+@guest
+    @if (Route::has('login'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+    @endif
+    @else
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->username }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="@if (Auth::user()->cas){{ route('cas.logout') }}@else{{ route('logout') }}@endif"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    <i class="bi bi-box-arrow-right"></i> {{ __('Logout') }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="@if (Auth::user()->cas){{ route('cas.logout') }}@else{{ route('logout') }}@endif"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-                                    @if (Auth::user()->cas)
-                                    <form id="logout-form" action="{{ route('cas.logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                    @else
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                    @endif
-                                    <form action="{{ route('app.setlang') }}" method="POST" id="setLangForm">
-                                        @csrf
-                                        <input type="hidden" name="locale" value="en">
-                                    </form>
-                                    <a class="flag ml-4" href="#" onclick="setLanguage('en');">!</a><a class="flag ml-1" href="#" onclick="setLanguage('sv');">w</a>
-                                </div>
-                            </li>
-                        @endguest
+        @if (Auth::user()->cas)
+                                <form id="logout-form" action="{{ route('cas.logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+        @else
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+        @endif
+                                <form action="{{ route('app.setlang') }}" method="POST" id="setLangForm">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="en">
+                                </form>
+                                <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}"><i class="bi bi-person"></i> {{ __('app.account') }}</a>
+                                <a class="flag ml-4" href="#" onclick="setLanguage('en');">!</a><a class="flag ml-1" href="#" onclick="setLanguage('sv');">w</a>
+                            </div>
+                        </li>
+@endguest
                     </ul>
                 </div>
             </nav>
