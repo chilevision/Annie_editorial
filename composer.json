@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "chilevision/annie_editorial",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "web application used to create rundowns for broadcast TV",
+    "keywords": ["broadcast", "annie_editorial", "rundown", "automation"],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
