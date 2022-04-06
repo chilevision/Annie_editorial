@@ -26,10 +26,10 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('unlock:unlock')
             ->everyFiveMinutes()
-            ->appendOutputTo('unlock.log');
+            ->appendOutputTo('storage/logs/unlock.log');
         $schedule->command('users:maintain')
             ->daily()
-            ->appendOutputTo('deleted-users.log');
+            ->appendOutputTo('storage/logs/deleted-users.log');
     }
 
     /**
