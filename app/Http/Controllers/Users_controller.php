@@ -56,7 +56,7 @@ class Users_controller extends Controller
 		]);
         if ($request->input('first') !== null){
             if (!Settings::exists()) {
-                Artisan::call('db:seed --class=SettingsSeeder');
+                Artisan::call('db:seed --class=SettingsSeeder --f');
             }
             Auth::loginUsingId($user->id);
             return redirect('/dashboard/settings');
