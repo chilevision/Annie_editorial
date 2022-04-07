@@ -18,7 +18,7 @@ class CasController extends Controller
     public function callback()
     {
         if (cas()->isAuthenticated()){
-            $user = User::where('name', '=', cas()->user())->first();
+            $user = User::where('username', '=', cas()->user())->first();
             if ($user === null) {
                 $user = User::create([
                     'username'  => cas()->user(),
