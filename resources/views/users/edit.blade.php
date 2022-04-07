@@ -27,7 +27,7 @@
                 <x-forms.input type="password" name="password" wrapClass="col" label="{{ __('settings.password') }}" inputClass="form-control" />
                 <x-forms.input type="password" name="password_confirmation" wrapClass="col" label="{{ __('settings.password-confirm') }}" inputClass="form-control" />
 @else 
-                <input type="hidden" name="name" value="{{ $user->name }}" />
+                <input type="hidden" name="username" value="{{ $user->username }}" />
                 <input type="hidden" name="email" value="{{ $user->email }}" />
 @endif
 @if (Auth::user()->admin)
@@ -38,7 +38,7 @@
 @endif
                 <div class="float-right">
                     <a href="{{ route('users.index') }}" role="button" class="btn btn-secondary">{{ __('settings.cancel') }}</a>
-                    <button type="button" class="btn btn-danger" onclick="deleteMyAccount();"><i class="bi bi-trash">Delete my account</i></button>
+                    @if (Auth::user()->id == $user->id)<button type="button" class="btn btn-danger" onclick="deleteMyAccount();"><i class="bi bi-trash">Delete my account</i></button>@endif
                     <button type="submit" class="btn btn-primary">{{ __('settings.update') }}</button>
                 </div>
             </form>

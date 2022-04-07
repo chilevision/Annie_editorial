@@ -81,7 +81,7 @@ class Users_controller extends Controller
             $admin = 0;
             if ($request->exists('admin')) $admin = 1;
             $request->validate([
-                'username' 	=> 'required|max:10|min:3|unique:users,name,'.$id.'|alpha_num',
+                'username' 	=> 'required|max:10|min:3|unique:users,username,'.$id.'|alpha_num',
                 'email' 	=> 'required|email|max:255|unique:users,email,'.$id,
             ]);
             if ($request->input('password') !=null){
