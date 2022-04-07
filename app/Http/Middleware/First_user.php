@@ -21,7 +21,7 @@ class First_user
     {
         {
             if (!Schema::hasTable('users')) {
-                Artisan::call('migrate --f');
+                Artisan::call('migrate --force');
             }
             if (User::exists()) {
                 return redirect('/login');
