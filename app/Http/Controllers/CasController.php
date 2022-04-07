@@ -21,9 +21,9 @@ class CasController extends Controller
             $user = User::where('name', '=', cas()->user())->first();
             if ($user === null) {
                 $user = User::create([
-                    'name'  => cas()->user(),
-                    'email' => cas()->user().'@du.se',
-                    'cas'   => 1
+                    'username'  => cas()->user(),
+                    'email'     => cas()->user().'@du.se',
+                    'cas'       => 1
                 ]);
             }
             Auth::loginUsingId($user->id);
