@@ -171,6 +171,7 @@ class Caspar extends Component
             $response = $client->send('TLS');
             
             if($response->success()) {
+                Templatefiles::truncate();
                 $templateArr = preg_split("/\r\n|\n|\r/", $response->getBody());
                 foreach ($templateArr as $template){
                     if(!$this->is_junkfile($template)){
