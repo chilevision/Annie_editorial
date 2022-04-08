@@ -214,6 +214,7 @@ class RundownrowForm extends Component
         $this->type             = 'GFX';
         $this->source           = '';
         $this->formAction       = 'submit_meta';
+        $this->mediabowser      = 'TEMPLATE';
     }
 
     /* Stores a newly created rundown_meta_row in storage. */

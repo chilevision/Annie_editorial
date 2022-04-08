@@ -125,6 +125,7 @@ $(function () {
 | param: query tells backend what file types to return
 */
 function mediabrowser(query){
+    alert(query);
     input = $('#input-source').val();
     Livewire.emit('mediabrowser', query, input);
 }
