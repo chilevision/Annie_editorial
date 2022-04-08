@@ -80,11 +80,7 @@ a[x-apple-data-detectors] {
              <tr style="border-collapse:collapse"> 
               <td align="left" style="padding:10px;Margin:0"><!--[if mso]><table style="width:580px"><tr><td style="width:280px" valign="top"><![endif]-->
                 <a target="_blank" href="{{ App::make('url')->to('/'); }}" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:none;color:#CCCCCC;font-size:12px">
-                @if (!get_custom_logo())
-                  <img src="{{ asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
-                @else
-                  <img src="{{ asset('site_logo/'.get_custom_logo()) }}" class="plull-left" />
-                @endif
+                  <img src="{{ get_custom_logo() ? asset('site_logo/'.get_custom_logo()) : asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
                 </a>
                <table class="es-right" cellspacing="0" cellpadding="0" align="right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right"> 
                  <tr style="border-collapse:collapse"> 

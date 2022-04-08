@@ -27,13 +27,8 @@
     <div id="app">
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    @if (!get_custom_logo())
-                    <img src="{{ asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
-                    @else
-                    <img src="{{ asset('site_logo/'.get_custom_logo()) }}" class="plull-left" />
-                    @endif
+                    <img src="{{ get_custom_logo() ? asset('site_logo/'.get_custom_logo()) : asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -76,7 +71,7 @@
     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->username }}
+                                {{ Auth::user()->name ? Auth::user()->name : Auth::user()->username }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="@if (Auth::user()->cas){{ route('cas.logout') }}@else{{ route('logout') }}@endif"

@@ -48,9 +48,7 @@ class CasController extends Controller
     {
         if (Settings::where('id', 1)->first()->sso){
             Auth::logout();
-
             $request->session()->invalidate();
-
             $request->session()->regenerateToken();
             cas()->logout();
         }

@@ -14,11 +14,7 @@
 <body>
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
-            @if (!get_custom_logo())
-            <img src="{{ asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
-            @else
-            <img src="{{ asset('site_logo/'.get_custom_logo()) }}" class="plull-left" />
-            @endif
+            <img src="{{ get_custom_logo() ? asset('site_logo/'.get_custom_logo()) : asset('css/img/annie_h_logo_sm.png') }}" class="pull-left" />
         </a>
         <div id="art">
             <div id="message">

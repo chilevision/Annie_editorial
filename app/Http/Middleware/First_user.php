@@ -13,21 +13,19 @@ class First_user
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        {
-            if (!Schema::hasTable('users')) {
-                Artisan::call('migrate --force');
-            }
-            if (User::exists()) {
-                return redirect('/login');
-            } else {
-                return $next($request);
-            }
+        if (!Schema::hasTable('users')) {
+            Artisan::call('migrate --force');
+        }
+        if (User::exists()) {
+            return redirect('/login');
+        } else {
+            return $next($request);
         }
     }
 }
