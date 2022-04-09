@@ -25,5 +25,6 @@ return [
     'accept'        => 'By signing in to this website you accept our',
     'tnc'           => 'terms and conditions',
     'close'         => 'Close',
+    'save'          => 'Save',
     'goback'        => 'Go back',
 ];

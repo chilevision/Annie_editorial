@@ -125,7 +125,6 @@ $(function () {
 | param: query tells backend what file types to return
 */
 function mediabrowser(query){
-    alert(query);
     input = $('#input-source').val();
     Livewire.emit('mediabrowser', query, input);
 }
@@ -187,8 +186,8 @@ Livewire.on('loadEditor', data => {
     row     = data[3];
     $('#summernote').summernote('reset');
     $('#summernote').summernote('code', data[0]);
-    $('#textEditorTitle').text(data[2]);
-    $("#textEditorSave").attr("onclick","saveText('" + data[1] + "')");
+    $('#textEditorModalLabel').text(data[2]);
+    $("#textEditorModalSave").attr("onclick","saveText('" + data[1] + "')");
 });
 
 /* Listens for a click event on caspar table
