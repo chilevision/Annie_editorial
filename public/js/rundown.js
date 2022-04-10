@@ -11,6 +11,9 @@ var code;
 var row;
 var type;
 var lock_updater = [];
+var accordionElement;
+var accordion;
+
 
 $( document ).ready(function() {
     initSortable();
@@ -38,7 +41,6 @@ $( document ).ready(function() {
             }
         }
     });
-
 });
 
 /*Sets duration value on rundown form duration input
@@ -67,22 +69,12 @@ function initSortable(){
         },
         // Element dragging ended
         onEnd: function (evt) {
-            console.log(evt.oldIndex +' ' +evt.newIndex);
-            if (evt.oldIndex != evt.newIndex ){
-                rows = new Array;
-                console.log('new pos: ' + evt.newIndex + ' old pos: ' +evt.oldIndex);
-                $('#rundown-body').find('.rundown-row').each(function() {
-                    rows.push( this.id.slice(12) );
-                });
-                console.log(rows);
-                moved_row       = rows[evt.newIndex];
-                before_in_table = rows[evt.newIndex-1];
-                after_in_table  = rows[evt.newIndex+1];
-                Livewire.emit('orderChanged', moved_row, before_in_table, after_in_table);
-
-                console.log('moved: ' + moved_row + ' before: ' + before_in_table + ' after: ' + after_in_table);
-            }
-            Livewire.emit('sortingEnded');
+            rows = new Array;
+            $(evt.to).find('.rundown-row').each(function() {
+                rows.push(parseInt(target = /[^-]*$/.exec(this.id)[0]));
+            })
+            console.log(rows);
+            Livewire.emit('orderChanged', rows);
         },
     });
 }
@@ -214,8 +206,6 @@ $('#casparModal').on('hidden.bs.modal', function () {
 | Unlocks editing 
 */
 $('#textEditorModal').on('hidden.bs.modal', function () {
-    console.log(type);
-    console.log(row);
     Livewire.emit('lock', type, row);
 });
 
@@ -269,7 +259,6 @@ function lock(data){
     (data.lock) ? disable_menu(element, edit_menu, delete_menu, disable_row) : enable_menu(element, edit_menu, delete_menu, disable_row);
 }
 function disable_menu(element, edit_menu, delete_menu, disable_row){
-    console.log(edit_menu);
     if (disable_row) $(element).css({'color': '#cccccc'});
     $(element).find('.dropdown-menu').find(delete_menu, edit_menu).addClass('disabled');
     $(element).find('.dropdown-menu').find(edit_menu).addClass('disabled');
@@ -278,6 +267,16 @@ function enable_menu(element, edit_menu, delete_menu, disable_row){
     if (disable_row) $(element).css({'color': '#000000'});
     $(element).find('.dropdown-menu').find(delete_menu, edit_menu).removeClass('disabled');
     $(element).find('.dropdown-menu').find(edit_menu).removeClass('disabled');
+    reload();
+}
+
+function reload(){
+    if (accordion != undefined){
+        Livewire.emit('reload', accordion);
+    }
+    else{
+        Livewire.emit('reload');
+    }
 }
 
 Livewire.on('keepLocked', data => {
@@ -292,4 +291,110 @@ Livewire.on('keepLocked', data => {
     else {
         clearInterval(lock_updater[type]);
     }
+});
+
+function openGfxModal(){
+    var list    = $('#gfxDataList');
+    var data    = $('#metaData').val();
+
+    $(list).empty();
+
+    data = data.split(/\r?\n/);
+    $.each(data, function( index, value ) {
+        var row = value.split(/: (.*)/s)
+        if (row[1] != undefined){
+            row = createListItem(index, row[1]);
+            $(list).append(row);
+        }
+    })
+    $('#gfxDataModal').modal('show');
+
+}
+
+
+
+// delete TODO span
+
+$('#gfxDataList').on('click', 'li span.delete', function(event){
+    $(this).parent().fadeOut(1000, function(){
+        $(this).remove();
+        if (!$(this).parent().is(':last-child')){
+            recountF();
+        }
+    });
+    event.stopPropagation();
+});
+
+
+// add TODO button
+
+$('#add-todo').on('keypress', function(event){
+    if(event.which === 13){
+        var list = $('#gfxDataList');
+        var f = $('#gfxDataList li').length;
+        var row = createListItem(f, $(this).val());
+        $(this).fadeOut(500, function(){
+            $(list).append(row);
+            $(this).val('');
+        
+        });
+      $('#toggle').toggleClass('bi bi-dash-square-fill');
+      $('#toggle').toggleClass('bi-plus-square-fill');
+    }
+});
+
+function createListItem(f, data){
+    return '<li> <span class="delete"><i class="bi bi-trash"></i></span><p class="badge badge-info d-inline">f'+f+': '+'</p><p class="gfxData d-inline">'+data+'</p></li>';
+}
+
+
+// toggle icon 
+
+$('#toggle').on('click', function(){
+    $(this).toggleClass('bi-plus-square-fill');
+    $(this).toggleClass('bi bi-dash-square-fill');
+    $('#add-todo').slideToggle(400);
+});
+
+// recount f numbers
+
+function recountF(){
+    var i = 0;
+    $('#gfxDataList').children('li').each(function () {
+        $(this).find('p.badge').text('f'+i+': ');
+        i++;
+    })
+}
+
+function moveGfxData(){
+    var output  = '';
+    var childs = $('#gfxDataList').children('li');
+    var i = 1
+    $(childs).each(function () {
+        output = output + $(this).find('p.badge').text() + $(this).find('p.gfxData').text();
+        if (i < childs.length){
+            output = output + '\n';
+        }
+        i++;
+    })
+    $('#metaData').val(output);
+    var element = document.getElementById('metaData');
+    element.dispatchEvent(new Event('input'));
+    $('#gfxDataModal').modal('hide');
+}
+
+$( document ).ready(function() {
+    $('.accordianOpenBtn').click(function(){
+        accordionElement = $(this);
+        setTimeout(function(){
+            expanded        = (/true/i).test(accordionElement.attr('aria-expanded'));
+            parseInt(target = /[^-]*$/.exec(accordionElement.attr('data-target'))[0]);
+            if(expanded === true){
+                accordion = target;
+            }
+            else if (expanded === false && accordion == target){
+                accordion = undefined;
+            }
+        },500);
+    });
 });

@@ -59,7 +59,6 @@ class RundownrowForm extends Component
         'editMeta'          => 'editMeta',
         'cancel_edit'       => 'cancel_edit',
         'sortingStarted'    => 'lockSorting',
-        'sortingEnded'      => 'unlockSorting',
         'updateSource'      => 'updateSource'
     ];
 
@@ -286,7 +285,8 @@ class RundownrowForm extends Component
         }
         $this->emit('lock', 'meta_row', $this->rundown_meta_row_id);
         $this->resetForm();
-        $this->emit('in_edit_mode', false); 
+        $this->emit('in_edit_mode', false);
+        
     }
 
     /* Resets form to default */
@@ -306,7 +306,7 @@ class RundownrowForm extends Component
     private function resetForm(){
         $this->reset(['story', 'talent', 'cue', 'source', 'audio', 'duration', 'file_fps', 'rundown_meta_row_id', 'rundown_row_id', 'metaData', 'type_disabled']);
         $this->type                     = 'MIXER';
-        $this->autotrigg                = 1;
+        $this->autotrigg                = 0;
         $this->header                   = 'rundown.new_row';
         $this->submit_btn_label         = 'rundown.create';
         $this->formAction               = 'submit';
@@ -325,16 +325,6 @@ class RundownrowForm extends Component
             $rundown->save();
         }
         event(new RundownEvent(['type' => 'lockSorting', 'code' => $code], $this->rundown->id));
-    }
-
-    /* Enables sorting functionality in rundown table */
-    public function unlockSorting(){
-        $rundown = Rundowns::find($this->rundown->id);
-        if($rundown !== NULL) {
-            $rundown->sortable = 1;
-            $rundown->save();
-        }
-        event(new RundownEvent(['type' => 'unlockSorting'], $this->rundown->id));
     }
 
     /* Sets values in form depending on type selected

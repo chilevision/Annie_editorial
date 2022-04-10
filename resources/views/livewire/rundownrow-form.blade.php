@@ -27,7 +27,7 @@
                     <x-forms.Select name="source" wrapClass="col" selectClass="form-control-sm" wire="source" label="rundown.source" :options="$sourceOptions" />
                     <x-forms.input type="text" name="audio" value="{{ $audio }}" wrapClass="col" wire="audio" label="rundown.audio" inputClass="form-control-sm" />
                     <x-forms.time name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
-                    <x-forms.input type="checkbox" name="autotrigg" value="{{ $autotrigg }}" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
+                    <x-forms.box name="autotrigg" value="1" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
                     @break
 
                     @case('VB')
@@ -36,7 +36,7 @@
                     <x-forms.source type="text" name="source" value="{{ $source }}" wrapClass="col" wire="source" sourceQuery="{{ $mediabowser }}" label="rundown.source" inputClass="form-control-sm" modalTarget="casparModal"/>
                     <x-forms.input type="text" name="audio" value="{{ $audio }}" wrapClass="col" wire="audio" label="rundown.audio" inputClass="form-control-sm" />
                     <x-forms.time name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />
-                    <x-forms.input type="checkbox" name="autotrigg" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
+                    <x-forms.box name="autotrigg" wrapClass="mr-5 ml-2" wire="autotrigg" label="rundown.triggering" inputClass="rundown-checkbox" />
                     <input type="hidden" name="file_fps" wire="file_fps" />
                     @break
 
@@ -71,7 +71,7 @@
                 @endif
                     <div class="form-group">
                         <label for="comment">@if($type == 'MIXER'){{ __('rundown.notes') }}@else Data @endif</label>
-                        <textarea class="form-control" rows="2" id="comment" wire:model="metaData" style="white-space:nowrap;"></textarea>
+                        <textarea class="form-control" @if($type == 'GFX') readonly @endif rows="2" id="metaData" wire:model="metaData" style="white-space:nowrap;" onclick="openGfxModal();"></textarea>
                     </div>
                     <x-Forms.time name="delay" value="{{ $delay }}" wrapClass="col" wire="delay" label="rundown.delay" inputClass="form-control-sm" step="1" />
                     <x-Forms.time name="duration" value="{{ $duration }}" wrapClass="col" wire="duration" label="rundown.duration" inputClass="form-control-sm" step="1" />

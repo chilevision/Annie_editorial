@@ -91,6 +91,7 @@ return [
     'fileduration'          => 'Duration',
     'filefps'               => 'Fps',
     'autoduration'          => 'Automatically add duration to rundown',
+    'add_gfx'               => 'Add template data',
 
     'message_date_updated'  => 'Your rundown date/title has been updated.',
     'message_ccgfile'       => 'Download CasparCG client-file here.',

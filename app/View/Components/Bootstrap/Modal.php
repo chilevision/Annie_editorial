@@ -18,7 +18,7 @@ class Modal extends Component
      *
      * @return void
      */
-    public function __construct($id, $saveBtn = 'app.save', $saveClick = '', $size = '', $title = '', $footer = '')
+    public function __construct($id, $saveBtn = '', $saveClick = '', $size = '', $title = '', $footer = '')
     {
         $this->id           = $id;
         $this->size         = $size;

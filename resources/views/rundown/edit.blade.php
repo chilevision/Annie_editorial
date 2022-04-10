@@ -9,15 +9,17 @@
 		channel.bind('{{ $rundown->id }}', function(data) {
 			console.log(data.message);
 			switch (data.message.type){
-				case 'render' 			: 
-					Livewire.emit('render');
+				case 'render' 	:
+					reload();
 					if (data.message.title != undefined) setNewTitle(data.message.title);
 					break;
 				case 'lockSorting'		: disable_sorting(data.message.code);	break;
-				case 'unlockSorting'	: sortable.options.disabled = false;	break;
-				case 'row_updated'		: 
+				case 'unlockSorting'	:
+					reload();
+					sortable.options.disabled = false;
+					break;
+				case 'row_updated'		:
 					enable_menu(data.message.id);
-					Livewire.emit('render');
 					break;
 				case 'prompter'			: break;
 				default 				: lock(data.message); break;
@@ -54,8 +56,13 @@
 	<div id="summernote"></div>
 </x-Bootstrap.modal>
 
-<x-Bootstrap.modal id="gfxDataModal">
-	<h1>Hej</h1>
+<x-Bootstrap.modal id="gfxDataModal" saveBtn="{{ __('settings.submit') }}" saveClick="moveGfxData();" title="{{ __('rundown.add_gfx') }}">
+	<div>
+        <h1><i id="toggle" class="bi bi-plus-square-fill"></i></h1>
+        <input type="text" id="add-todo" placeholder="Add a new TO-DO">
+        <ul id="gfxDataList">
+        </ul>
+    </div>
 </x-Bootstrap.modal>
 <!-- /Modals -->
 @endsection

@@ -13,8 +13,8 @@
             <div class="modal-footer">
                 {{ $footer ? $footer : '' }}
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('app.close') }}</button>
-                @if (!$saveBtn = false)
-                <button type="button" id="{{ $id.'Save' }}" class="btn btn-primary" {{ $saveClick ? 'onclick="'.$saveClick.'();"' : '' }}>{{ __($saveBtn) }}</button>
+                @if (!$saveBtn == '')
+                <button type="button" id="{{ $id.'Save' }}" class="btn btn-primary" {!! $saveClick ? 'onclick="'.$saveClick.'"' : '' !!}>{{ __($saveBtn) }}</button>
                 @endif
             </div>
         </div>

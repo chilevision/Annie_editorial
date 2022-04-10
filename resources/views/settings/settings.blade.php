@@ -245,7 +245,7 @@
     </div>
   </form>
 </div>
-<x-Bootstrap.modal id="preview-email-modal" size="lg" saveBtn="false">
+<x-Bootstrap.modal id="preview-email-modal" size="lg">
   @include('email.notification', ['settings' => $settings, 'preview' => 1])
 </x-Bootstrap.modal>
 

@@ -114,7 +114,7 @@
                         </div>
                     </div>
                 </td>
-                <td style="background: #{{ $row->color }}"><a href="#" class="text-white" data-toggle="collapse" data-target="#rundown-meta-{{ $row->id }}" aria-expanded="false" aria-controls="rundown-meta-{{ $row->id }}"><i class="bi bi-list-nested"></i></a></td>
+                <td style="background: #{{ $row->color }}"><a href="#" class="text-white accordianOpenBtn" data-toggle="collapse" data-target="#rundown-meta-{{ $row->id }}" aria-expanded="false" aria-controls="rundown-meta-{{ $row->id }}"><i class="bi bi-list-nested"></i></a></td>
                 <td scope="col"><div class="overflow-hidden" style="width: 420px">{{ $row->story }}</div></td>
                 <td scope="col">{{ $row->type }}</td>
                 <td scope="col"><div class="overflow-hidden" style="width: 130px">{{ $row->talent }}</div></td>

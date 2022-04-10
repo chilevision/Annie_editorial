@@ -42,9 +42,13 @@ if (!function_exists('to_seconds'))
 {
     function to_seconds($time)
     {
+        if (strlen($time) == 5){
+            $time = $time.':00';
+        }
         $duration = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $time);
         sscanf($duration, "%d:%d:%d", $hours, $minutes, $seconds);
         $duration = $hours * 3600 + $minutes * 60 + $seconds;
+    
         return $duration;
     }
     

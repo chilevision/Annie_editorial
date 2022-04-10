@@ -84,7 +84,7 @@ tr.rundown-break-row .dropdown-menu{
     white-space: nowrap; overflow: hidden; text-overflow:ellipsis;
 }
 .rundown-checkbox{
-    display: block; background-color: indigo; margin: 5px auto;
+    display: block;  margin: 38px auto;
 }
 .hiddenRow{
     padding: 0!important;
@@ -149,3 +149,88 @@ tr.rundown-break-row .dropdown-menu{
     background-color: transparent;
     border: 0;
 }
+
+  #gfxDataModal ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+  }
+  
+  #gfxDataModal h1{
+      background: #2fa4cd;
+      margin:0;
+      padding: 10px 20px;
+      font-size: 24px;
+      color: white;
+  }
+  
+  
+  #gfxDataModal li {
+      background: #fff;
+      height: 40px;
+      line-height: 40px;
+      color: #666;
+  }
+  
+  
+  #gfxDataModal li:nth-child(2n){
+      background: #f7f7f7;
+  }
+  
+  
+  
+  #gfxDataModal span.delete{
+     background: #e74c3c;
+      height: 40px;
+      margin-right: 20px;
+      text-align: center;
+      color: white;
+      width: 0;
+      display: inline-block;
+      transition: .3s linear;
+      opacity: 0
+  }
+  #gfxDataModal .badge{
+      margin-right: 5px;
+  }
+  
+  
+  
+  #gfxDataModal li:hover{
+      cursor: pointer;
+  }
+  
+  
+  #gfxDataModal li:hover span {
+      width: 40px;
+      opacity: 1.0;
+  }
+  
+  
+  #gfxDataModal input{
+      font-size: 18px;
+      background: #F5F5F5;
+      color: #2fa4cd;
+      width: 100%;
+      border: none;
+      box-sizing: border-box;
+      padding: 13px 13px 13px 20px;
+      display: none;
+  }
+  
+  #gfxDataModal input:focus{
+      border: 2px solid #2fa4cd;
+      background: white;
+      outline: none;
+  }
+  
+  
+  #gfxDataModal .completed{
+    text-decoration: line-through;
+    color: grey;
+  }
+  
+  
+  #gfxDataModal li.over {
+    border: 1px dashed grey;
+  }

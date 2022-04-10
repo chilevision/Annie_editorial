@@ -9,6 +9,7 @@ use App\Events\RundownEvent;
 use App\Models\Rundown_meta_rows;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Mockery\Undefined;
 
 class Rundown extends Component
 {
@@ -18,10 +19,10 @@ class Rundown extends Component
     public $page_number     = 1;
     public $rundown_timer   = 0;
     public $row;
-    public $show_meta       = false;
+    public $show_meta       = 0;
 
     protected $listeners = [
-        'render'            => 'render',
+        'reload'            => 'reload',
         'orderChanged'      => 'updateOrder',
         'textEditor'        => 'init_textEditor',
         'saveText'          => 'saveText',
@@ -74,6 +75,11 @@ class Rundown extends Component
         }
     }
 
+    public function reload($open = '')
+    {   
+        $open != '' ? $this->show_meta = $open : $this->show_meta = null;
+    }
+
     public function add_rows()
     {
         $rows = Rundown_rows::where('rundown_id', $this->rundown->id)->get();
@@ -91,12 +97,23 @@ class Rundown extends Component
         event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
     }
 
-    public function updateOrder($moved_row, $before_in_table, $after_in_table)
+    public function updateOrder($rows)
     {   
-        $this->pick_out_row($moved_row);
-        Rundown_rows::where('id', $moved_row)->update(['before_in_table' => $before_in_table]);
-        Rundown_rows::where('id', $after_in_table)->update(['before_in_table' => $moved_row]);
-        event(new RundownEvent(['type' => 'render'], $this->rundown->id));
+        foreach ($rows as $key => $row){
+            if ($key == 0){
+                $row_before_this = null;
+            }
+            else{
+                $row_before_this = $rows[$key-1];
+            }
+            Rundown_rows::where('id', $row)->update(['before_in_table' => $row_before_this]);
+        }
+        $rundown = Rundowns::find($this->rundown->id);
+        if($rundown !== NULL) {
+            $rundown->sortable = 1;
+            $rundown->save();
+        }
+        event(new RundownEvent(['type' => 'unlockSorting'], $this->rundown->id));
     }
 
     private function pick_out_row($id){
