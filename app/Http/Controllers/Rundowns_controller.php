@@ -348,7 +348,7 @@ class Rundowns_controller extends Controller
                                 $gfxdata = preg_split("/\r\n|\n|\r/", $meta_row->data);
                                 foreach ($gfxdata as $data){
                                     $data = explode("=>", $data);
-                                    if (is_array($data)){
+                                    if (is_array($data) && array_key_exists(1, $data)){
                                         $componentdata	= $xml->createElement('componentdata');		$templatedata->appendChild($componentdata);
                                         $id				= $xml->createElement('id', $data[0]);			$componentdata->appendChild($id);
                                         $value			= $xml->createElement('value', $data[1]);		$componentdata->appendChild($value);
