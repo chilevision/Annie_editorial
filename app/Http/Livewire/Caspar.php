@@ -29,7 +29,7 @@ class Caspar extends Component
     public $hide_spinner    = false;
 
     public $first_load              = true;
-    protected $update_frequency     = 120;
+    protected $update_frequency     = 1;
     protected $listeners            = ['mediabrowser'];
     protected $paginationTheme      = 'bootstrap';
     
@@ -41,7 +41,7 @@ class Caspar extends Component
         else {
             if ($this->content_type == 'templates') {
                 $files = Templatefiles::when($this->search, function($query, $search){
-                    return $query->where('name', 'LIKE', "%$search%");
+                    return $query->where('name', 'LIKE', "%$search%")->orWhere('type', 'LIKE', "%$search%")->orWhere('modified_at', 'LIKE', "%$search%");
                 })->orderBy($this->orderBy, $this->orderAsc ? 'asc' : 'desc')->paginate($this->perPage);
             }
             else {
@@ -175,8 +175,19 @@ class Caspar extends Component
                 $templateArr = preg_split("/\r\n|\n|\r/", $response->getBody());
                 foreach ($templateArr as $template){
                     if(!$this->is_junkfile($template)){
+                        
+                        $name = $this->getStringBetween($template);
+                        $templateData = explode(" ", substr($template, strrpos($template, '" ')+2));
+                        if (is_array($templateData)){
+                            array_key_exists(0, $templateData) ? $size = $templateData[0] : $size = '';
+                            array_key_exists(1, $templateData) ? $date = $templateData[1] : $date = '';
+                            array_key_exists(2, $templateData) ? $type = $templateData[2] : $date = '';
+                        }
                         Templatefiles::create([
-                            'name' => $template
+                            'name'          => $name,
+                            'size'          => $size,
+                            'modified_at'   => date('Y-m-d H:i:s', strtotime($date)),
+                            'type'          => $type
                         ]);
                     }
                 }

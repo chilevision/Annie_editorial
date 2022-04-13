@@ -11,5 +11,8 @@ class Templatefiles extends Model
 
     protected $fillable = [
         'name',
+        'size',
+        'type',
+        'modified_at'
     ];
 }

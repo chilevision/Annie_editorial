@@ -65,7 +65,9 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col" style="width:20px"></th>
-                <th scope="col">{{ __('rundown.filename') }}</th>
+                <th scope="col"><a href="#" wire:click="changeOrder('name')" class="text-light">{{ __('rundown.filename') }}@if ($orderBy == 'name') {!! $arrow !!} @endif</a></th>
+                <th scope="col"><a href="#" wire:click="changeOrder('type')" class="text-light">{{ __('rundown.filetype')  }}@if ($orderBy == 'type') {!! $arrow !!} @endif</a></th>
+                <th scope="col"><a href="#" wire:click="changeOrder('modified_at')" class="text-light">{{ __('rundown.filemodified')  }}@if ($orderBy == 'modified_at') {!! $arrow !!} @endif</a></th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +75,8 @@
               <tr @if ($file->name == $selected) class="selected" @endif>
                 <td><input type="radio" name="file" value="{{ $file->name }}" @if ($file->name == $selected) checked="checked" @endif/></td>
                 <td>{{ $file->name }}</td>
+                <td>{{ $file->type }}</td>
+                <td>{{ $file->modified_at }}</td>
               </tr>
 @endforeach
             </tbody>
