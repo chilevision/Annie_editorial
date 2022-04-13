@@ -88,7 +88,7 @@
         <i class="bi bi-trash ml-4"></i> = {{ __('rundown.delete') }}
     </p>
     <div class="d-flex justify-content-center">{!! $rundowns->links() !!}</div>
-    <form name="print-rundown-form" id="print-rundown-form" method="POST" action="{{ route('rundown.print') }}">
+    <form name="print-rundown-form" id="print-rundown-form" method="POST" action="{{ route('rundown.print') }}" target='_blank'>
         @csrf
         <div id="print-rundown-form-values">
         </div>
