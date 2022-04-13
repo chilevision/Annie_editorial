@@ -108,3 +108,29 @@ if (!function_exists('font_size_replace'))
         return $string;
     }
 }
+/*
+|
+| Dekodes meta row data and returns string
+*/
+if (!function_exists('metaDataToString'))
+{
+    function metaDataToString($data, $length = ''){
+        json_decode($data);
+        if (json_last_error()){
+            $output = strip_tags($data);
+        }
+        else{
+            $keys = json_decode($data, true);
+            $output = '';
+            $i = 1;
+            foreach ($keys as $key => $val){
+                $output .= $key . $val;
+                if ($i < count($keys)){
+                    $output .= ' ';
+                }
+                $i++;
+            }
+        }
+        return $output;
+    }
+}

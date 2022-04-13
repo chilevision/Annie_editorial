@@ -59,7 +59,7 @@
 <x-Bootstrap.modal id="gfxDataModal" saveBtn="{{ __('settings.submit') }}" saveClick="moveGfxData();" title="{{ __('rundown.add_gfx') }}">
 	<div>
         <h1><i id="toggle" class="bi bi-plus-square-fill"></i></h1>
-        <input type="text" id="add-todo" placeholder="Add a new TO-DO">
+        <input type="text" id="add-todo" placeholder="{{ __('rundown.add_new_gfx') }}">
         <ul id="gfxDataList">
         </ul>
     </div>

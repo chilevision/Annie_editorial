@@ -87,6 +87,7 @@ function saveText(type){
     $('#textEditorModal').modal('hide');
     var textareaValue = $('#summernote').summernote('code');
     Livewire.emit('saveText', [type, textareaValue]);
+    $('#summernote').summernote('reset');
 }
 
 /*Generates a random code 
@@ -293,22 +294,34 @@ Livewire.on('keepLocked', data => {
     }
 });
 
+$('#editor').on('click', 'button[name="edit_data"]', function(event){
+    type = $(this).val();
+    switch (type){
+        case 'gfx': 
+            openGfxModal(); 
+            break;
+        case 'notes':
+            $('#summernote').summernote('reset');
+            $('#summernote').summernote('code', $('#metaData').val());
+            $('#textEditorModalLabel').text($('.edit-cam-menu').first().text());
+            $("#textEditorModalSave").attr("onclick","saveMetaCamNotes()");
+            $('#textEditorModal').modal('show');
+            break;
+    }
+})
+
 function openGfxModal(){
     var list    = $('#gfxDataList');
     var data    = $('#metaData').val();
-
     $(list).empty();
-
-    data = data.split(/\r?\n/);
-    $.each(data, function( index, value ) {
-        var row = value.split(/: (.*)/s)
-        if (row[1] != undefined){
-            row = createListItem(index, row[1]);
+    if (isJson(data)){
+        data = JSON.parse(data);
+        $.each(data, function(key, value){
+            var row = createListItem(key, value);
             $(list).append(row);
-        }
-    })
+        });
+    }
     $('#gfxDataModal').modal('show');
-
 }
 
 
@@ -331,7 +344,7 @@ $('#gfxDataList').on('click', 'li span.delete', function(event){
 $('#add-todo').on('keypress', function(event){
     if(event.which === 13){
         var list = $('#gfxDataList');
-        var f = $('#gfxDataList li').length;
+        var f = 'f' + $('#gfxDataList li').length +': ';
         var row = createListItem(f, $(this).val());
         $(this).fadeOut(500, function(){
             $(list).append(row);
@@ -344,7 +357,7 @@ $('#add-todo').on('keypress', function(event){
 });
 
 function createListItem(f, data){
-    return '<li> <span class="delete"><i class="bi bi-trash"></i></span><p class="badge badge-info d-inline">f'+f+': '+'</p><p class="gfxData d-inline">'+data+'</p></li>';
+    return '<li> <span class="delete"><i class="bi bi-trash"></i></span><p class="badge badge-info d-inline">'+f+'</p><input type="text" class="gfxData d-inline form-control-sm" value="'+data+'"/></li>';
 }
 
 
@@ -367,20 +380,24 @@ function recountF(){
 }
 
 function moveGfxData(){
-    var output  = '';
+    var output  = new Object;
     var childs = $('#gfxDataList').children('li');
-    var i = 1
     $(childs).each(function () {
-        output = output + $(this).find('p.badge').text() + $(this).find('p.gfxData').text();
-        if (i < childs.length){
-            output = output + '\n';
-        }
-        i++;
+        output[$(this).find('p.badge').text()] = $(this).find('input.gfxData').val();
     })
-    $('#metaData').val(output);
+    $('#metaData').val(JSON.stringify(output));
     var element = document.getElementById('metaData');
     element.dispatchEvent(new Event('input'));
     $('#gfxDataModal').modal('hide');
+}
+
+function saveMetaCamNotes(){
+    var textareaValue = $('#summernote').summernote('code');
+    $('#metaData').val(textareaValue);
+    var element = document.getElementById('metaData');
+    element.dispatchEvent(new Event('input'));
+    $('#textEditorModal').modal('hide');
+    $('#summernote').summernote('reset');
 }
 
 $( document ).ready(function() {
@@ -398,3 +415,13 @@ $( document ).ready(function() {
         },500);
     });
 });
+
+
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}

@@ -35,6 +35,7 @@ class RundownrowForm extends Component
     public $edit_mode;
     public $sourceOptions;
     public $mixerKeys;
+    public $dataBtn;
 
     protected $typeOptions = [
         ['value' => 'MIXER', 'title' => 'MIXER'],
@@ -214,11 +215,12 @@ class RundownrowForm extends Component
         $this->source           = '';
         $this->formAction       = 'submit_meta';
         $this->mediabowser      = 'TEMPLATE';
+        $this->dataBtn          = 'gfx';
     }
 
     /* Stores a newly created rundown_meta_row in storage. */
     public function submit_meta()
-    {  
+    {
         $duration   = to_seconds($this->duration);
         $delay      = to_seconds($this->delay);
         Rundown_meta_rows::create([
@@ -244,6 +246,7 @@ class RundownrowForm extends Component
             $this->rundown_meta_row_id  = $id;
             $this->story                = $row->title;
             $this->type                 = $row->type;
+            $this->typeChange();
             $this->source               = $row->source;
             $this->duration             = gmdate('H:i:s', $row->duration);
             $this->delay                = gmdate('H:i:s', $row->delay);
@@ -256,12 +259,6 @@ class RundownrowForm extends Component
             $this->type_disabled        = 'disabled';
             $this->edit_mode            = 'meta';
 
-            switch ($this->type){
-                case 'AUDIO'    : $this->mediabowser = 'AUDIO';     break;
-                case 'BG'       : $this->mediabowser = 'BG';        break;
-                case 'GFX'      : $this->mediabowser = 'TEMPLATE';  break;
-                default         : $this->mediabowser = 'MOVIE';     break;
-            }
         
             $this->emit('lock', 'meta_row', $id, 1);
             $this->emit('in_edit_mode', true);
@@ -313,8 +310,11 @@ class RundownrowForm extends Component
         $this->formType                 = 'standard';
         $this->delay                    = '00:00:00';
         $this->mediabowser              = 'MOVIE';
+        $this->edit_mode                = NULL;
+        $this->dataBtn                  = 'gfx';
+
         $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
-        $this->edit_mode = NULL;
+        
     }
 
     /* Disable sorting functionality in rundown table */
@@ -332,11 +332,29 @@ class RundownrowForm extends Component
     public function typeChange() {
         $this->source = '';
         switch($this->type){
-            case 'MIXER'    : $this->source = 'CAM1';           break;
-            case 'VB'       : $this->source = '';               break;
-            case 'AUDIO'    : $this->mediabowser = 'AUDIO';     break;
-            case 'BG'       : $this->mediabowser = 'BG';        break;
-            case 'GFX'      : $this->mediabowser = 'TEMPLATE';  break;
+            case 'MIXER': 
+                $this->source = 'CAM1';
+                $this->dataBtn = 'notes';
+                break;
+            case 'VB':
+                $this->source = '';
+                $this->dataBtn = null;
+                break;
+            case 'AUDIO': 
+                $this->mediabowser = 'AUDIO';
+                $this->dataBtn = null;
+                break;
+            case 'BG':
+                $this->mediabowser = 'BG';
+                $this->dataBtn = null;
+                break;
+            case 'GFX':
+                $this->mediabowser = 'TEMPLATE';
+                $this->dataBtn = 'gfx';
+                break;
+            case 'KEY':
+                $this->dataBtn = null;
+                break;
         }
     }
 

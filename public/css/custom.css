@@ -206,8 +206,11 @@ tr.rundown-break-row .dropdown-menu{
       opacity: 1.0;
   }
   
-  
-  #gfxDataModal input{
+  input.gfxData{
+    border-style:solid;
+    border:none;
+  }
+  #add-todo{
       font-size: 18px;
       background: #F5F5F5;
       color: #2fa4cd;

@@ -154,7 +154,7 @@
                                 <td scope="col"><div class="overflow-hidden" style="width: 300px">{{ $meta_row->title }}</div></td>
                                 <td scope="col">{{  $meta_row->type }}</td>
                                 <td scope="col"><div class="overflow-hidden" style="width: 250px">{{  $meta_row->source }}</div></td>
-                                <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ strip_tags($meta_row->data) }}</div></td>
+                                <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ metaDataToString($meta_row->data) }}</div></td>
                                 <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
                                 <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                             </tr>

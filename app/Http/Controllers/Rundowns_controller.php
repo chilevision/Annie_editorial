@@ -32,7 +32,7 @@ class Rundowns_controller extends Controller
      */
     public function create()
     {
-        $all_users = User::where('id', '!=', Auth::user()->id)->pluck('name')->toArray();
+        $all_users = User::where('id', '!=', Auth::user()->id)->pluck('username')->toArray();
 
         return view('rundown.create')->with('all_users', $all_users);
     }
@@ -45,13 +45,14 @@ class Rundowns_controller extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['rundown-title' => 'required|max:50']);
         $user_ids = [Auth::user()->id];
         $users = $request->input('users');
         if($users){
             $users = explode (",", $request->input('users'));
             foreach ($users as $user){
-                $user_id = User::where('name', $user)->first();
-                if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
+                $user_id = User::where('username', $user)->first();
+                if ($user_id == null) return back()->withErrors('User '.$user.' does not exist.')->withInput();
                 else{
                     array_push($user_ids, $user_id->id);
                 }
@@ -59,8 +60,10 @@ class Rundowns_controller extends Controller
         }
         $validator = $this->validateTimestamps($request);
         if ($validator){ 
-            return redirect('dashboard/rundown/create')->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput();
         }
+        dd('det gick ju fint det där.');
+
         $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
         $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
         $duration   = strtotime($stoptime) - strtotime($starttime);
@@ -125,10 +128,10 @@ class Rundowns_controller extends Controller
             $starttime  = date('H:i',strtotime($rundown->starttime));
             $stoptime   = date('H:i',strtotime($rundown->stoptime));
             $users      = '';
-            $all_users = User::where('id', '!=', $rundown->owner)->pluck('name')->toArray();
+            $all_users = User::where('id', '!=', $rundown->owner)->pluck('username')->toArray();
             foreach ($rundown->users as $user){
                 if ($user->id != $rundown->owner){
-                    $users = $users . $user->name.',';
+                    $users = $users . $user->username.',';
                 }
             }
 
@@ -160,7 +163,7 @@ class Rundowns_controller extends Controller
         if ($request->input('users') != null){
             $users = explode (",", $request->input('users'));
             foreach ($users as $user){
-                $user_id = User::where('name', $user)->first();
+                $user_id = User::where('username', $user)->first();
                 if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
                 else{
                     array_push($user_ids, $user_id->id);
@@ -343,16 +346,12 @@ class Rundowns_controller extends Controller
                             $sendasjson				= $xml->createElement('sendasjson', 'false');				    $groupitem->appendChild($sendasjson);
                     
                             $templatedata			= $xml->createElement('templatedata');						    $groupitem->appendChild($templatedata);
-
-                            if (!is_null($meta_row->data)){
-                                $gfxdata = preg_split("/\r\n|\n|\r/", $meta_row->data);
-                                foreach ($gfxdata as $data){
-                                    $data = explode("=>", $data);
-                                    if (is_array($data) && array_key_exists(1, $data)){
+                            $gfxdata = json_decode($meta_row->data);
+                            if (!json_last_error()){
+                                foreach ($gfxdata as $key => $val){
                                         $componentdata	= $xml->createElement('componentdata');		$templatedata->appendChild($componentdata);
-                                        $id				= $xml->createElement('id', $data[0]);			$componentdata->appendChild($id);
-                                        $value			= $xml->createElement('value', $data[1]);		$componentdata->appendChild($value);
-                                    }	
+                                        $id				= $xml->createElement('id', $key);			$componentdata->appendChild($id);
+                                        $value			= $xml->createElement('value', $val);		$componentdata->appendChild($value);
                                 }
                             }
                         }

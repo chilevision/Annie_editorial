@@ -59,6 +59,7 @@ return [
     'edit_row'              => 'Edit row',
     'edit_meta'             => 'Edit meta row',
     'notes'                 => 'Notes',
+    'edit_data'             => 'Edit data',
     'edit_camera_notes'     => 'Edit camera notes',
     'cancel'                => 'Cancel',
     'next'                  => 'Next',
@@ -92,6 +93,7 @@ return [
     'filefps'               => 'Fps',
     'autoduration'          => 'Automatically add duration to rundown',
     'add_gfx'               => 'Add template data',
+    'add_new_gfx'           => 'Add new data row',
 
     'message_date_updated'  => 'Your rundown date/title has been updated.',
     'message_ccgfile'       => 'Download CasparCG client-file here.',

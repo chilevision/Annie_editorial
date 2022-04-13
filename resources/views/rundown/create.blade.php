@@ -17,6 +17,15 @@
 @endsection
 
 @section('content')
+@if (count($errors) > 0)
+	<div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="container">
 	<div class="row">
         <div class="col">
@@ -45,7 +54,10 @@
 						<div class="form-group">
 							<label for="rundownUsers">{{ __('rundown.users') }}:</label>
 							<input type="text" class="form-control" name="users" id="rundownUsers" aria-describedby="rundownUsershelp" data-role="tagsinput" value="{{ old('users') }}" />
+							@error('users') <span class="text-danger">{{ $message }}</span> 
+							@else
 							<small id="rundownUsershelp" class="form-text text-muted">{{ __('rundown.users_help') }}</small>
+							@endif
 						</div>
 						
 
