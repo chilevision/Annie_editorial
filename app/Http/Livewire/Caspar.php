@@ -21,7 +21,7 @@ class Caspar extends Component
 
     public $search;
     public $per_page        = [10,25,50,100];
-    public $perPage         = 10;
+    public $perPage         = 120;
     public $orderBy         = 'name';
     public $orderAsc        = true;
     public $arrow           = '<i class="bi bi-arrow-down-circle-fill"></i>';
