@@ -235,6 +235,9 @@ class Rundowns_controller extends Controller
         $rundownrows    = sort_rows($rows)[0];
         $timer          = strtotime($rundown->starttime);
         $filename 	    = 'HDA_Rundown'.sprintf("%06d", $request->input('id')).'.pdf';
+        foreach ($rundownrows as $row){
+            
+        }
         $mpdf           = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
             'format' => 'A4',
