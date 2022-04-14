@@ -178,11 +178,13 @@ class Caspar extends Component
                         
                         $name = $this->getStringBetween($template);
                         $templateData = explode(" ", substr($template, strrpos($template, '" ')+2));
-                        if (is_array($templateData)){
-                            array_key_exists(0, $templateData) ? $size = $templateData[0] : $size = '';
-                            array_key_exists(1, $templateData) ? $date = $templateData[1] : $date = '';
-                            array_key_exists(2, $templateData) ? $type = $templateData[2] : $date = '';
-                        }
+                        $size = '';
+                        $date = '';
+                        $type = '';
+                        if (is_array($templateData) && array_key_exists(0, $templateData)) $size = $templateData[0];
+                        if (is_array($templateData) && array_key_exists(1, $templateData)) $date = $templateData[1];
+                        if (is_array($templateData) && array_key_exists(2, $templateData)) $type = $templateData[2];
+                        
                         Templatefiles::create([
                             'name'          => $name,
                             'size'          => $size,
