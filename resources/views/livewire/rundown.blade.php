@@ -70,8 +70,8 @@
                 <td scope="col" class="rundown-pre"></td>
                 <td scope="col" class="rundown-pre"></td>
             </tr>
-            @break
-            @case('BREAK')
+        @break
+        @case('BREAK')
             <tr class="rundown-row rundown-break-row sortable-row" id="rundown-row-{{ $row->id }}">
                 <td scope="col" class="rundown-break">
                     <div class="dropdown">
@@ -98,9 +98,9 @@
                 $page++;
                 $page_number = 1;
             @endphp
-            @break
+        @break
 
-            @default
+        @default
             <tr class="rundown-row sortable-row" id="rundown-row-{{ $row->id }}" @if($row->locked_by != NULL) style="color: #cccccc" @endif>
                 <td scope="col">
                     <div class="dropdown">
@@ -133,39 +133,40 @@
                 <td scope="col">{{ date('H:i:s', $timer) }}</td>
             </tr>
             @if (!$row->Rundown_meta_rows->isEmpty())
-            <tr class="meta-row">
-                <td colspan="12" class="hiddenRow">
-                    <div class="accordian-body collapse meta-container @if ($row->id == $show_meta)show @endif" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
-                        <x-table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
-            @php $i = 1; @endphp
-            @foreach ($row->Rundown_meta_rows as $meta_row )
-                            <tr id="rundown-meta-row-{{ $meta_row->id }}" @if($meta_row->locked_by != NULL) style="color: #cccccc" @endif>
-                                <td>
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle text-dark" href="#" role="button" id="meta-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number.'-'.$i }}</a>
-                                        <div class="dropdown-menu" aria-labelledby="meta-{{ $meta_row->id }}-link">
-                                            <a class="dropdown-item edit-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
-                                            <a class="dropdown-item delete-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
-                                            @if ($meta_row->type == 'MIXER')<a class="dropdown-item edit-cam-menu @if ($meta_row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $meta_row->id }}', 'cam_meta_notes'])">{{ __('rundown.edit_camera_notes') }}</a>@endif
+                <tr class="meta-row">
+                    <td colspan="12" class="hiddenRow">
+                        <div class="accordian-body collapse meta-container @if ($row->id == $show_meta)show @endif" id="rundown-meta-{{ $row->id }}" data-parent="#rundown-body">
+                            <x-table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
+                @php $i = 1; @endphp
+                @foreach ($row->Rundown_meta_rows as $meta_row )
+                                <tr id="rundown-meta-row-{{ $meta_row->id }}" @if($meta_row->locked_by != NULL) style="color: #cccccc" @endif>
+                                    <td>
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle text-dark" href="#" role="button" id="meta-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number.'-'.$i }}</a>
+                                            <div class="dropdown-menu" aria-labelledby="meta-{{ $meta_row->id }}-link">
+                                                <a class="dropdown-item edit-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
+                                                <a class="dropdown-item delete-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
+                                                @if ($meta_row->type == 'MIXER')<a class="dropdown-item edit-cam-menu @if ($meta_row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $meta_row->id }}', 'cam_meta_notes'])">{{ __('rundown.edit_camera_notes') }}</a>@endif
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td scope="col" style="background: #{{ $row->color }}"></td>
-                                <td scope="col"><div class="overflow-hidden" style="width: 300px">{{ $meta_row->title }}</div></td>
-                                <td scope="col">{{  $meta_row->type }}</td>
-                                <td scope="col"><div class="overflow-hidden" style="width: 250px">{{  $meta_row->source }}</div></td>
-                                <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ metaDataToString($meta_row->data) }}</div></td>
-                                <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
-                                <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
-                            </tr>
-            @php $i++; @endphp
-            @endforeach
-                        </x-Table.table>
-                    </div>
-                </td>
-            </tr>
-        @endif
+                                    </td>
+                                    <td scope="col" style="background: #{{ $row->color }}"></td>
+                                    <td scope="col"><div class="overflow-hidden" style="width: 300px">{{ $meta_row->title }}</div></td>
+                                    <td scope="col">{{  $meta_row->type }}</td>
+                                    <td scope="col"><div class="overflow-hidden" style="width: 250px">{{  $meta_row->source }}</div></td>
+                                    <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ metaDataToString($meta_row->data) }}</div></td>
+                                    <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
+                                    <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
+                                </tr>
+                    @php $i++; @endphp
+                @endforeach
+                            </x-Table.table>
+                        </div>
+                    </td>
+                </tr>
+            @endif
             @php $page_number++; @endphp
+        @break
         @endswitch
         @php 
             $rundown_timer = $rundown_timer + $row->duration;
