@@ -49,7 +49,6 @@
                 @foreach ($rundownrows as $row)
                     @if ($row->type == 'MIXER')
                         @php
-                            $row->page = $page.$page_number;
                             $row->start = $timer;
                         @endphp
                     @endif
@@ -81,14 +80,10 @@
                                 @php $timer = $timer + $row->duration @endphp
                                 <td class="rundown-break">{{ date('H:i:s', $timer) }}</td>
                             </tr>
-                            @php 
-                                $page++;
-                                $page_number = 1;
-                            @endphp
                         @break 
                         @default
                             <tr class="rundown-row" id="rundown-row-{{ $row->id }}" >
-                                <td style="width: 35px;">{{ $page.$page_number }}</td>
+                                <td style="width: 35px;">{{ $page_numbers[$row->id] }}</td>
                                 <td style="background: #{{ $row->color }}; width: 7px;"></td>
                                 <td style="width: 150px;">{{ $row->story }}</td>
                                 <td>
@@ -138,16 +133,14 @@
                                         <th style="padding: 2px; vertical-align: bottom; text-align: left;">{{ __('rundown.delay') }}</th>
                                         <th style="padding: 2px; vertical-align: bottom; text-align: left;">{{ __('rundown.duration') }}</th>
                                     </tr>
-                                    @php $i = 1; @endphp
                                     @foreach ($row->Rundown_meta_rows as $meta_row )
                                         @if ($meta_row->type == 'MIXER')
                                             @php
-                                                $meta_row->page = $page.$page_number.'-'.$i;
                                                 $meta_row->start = $timer+$meta_row->delay;
                                             @endphp
                                         @endif
                                         <tr>
-                                            <td style="width: 38px;">{{ $page.$page_number.'-'.$i }}</td>
+                                            <td style="width: 38px;">{{ $page_numbers['m'.$meta_row->id] }}</td>
                                             <td scope="col" style="background: #{{ $row->color }}; width: 5px; height: 25px"></td>
                                             <td scope="col" style="width: 150px; padding-left: 5px;">{{ $meta_row->title }}</td>
                                             <td scope="col" style="width: 100px">{{  $meta_row->type }}</td>
@@ -155,12 +148,10 @@
                                             <td scope="col" style="width: 60px">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
                                             <td scope="col" style="width: 60px">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                                         </tr>
-                                        @php $i++; @endphp
                                     @endforeach
                                 </table>
                                 <table class="rundown">
                             @endif
-                            @php $page_number++; @endphp
                     @endswitch
                 @endforeach
             </table>
@@ -173,8 +164,6 @@
         @if (array_key_exists('script', $pages))
             @php
                 $timer          = strtotime($rundown->starttime); 
-                $page           = 'A';
-                $page_number    = 1;
             @endphp
             <h3 style="width: 100%; text-align:center;">{{ __('rundown.scripts') }}</h3>
             <div style="border: 1px solid #eee; width: 100%; padding: 0 20px 20px 20px;">
@@ -193,7 +182,7 @@
                             </tr>
                             <tr>
                                 <td style="background: #{{ $row->color }}"></td>
-                                <td style="vertical-align: top:">{{ $page.$page_number }}</td>
+                                <td style="vertical-align: top:">{{ $page_numbers[$row->id] }}</td>
                                 <td style="vertical-align: top:">{{ $row->story }}</td>
                                 <td style="vertical-align: top:">{{ $row->talent }}</td>
                                 <td style="vertical-align: top:">
@@ -217,13 +206,6 @@
                         </table>
                         <div style="background: #{{ $row->color }}; width: 6cm; height: 2px; margin: 0, 0, 10px, 5px;"></div>
                     @endif
-                    @php $page_number++; @endphp
-                    @if ($row->type == 'BREAK')
-                        @php
-                            $page++;
-                            $page_number = 1;
-                        @endphp
-                    @endif
                 @endforeach
             </div>
         @endif
@@ -234,7 +216,7 @@
 
                 foreach ($rundownrows as $row){
                     if ($row->type == 'MIXER'){
-                        $row->page = $page.$page_number;
+                        $row->page = $page_numbers[$row->id];
                         $row->start = $timer;
                         $cam = $row->source;
                         if (isset($camera_notes->$cam)){
@@ -248,16 +230,13 @@
                     switch($row->type){
                         case('BREAK') :
                             $timer = $timer + $row->duration;
-                            $page++;
-                            $page_number = 1;
                         break;
                         default :
                             $timer = $timer + $row->duration;
                             if (!$row->Rundown_meta_rows->isEmpty()){
-                                $i = 1;
                                 foreach ($row->Rundown_meta_rows as $meta_row ){
                                     if ($meta_row->type == 'MIXER'){
-                                        $meta_row->page = $page.$page_number.'-'.$i;
+                                        $meta_row->page = $page_numbers['m'.$meta_row->id];
                                         $meta_row->start = $timer+$meta_row->delay;
                                         $cam = $meta_row->source;
                                         if (isset($camera_notes->$cam)){
@@ -268,10 +247,18 @@
                                         }
                                         $camera_notes->$cam[$pos] = $meta_row;
                                     }
-                                $i++;
                                 }
                             }
-                            $page_number++;
+
+
+
+
+                            
+
+
+
+
+
                     }
                 }
                 $camera_notes = collect($camera_notes)->sortKeys();

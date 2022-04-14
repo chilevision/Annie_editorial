@@ -235,8 +235,30 @@ class Rundowns_controller extends Controller
         $rundownrows    = sort_rows($rows)[0];
         $timer          = strtotime($rundown->starttime);
         $filename 	    = 'HDA_Rundown'.sprintf("%06d", $request->input('id')).'.pdf';
+        $page_numbers   = [];
+        $page           = 'A';
+        $page_number    = 1;
         foreach ($rundownrows as $row){
-            
+            switch ($row->type){
+                case 'PRE':
+                    break;
+                case 'BREAK':
+                    $page++;
+                    $page_number = 1;
+                    break;
+                default:
+                    $page_numbers[$row->id] = $page.$page_number;
+                    if (!$row->Rundown_meta_rows->isEmpty()){
+                        $i = 1;
+                        foreach ($row->Rundown_meta_rows as $meta_row ){
+                            $page_numbers['m'.$meta_row->id] = $page.$page_number.'-'.$i;
+                            $i++;
+                        }
+                        
+                    }
+                    $page_number++;
+                    break;
+            }
         }
         $mpdf           = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
@@ -271,9 +293,8 @@ class Rundowns_controller extends Controller
             'rundown'       => $rundown,
             'rundownrows'   => $rundownrows,
             'timer'         => $timer,
-            'page'          => 'A',
-            'page_number'   => 1,
-            'pages'         => $request->input()
+            'page_numbers'  => $page_numbers,
+            'pages'         => $request->input(),
         ]));
         
         $mpdf->Output($filename, 'I');
