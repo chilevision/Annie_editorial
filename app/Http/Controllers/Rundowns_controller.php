@@ -62,7 +62,6 @@ class Rundowns_controller extends Controller
         if ($validator){ 
             return back()->withErrors($validator)->withInput();
         }
-        dd('det gick ju fint det där.');
 
         $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
         $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
