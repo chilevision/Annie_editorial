@@ -60,7 +60,7 @@
         @elseif ($formType == 'meta')
             <form method="POST" wire:submit.prevent="{{ $formAction }}">
                 <div class="form-row">
-                    <x-Forms.input type="text" name="title" value="{{ $story }}" wrapClass="col-2" wire="story" label="rundown.title" inputClass="form-control-sm" />
+                    <x-Forms.input type="text" name="title" value="{{ $story }}" wrapClass="col-2" wire="story" label="rundown.title" inputClass="form-control-sm">@error('story') <span class="text-danger">{{ $message }}</span> @enderror</x-Forms.input>
                     <x-Forms.Select name="type" wrapClass="col-1" selectClass="form-control-sm" disabled="{{ $type_disabled }}" :wire="[['type' => 'model', 'target' => 'type'],['type' => 'change', 'target' => 'typeChange']]" label="rundown.type" :options="$metaTypeOptions" />
                 @if ($type == 'KEY')
                     <x-Forms.Select name="source" wrapClass="col-1" selectClass="form-control-sm" wire="source" label="rundown.source" :options="$mixerKeys" />

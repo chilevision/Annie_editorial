@@ -53,9 +53,20 @@ class Settings_controller extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'name'          => 'required|max:30',
-            'image'         => 'image|mimes:png,jpg,jpeg,gif|max:5048',
-            'showlenght'    => 'required|numeric|min:1',
+            'name'                      => 'required|max:30',
+            'image'                     => 'image|mimes:png,jpg,jpeg,gif|max:5048',
+            'max_rundown_lenght'        => 'required|numeric|min:1',
+            'company'                   => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
+            'company_phone'             => 'nullable|max:20|min:6|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+            'company_email'             => 'nullable|email',
+            'videoserver_name'          => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
+            'videoserver_ip'            => 'nullable|ip',
+            'videoserver_port'          => 'nullable|numeric|max:9999',
+            'videoserver_channel'       => 'nullable|numeric|max:9',
+            'templateserver_name'       => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
+            'templateserver_ip'         => 'nullable|ip',
+            'templateserver_port'       => 'nullable|numeric|max:9999',
+            'templateserver_channel'    => 'nullable|numeric|max:9',
         ]);
         $colors         = [];
         $mixer_inputs   = [];
@@ -70,6 +81,8 @@ class Settings_controller extends Controller
 
         if ($request->input('ttl')){
             $request->validate([
+                'senderEmail' => 'required|email',
+                'senderName'    => 'required|max:30|regex:/^[\pL\s\-]+$/u',
                 'subject'       => 'required',
                 'emailBody'     => 'required',
             ]);
@@ -81,15 +94,15 @@ class Settings_controller extends Controller
             'company_country'           => $request->input('company_country'),
             'company_phone'             => $request->input('company_phone'),
             'company_email'             => $request->input('company_email'),
-            'max_rundown_lenght'        => $request->input('showlenght'),
-            'videoserver_name'          => $request->input('vserver_name'),
-            'videoserver_ip'            => $request->input('vserver_ip'),
-            'videoserver_port'          => $request->input('vserver_port'),
-            'videoserver_channel'       => $request->input('vserver_channel'),
-            'templateserver_name'       => $request->input('gfxserver_name'),
-            'templateserver_ip'         => $request->input('gfxserver_ip'),
-            'templateserver_port'       => $request->input('gfxserver_port'),
-            'templateserver_channel'    => $request->input('gfxserver_channel'),
+            'max_rundown_lenght'        => $request->input('max_rundown_lenght'),
+            'videoserver_name'          => $request->input('videoserver_name'),
+            'videoserver_ip'            => $request->input('videoserver_ip'),
+            'videoserver_port'          => $request->input('videoserver_port'),
+            'videoserver_channel'       => $request->input('videoserver_channel'),
+            'templateserver_name'       => $request->input('templateserver_name'),
+            'templateserver_ip'         => $request->input('templateserver_ip'),
+            'templateserver_port'       => $request->input('templateserver_port'),
+            'templateserver_channel'    => $request->input('templateserver_channel'),
             'pusher_channel'            => $request->input('pusher_channel'),
             'colors'                    => serialize($colors),
             'sso'                       => $sso,
@@ -135,6 +148,6 @@ class Settings_controller extends Controller
             Settings::where('id', 1)->update(['logo_path' => $filename]);
         }
 
-        return redirect(route('settings'));
+        return redirect(route('settings'))->with('status', __('settings.updated'));
     }
 }

@@ -6,5 +6,6 @@
             <button class="btn btn-sm btn-dark" type="button" id="source-search" onclick="mediabrowser('{{ $sourceQuery }}')" data-toggle="modal" data-target="#{{ $modalTarget }}"><i class="bi bi-search"></i></button>
         </div>
     </div>
+    @error($name) <span class="text-danger">{{ $message }}</span> @enderror
     {{ $slot }}
 </div>

@@ -55,7 +55,7 @@ return [
     'submit'                    => 'Save changes',
     'cancel'                    => 'Cancel',
     'update'                    => 'Update',
-    
+    'updated'                   => 'The settings have been updated.',    
     'enable-sso'                => 'Enable CAS/SSO',
     'sso-help'                  => 'You need to edit your ENV-file to use SSO',
     'pusher-help'               => 'You need to edit your ENV-file to use Pusher',

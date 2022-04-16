@@ -26,10 +26,16 @@
     });
 
     @if ($errors->any())
-      @if (in_array(array_key_first($errors->getMessages()), $settings->userValPage))
-      $('#settings-links a[href="#settings-users"]').tab('show');
-      @endif
+      var error_field = '{{ key($errors->getMessages()) }}';
+      $( document ).ready(openTab(error_field));
     @endif
+    function openTab(error){
+      target = 'input-' + error;
+      if (target.length == 0) target = 'select' + error;
+      parent = $('#'+target).closest('.tab-pane').attr('id');
+      if (parent == 'settings-users') $('#collapseEmail').addClass('show');
+      $('#settings-links a[href="#'+parent+'"]').tab('show');
+    }
 
     $('#pusher-help').popover({
     container: 'body'
@@ -71,7 +77,11 @@
 @endsection
 
 @section('content')
-
+@if (session('status'))
+	<div class="alert alert-success">
+		{!! session('status') !!}
+	</div>
+@endif
 <div class="container light-style flex-grow-1 container-p-y">
   <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
     @csrf
@@ -94,24 +104,24 @@
           <div class="tab-content">
             <div class="tab-pane fade active show" id="settings-general">
               <div class="card-body pb-2"> 
-                <x-forms.input type="text" name="name" value="{{ $settings->name }}" wrapClass="col" wire="" label="settings.site_name" inputClass="form-control" />
+                <x-forms.input type="text" name="name" value="{{old('name', $settings->name) }}" wrapClass="col" wire="" label="settings.site_name" inputClass="form-control" />
                 <x-forms.input type="text" name="company" value="{{ $settings->company }}" wrapClass="col" wire="" label="settings.company-name" inputClass="form-control" />
                 <div class="row pl-3 pr-3">
-                  <x-forms.input type="text" name="company_address" value="{{ $settings->company_address }}" wrapClass="col" wire="" label="settings.company-address" inputClass="form-control" />
-                  <x-forms.input type="text" name="company_country" value="{{ $settings->company_country }}" wrapClass="col" wire="" label="settings.company-country" inputClass="form-control" />
+                  <x-forms.input type="text" name="company_address" value="{{old('company_address', $settings->company_address) }}" wrapClass="col" wire="" label="settings.company-address" inputClass="form-control" />
+                  <x-forms.input type="text" name="company_country" value="{{old('company_country', $settings->company_country) }}" wrapClass="col" wire="" label="settings.company-country" inputClass="form-control" />
                 </div>
                 <div class="row pl-3 pr-3">
-                  <x-forms.input type="text" name="company_phone" value="{{ $settings->company_phone }}" wrapClass="col" wire="" label="settings.company-phone" inputClass="form-control" />
-                  <x-forms.input type="text" name="company_email" value="{{ $settings->company_email }}" wrapClass="col" wire="" label="settings.company-email" inputClass="form-control" />
+                  <x-forms.input type="text" name="company_phone" value="{{old('company_phone', $settings->company_phone) }}" wrapClass="col" wire="" label="settings.company-phone" inputClass="form-control" />
+                  <x-forms.input type="text" name="company_email" value="{{old('company_email', $settings->company_email) }}" wrapClass="col" wire="" label="settings.company-email" inputClass="form-control" />
                 </div>
                 <x-forms.input type="file" name="image" value="" wrapClass="col" wire="" label="settings.image" inputClass="form-control-file" />
                 <div class="row pl-3">  
-                  <x-forms.input type="number" name="showlenght" value="{{ $settings->max_rundown_lenght }}" wrapClass="col-3" wire="" label="settings.show_lenght" inputClass="form-control" />
+                  <x-forms.input type="number" name="max_rundown_lenght" value="{{old('max_rundown_lenght', $settings->max_rundown_lenght) }}" wrapClass="col-3" wire="" label="settings.show_lenght" inputClass="form-control" />
                   <div class="col form-unit">Minutes</div>
                 </div>
                 <hr/>
                 <h5 class="pl-3 pb-3">Pusher:</h5>
-                <x-forms.input type="text" name="pusher_channel" value="{{ $settings->pusher_channel }}" wrapClass="col" wire="" label="settings.pusher_channel" inputClass="form-control">
+                <x-forms.input type="text" name="pusher_channel" value="{{old('pusher_channel', $settings->pusher_channel) }}" wrapClass="col" wire="" label="settings.pusher_channel" inputClass="form-control">
                 @if(!$settings->pusherEnv)
                   <small id="ttlHelp" class="form-text text-muted">
                     <span class="align-middley">
@@ -152,14 +162,14 @@
                 </div>
                   
                 <div class="form-row mb-4">
-                  <x-forms.select name="ttl" wrapClass="col-auto" selected="{{ $settings->user_ttl }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL">
+                  <x-forms.select name="ttl" wrapClass="col-auto" selected="{{ old('ttl', $settings->user_ttl) }}" selectClass="form-control" wire="" label="Remove inactive users after:" :options="$userTTL">
                     <small id="ttlHelp" class="form-text text-muted">{{ __('settings.users-help') }}</small>
                   </x-forms.select>
                 </div>
                 <div class="collapse @if($settings->user_ttl)show @endif" id="collapseEmail">
                   <x-forms.input type="email" name="senderEmail" value="{{old('senderEmail', $settings->email_address)}}" wrapClass="col ml-n3" wire="" label="settings.mailemail" inputClass="form-control" />
-                  <x-forms.input type="text" name="senderName" value="{{old('port', $settings->email_name)}}" wrapClass="col ml-n3" wire="" label="settings.mailname" inputClass="form-control" />
-                  <x-forms.input type="text" name="subject" value="{{old('port', $settings->email_subject)}}" wrapClass="col ml-n3" wire="" label="settings.subject" inputClass="form-control" />
+                  <x-forms.input type="text" name="senderName" value="{{old('senderName', $settings->email_name)}}" wrapClass="col ml-n3" wire="" label="settings.mailname" inputClass="form-control" />
+                  <x-forms.input type="text" name="subject" value="{{old('subject', $settings->email_subject)}}" wrapClass="col ml-n3" wire="" label="settings.subject" inputClass="form-control" />
                   <label for="summernote">{{ __('settings.users-message') }}</label>
                   <textarea id="summernote" name="emailBody">
                     @php $settings->removal_email ? $body = $settings->removal_email : $body = __('settings.removal-email-example') @endphp
@@ -221,18 +231,18 @@
             </div>
             <div class="tab-pane fade" id="settings-vserver">
               <div class="card-body pb-2">
-                <x-forms.input type="text" name="vserver_name" value="{{ $settings->videoserver_name }}" wrapClass="col" wire="" label="settings.vservername" inputClass="form-control" />
-                <x-forms.input type="text" name="vserver_ip" value="{{ $settings->videoserver_ip }}" wrapClass="col" wire="" label="settings.vserverip" inputClass="form-control" />
-                <x-forms.input type="number" name="vserver_port" value="{{ $settings->videoserver_port }}" wrapClass="col" wire="" label="settings.vserverport" inputClass="form-control" />
-                <x-forms.input type="number" name="vserver_channel" value="{{ $settings->videoserver_channel }}" wrapClass="col" wire="" label="settings.vserverchannel" inputClass="form-control" />
+                <x-forms.input type="text" name="videoserver_name" value="{{ old('videoserver_name', $settings->videoserver_name) }}" wrapClass="col" wire="" label="settings.vservername" inputClass="form-control" />
+                <x-forms.input type="text" name="videoserver_ip" value="{{ old('videoserver_ip', $settings->videoserver_ip) }}" wrapClass="col" wire="" label="settings.vserverip" inputClass="form-control" />
+                <x-forms.input type="number" name="videoserver_port" value="{{ old('videoserver_port', $settings->videoserver_port) }}" wrapClass="col" wire="" label="settings.vserverport" inputClass="form-control" />
+                <x-forms.input type="number" name="videoserver_channel" value="{{ old('videoserver_channel', $settings->videoserver_channel) }}" wrapClass="col" wire="" label="settings.vserverchannel" inputClass="form-control" />
               </div>
             </div>
             <div class="tab-pane fade" id="settings-gfxserver">
               <div class="card-body pb-2">
-                <x-forms.input type="text" name="gfxserver_name" value="{{ $settings->templateserver_name }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
-                <x-forms.input type="text" name="gfxserver_ip" value="{{ $settings->templateserver_ip }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
-                <x-forms.input type="number" name="gfxserver_port" value="{{ $settings->templateserver_port }}" wrapClass="col" wire="" label="settings.gfxserverport" inputClass="form-control" />
-                <x-forms.input type="number" name="gfxserver_channel" value="{{ $settings->templateserver_channel }}" wrapClass="col" wire="" label="settings.gfxserverchannel" inputClass="form-control" />
+                <x-forms.input type="text" name="templateserver_name" value="{{ old('templateserver_name', $settings->templateserver_name) }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
+                <x-forms.input type="text" name="templateserver_ip" value="{{ old('templateserver_ip', $settings->templateserver_ip) }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
+                <x-forms.input type="number" name="templateserver_port" value="{{ old('gtemplateserver_port', $settings->templateserver_port) }}" wrapClass="col" wire="" label="settings.gfxserverport" inputClass="form-control" />
+                <x-forms.input type="number" name="templateserver_channel" value="{{ old('templateserver_channel', $settings->templateserver_channel) }}" wrapClass="col" wire="" label="settings.gfxserverchannel" inputClass="form-control" />
               </div>
             </div>
           </div>

@@ -100,8 +100,15 @@ class RundownrowForm extends Component
     public function submit()
     {
         $rules = [
-            'story'      => 'required',
+            'story'         => 'required|min:3|max:40',
+            'duration'      => 'nullable|date_format:H:i:s',
+            'talent'        => 'nullable|max:30',
+            'cue'           => 'nullable|max:40',
+            'audio'         => 'nullable|max:30'
         ];
+        if ($this->type == 'VB'){
+            $rules['source'] = 'required';
+        }
         $this->validate($rules);
         $duration = to_seconds($this->duration);
         $rows = Rundown_rows::where('rundown_id', $this->rundown->id)->get();
@@ -169,6 +176,17 @@ class RundownrowForm extends Component
     }
 
     public function update(){
+        $rules = [
+            'story'         => 'required|min:3|max:40',
+            'duration'      => 'nullable|date_format:H:i:s',
+            'talent'        => 'nullable|max:30',
+            'cue'           => 'nullable|max:40',
+            'audio'         => 'nullable|max:30'
+        ];
+        if ($this->type == 'VB'){
+            $rules['source'] = 'required';
+        }
+        $this->validate($rules);
         $row = Rundown_rows::find($this->rundown_row_id);
         if($row !== NULL){
             $row->story            = $this->story;
@@ -221,6 +239,13 @@ class RundownrowForm extends Component
     /* Stores a newly created rundown_meta_row in storage. */
     public function submit_meta()
     {
+        $rules = [
+            'story'         => 'required|min:3|max:40',
+            'source'        => 'required',
+            'duration'      => 'nullable|date_format:H:i:s',
+            'delay'         => 'nullable|date_format:H:i:s',
+        ];
+        $this->validate($rules);
         $duration   = to_seconds($this->duration);
         $delay      = to_seconds($this->delay);
         Rundown_meta_rows::create([
@@ -269,6 +294,13 @@ class RundownrowForm extends Component
     /* Updates a rundown_meta_row in DB */ 
     public function update_meta()
     {
+        $rules = [
+            'story'         => 'required|min:3|max:40',
+            'source'        => 'required',
+            'duration'      => 'nullable|date_format:H:i:s',
+            'delay'         => 'nullable|date_format:H:i:s',
+        ];
+        $this->validate($rules);
         $row = Rundown_meta_rows::find($this->rundown_meta_row_id);
         if($row !== NULL){
             $row->title            = $this->story;
@@ -314,7 +346,7 @@ class RundownrowForm extends Component
         $this->dataBtn                  = 'gfx';
 
         $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
-        
+        $this->resetErrorBag();
     }
 
     /* Disable sorting functionality in rundown table */

@@ -83,11 +83,12 @@ class Users_controller extends Controller
             $request->validate([
                 'username' 	=> 'required|max:10|min:3|unique:users,username,'.$id.'|alpha_num',
                 'email' 	=> 'required|email|max:255|unique:users,email,'.$id,
+                'name'      => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
+                'role'      => 'nullable|max:20|regex:/^[\pL\s\-]+$/u',
+                'phone'     => 'nullable|max:20|min:6|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                'password'  => 'nullable|min:6|confirmed'
             ]);
             if ($request->input('password') !=null){
-                $request->validate([
-                    'password' 	=> 'required|min:6|confirmed',
-                ]);
                 User::find($id)->update([
                     'name'      => $request->input('name'),
                     'username'  => $request->input('username'),
