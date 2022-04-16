@@ -31,6 +31,8 @@ class Settings extends Model
         'templateserver_ip',
         'templateserver_port',
         'templateserver_channel',
+        'backgroundserver_channel',
+        'include_background',
         'pusher_channel',
         'logo_path',
         'colors',

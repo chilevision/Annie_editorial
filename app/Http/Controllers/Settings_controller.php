@@ -62,17 +62,18 @@ class Settings_controller extends Controller
             'videoserver_name'          => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
             'videoserver_ip'            => 'nullable|ip',
             'videoserver_port'          => 'nullable|numeric|max:9999',
-            'videoserver_channel'       => 'nullable|numeric|max:9',
+            'videoserver_channel'       => 'nullable|numeric|max:9|gt:0',
             'templateserver_name'       => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
             'templateserver_ip'         => 'nullable|ip',
             'templateserver_port'       => 'nullable|numeric|max:9999',
-            'templateserver_channel'    => 'nullable|numeric|max:9',
+            'templateserver_channel'    => 'nullable|numeric|max:9|gt:0',
+            'backgroundserver_channel'  => 'nullable|numeric|max:9|gt:0'
         ]);
         $colors         = [];
         $mixer_inputs   = [];
         $mixer_keys     = [];
         $request->input('sso') ? $sso = 1 : $sso = 0;
-        $request->input('tls') ? $tls = 1 : $tls = 0;
+        $request->input('include_background') ? $bg = 1 : $bg = 0;
         foreach ($request->input() as $key=>$input){
             if (strpos($key, 'color') === 0)        array_push($colors, substr($input, -6));
             if (strpos($key, 'mixer_input') === 0)  array_push($mixer_inputs, $input);
@@ -103,6 +104,8 @@ class Settings_controller extends Controller
             'templateserver_ip'         => $request->input('templateserver_ip'),
             'templateserver_port'       => $request->input('templateserver_port'),
             'templateserver_channel'    => $request->input('templateserver_channel'),
+            'backgroundserver_channel'  => $request->input('backgroundserver_channel'),
+            'include_background'        => $bg,
             'pusher_channel'            => $request->input('pusher_channel'),
             'colors'                    => serialize($colors),
             'sso'                       => $sso,

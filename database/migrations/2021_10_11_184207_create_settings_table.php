@@ -35,6 +35,8 @@ class CreateSettingsTable extends Migration
             $table->string('templateserver_ip', 45)->nullable();
             $table->smallInteger('templateserver_port')->unsigned()->default(5250);
             $table->smallInteger('templateserver_channel')->unsigned()->default(1);
+            $table->smallInteger('backgroundserver_channel')->unsigned()->nullable();
+            $table->boolean('include_background')->default(0);
 
             $table->binary('mixer_inputs')->nullable();
             $table->binary('mixer_keys')->nullable();

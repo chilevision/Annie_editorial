@@ -235,6 +235,13 @@
                 <x-forms.input type="text" name="videoserver_ip" value="{{ old('videoserver_ip', $settings->videoserver_ip) }}" wrapClass="col" wire="" label="settings.vserverip" inputClass="form-control" />
                 <x-forms.input type="number" name="videoserver_port" value="{{ old('videoserver_port', $settings->videoserver_port) }}" wrapClass="col" wire="" label="settings.vserverport" inputClass="form-control" />
                 <x-forms.input type="number" name="videoserver_channel" value="{{ old('videoserver_channel', $settings->videoserver_channel) }}" wrapClass="col" wire="" label="settings.vserverchannel" inputClass="form-control" />
+                <x-forms.input type="number" name="backgroundserver_channel" value="{{ old('backgroundserver_channel', $settings->backgroundserver_channel) }}" wrapClass="col" wire="" label="settings.bserverchannel" inputClass="form-control">
+                  <small id="bserverHelp" class="form-text text-muted">{{ __('settings.bserver-help') }}</small>
+                </x-forms.input>
+                <div class="form-check mb-4 ml-3">
+                  <input class="form-check-input" type="checkbox" id="include_background" name="include_background" value="1" @if ($settings->include_background)checked @endif>
+                  <label class="form-check-label" for="include_background">{{ __('settings.include-backgrond') }}</label>
+                </div>
               </div>
             </div>
             <div class="tab-pane fade" id="settings-gfxserver">

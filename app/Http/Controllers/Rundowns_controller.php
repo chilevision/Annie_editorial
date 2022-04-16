@@ -9,6 +9,7 @@ use App\Models\Rundown_rows;
 use App\Models\Settings;
 use App\Models\User;
 use App\Events\RundownEvent;
+use App\Models\Mediafiles;
 use Hamcrest\Core\Set;
 use Illuminate\Support\Facades\Auth;
 use Mpdf;
@@ -306,12 +307,11 @@ class Rundowns_controller extends Controller
      */
     public function generateXML($id)
     {
-        $rundown = Rundowns::find($id);
+        $settings   = Settings::where('id', 1)->first();
+        $rundown    = Rundowns::find($id);
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         $rows           = Rundown_rows::where('rundown_id', $id)->get();
-        $server         = Settings::where('id', 1)->value('templateserver_name');
-        $serverchannel  = Settings::where('id', 1)->value('templateserver_channel');
         $filename 	    = 'HDA_Rundown'.sprintf("%06d", $id);
         $rundownrows    = sort_rows($rows)[0];
         $xml            = new \DOMDocument('1.0','UTF-8');
@@ -346,15 +346,36 @@ class Rundowns_controller extends Controller
 
                 if (!$row->Rundown_meta_rows->isEmpty()){
                     foreach ($row->Rundown_meta_rows as $meta_row ){
-                        if ($meta_row->type == 'GFX'){
+                        if ($meta_row->type == 'GFX' || $meta_row->type == 'BG'){
+                            if ($meta_row->type == 'BG'){
+                                if (!$settings->include_background || $settings->backgroundserver_channel == null){
+                                    continue;
+                                }
+                                $server_name    = $settings->videoserver_name;
+                                $server_channel = $settings->backgroundserver_channel;
+                                $layer          = 10;
+                                $type           = 'MOVIE';
+                                $file           = Mediafiles::where('name', $meta_row->source)->first();
+                                if ($file != null){
+                                    $type = $file->type;
+                                }
+                                $title = 'BG '.$meta_row->title;
+                            }
+                            else{
+                                $server_name    = $settings->templateserver_name;
+                                $server_channel = $settings->templateserver_channel;
+                                $layer          = 20;
+                                $type           = 'TEMPLATE';
+                                $title          = $meta_row->title;
+                            }
                             $groupitem = $xml->createElement('item');
 							$groupitems->appendChild($groupitem);
-                            $type 					= $xml->createElement('type', 'TEMPLATE');					    $groupitem->appendChild($type);
-                            $devicename 			= $xml->createElement('devicename', $server);	                $groupitem->appendChild($devicename);
-                            $label 					= $xml->createElement('label', $meta_row->title);			    $groupitem->appendChild($label);
+                            $type 					= $xml->createElement('type', $type);   					    $groupitem->appendChild($type);
+                            $devicename             = $xml->createElement('devicename', $server_name);              $groupitem->appendChild($devicename);
+                            $label 					= $xml->createElement('label', $title);			                $groupitem->appendChild($label);
                             $name 					= $xml->createElement('name', $meta_row->source);			    $groupitem->appendChild($name);
-                            $channel				= $xml->createElement('channel', $serverchannel);			    $groupitem->appendChild($channel);
-                            $videolayer				= $xml->createElement('videolayer', 20);			            $groupitem->appendChild($videolayer);
+                            $channel                = $xml->createElement('channel', $server_channel);			    $groupitem->appendChild($channel);
+                            $videolayer				= $xml->createElement('videolayer', $layer);			        $groupitem->appendChild($videolayer);
                             $delay					= $xml->createElement('delay', 0);							    $groupitem->appendChild($delay);
                             $duration				= $xml->createElement('duration', $meta_row->duration*1000);    $groupitem->appendChild($duration);
                             $allowgpi				= $xml->createElement('allowgpi', 'false');					    $groupitem->appendChild($allowgpi);
@@ -367,14 +388,16 @@ class Rundowns_controller extends Controller
                             $useuppercasedata		= $xml->createElement('useuppercasedata', 'false');			    $groupitem->appendChild($useuppercasedata);
                             $triggeronnext 			= $xml->createElement('triggeronnext', 'false');			    $groupitem->appendChild($triggeronnext);
                             $sendasjson				= $xml->createElement('sendasjson', 'false');				    $groupitem->appendChild($sendasjson);
-                    
-                            $templatedata			= $xml->createElement('templatedata');						    $groupitem->appendChild($templatedata);
-                            $gfxdata = json_decode($meta_row->data);
-                            if (!json_last_error()){
-                                foreach ($gfxdata as $key => $val){
-                                        $componentdata	= $xml->createElement('componentdata');		$templatedata->appendChild($componentdata);
-                                        $id				= $xml->createElement('id', $key);			$componentdata->appendChild($id);
-                                        $value			= $xml->createElement('value', $val);		$componentdata->appendChild($value);
+
+                            if ($meta_row->type == 'GFX'){
+                                $templatedata			= $xml->createElement('templatedata');						    $groupitem->appendChild($templatedata);
+                                $gfxdata = json_decode($meta_row->data);
+                                if (!json_last_error()){
+                                    foreach ($gfxdata as $key => $val){
+                                            $componentdata	= $xml->createElement('componentdata');		$templatedata->appendChild($componentdata);
+                                            $id				= $xml->createElement('id', $key);			$componentdata->appendChild($id);
+                                            $value			= $xml->createElement('value', $val);		$componentdata->appendChild($value);
+                                    }
                                 }
                             }
                         }
