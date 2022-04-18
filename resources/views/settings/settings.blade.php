@@ -246,8 +246,16 @@
             </div>
             <div class="tab-pane fade" id="settings-gfxserver">
               <div class="card-body pb-2">
-                <x-forms.input type="text" name="templateserver_name" value="{{ old('templateserver_name', $settings->templateserver_name) }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
-                <x-forms.input type="text" name="templateserver_ip" value="{{ old('templateserver_ip', $settings->templateserver_ip) }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
+                <div class="row pl-3">
+                  <x-forms.input type="text" name="templateserver_name" value="{{ old('templateserver_name', $settings->templateserver_name) }}" wrapClass="col" wire="" label="settings.gfxservername" inputClass="form-control" />
+                  <div class="col pl-3">
+                    <button type="button" class="btn btn-custom mt-4" onclick="copyServer();">{{ __('settings.use_same') }}</button>
+                  </div>
+                </div>
+                <div class="row pl-3">
+                  <x-forms.input type="text" name="templateserver_ip" value="{{ old('templateserver_ip', $settings->templateserver_ip) }}" wrapClass="col" wire="" label="settings.gfxserverip" inputClass="form-control" />
+                  <div class="col"></div>
+                </div>
                 <x-forms.input type="number" name="templateserver_port" value="{{ old('gtemplateserver_port', $settings->templateserver_port) }}" wrapClass="col" wire="" label="settings.gfxserverport" inputClass="form-control" />
                 <x-forms.input type="number" name="templateserver_channel" value="{{ old('templateserver_channel', $settings->templateserver_channel) }}" wrapClass="col" wire="" label="settings.gfxserverchannel" inputClass="form-control" />
               </div>
@@ -320,6 +328,11 @@
       var emailText = $('#summernote').val();
       $('#email_body_data').empty().append(emailText);
       $('#preview-email-modal').modal('show');
+    }
+    function copyServer(){
+      $('#input-templateserver_name').val($('#input-videoserver_name').val());
+      $('#input-templateserver_ip').val($('#input-videoserver_ip').val());
+      $('#input-templateserver_port').val($('#input-videoserver_port').val());
     }
   </script>
 @endsection

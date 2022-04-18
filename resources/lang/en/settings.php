@@ -59,6 +59,7 @@ return [
     'updated'                   => 'The settings have been updated.',
     'include-backgrond'         => 'Include background data in client-file',
     'enable-sso'                => 'Enable CAS/SSO',
+    'use_same'                  => 'Use video server settings',
     'sso-help'                  => 'You need to edit your ENV-file to use SSO',
     'pusher-help'               => 'You need to edit your ENV-file to use Pusher',
     'pusher_help_title'         => 'Pusher help',
