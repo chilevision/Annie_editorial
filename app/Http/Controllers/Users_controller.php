@@ -68,7 +68,12 @@ class Users_controller extends Controller
     {
         if (Auth::user()->admin || Auth::user()->id == $id){
             $user = User::find($id);
-            return view('users.edit')->with('user', $user);
+            $roles = json_decode(Settings::where('id', 1)->first()->user_roles);
+            $optionRoles = [['value' => null, 'title' => '']];
+            foreach ($roles as $role){
+                array_push($optionRoles, ['value' => $role, 'title' => $role]);
+            }
+            return view('users.edit')->with(['user' => $user, 'roles' => $optionRoles]);
         }
         else{
             return redirect(route('dashboard'));
@@ -84,7 +89,6 @@ class Users_controller extends Controller
                 'username' 	=> 'required|max:10|min:3|unique:users,username,'.$id.'|alpha_num',
                 'email' 	=> 'required|email|max:255|unique:users,email,'.$id,
                 'name'      => 'nullable|max:30|regex:/^[\pL\s\-]+$/u',
-                'role'      => 'nullable|max:20|regex:/^[\pL\s\-]+$/u',
                 'phone'     => 'nullable|max:20|min:6|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
                 'password'  => 'nullable|min:6|confirmed'
             ]);

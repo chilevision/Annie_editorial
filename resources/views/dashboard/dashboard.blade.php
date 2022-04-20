@@ -9,7 +9,7 @@
 			<h1 class="text-center dashboard">{{ __('dashboard.welcome') }}</h1>
 		</div>
 		<div class="card-body w-75 mx-auto">
-				<img src="{{ asset('css/img/stack_re-order_01.png') }}" alt="Caspar" class="mx-auto">
+				<img class="img-fluid" src="{{ asset('css/img/annie.jpg') }}" alt="Caspar" class="mx-auto">
 				<p>{{ __('dashboard.intro') }}</p>
 				<a class="btn btn-secondary" href="https://github.com/CasparCG/help/wiki" target="_blank">{{ __('dashboard.read_more') }}</a>
 		</div>

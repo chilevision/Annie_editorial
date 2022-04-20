@@ -29,6 +29,7 @@ class User extends Authenticatable
         'email_token',
         'last_signed_in',
         'notified_at',
+        'last_seen',
     ];
 
     /**

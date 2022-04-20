@@ -40,6 +40,7 @@ class Settings extends Model
         'mixer_keys',
         'sso',
         'user_ttl',
+        'user_roles',
         'email_address',
         'email_name',
         'email_subject',

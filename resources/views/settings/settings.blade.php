@@ -83,7 +83,7 @@
 	</div>
 @endif
 <div class="container light-style flex-grow-1 container-p-y">
-  <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
+  <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data" id="settings-form">
     @csrf
     @method('PUT')
     <div class="card overflow-hidden pb-5">
@@ -159,6 +159,37 @@
                   <input class="form-check-input" type="checkbox" id="sso" name="sso" value="1" @if ($settings->sso)checked @endif>
                   <label class="form-check-label" for="sso">{{ __('settings.enable-sso') }}</label>
                   <small id="ssoHelp" class="form-text text-muted ml-n4">{{ __('settings.sso-help') }}</small>
+                </div>
+                <div class="accordion mb-2" id="accordionRoles">
+                  <div class="card">
+                    <div class="card-header" id="headingOne">
+                      <h2 class="mb-0">
+                        <button class="btn btn-block btn-sm text-left" type="button" data-toggle="collapse" data-target="#collapseRoles" aria-expanded="false" aria-controls="collapseRoles">
+                          User selectable roles
+                        </button>
+                      </h2>
+                    </div>
+                
+                    <div id="collapseRoles" class="collapse" aria-labelledby="headingOne" data-parent="#accordionRoles">
+                      <div class="card-body">
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control shadow-none" id="input-add-role" placeholder="{{ __('settings.role') }}" aria-describedby="button-add-role">
+                          <button class="btn btn-custom shadow-none" type="button" id="button-add-role">{{ __('settings.add_role') }}</button>
+                        </div>
+                        <ul class="list-group" id="roleList">
+                          @php $counter=0; @endphp
+                          @foreach ($roles as $role)
+                          <li>
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control shadow-none" name="role-{{ $counter }}" value="{{ $role }}"/>
+                              <div class="input-group-append"><button class="btn btn-outline-secondary shadow-none" type="button" id="button-addon2"><i class="bi bi-x-circle"></i></button></div>
+                            </div>
+                          </li>
+                          @endforeach
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                   
                 <div class="form-row mb-4">
@@ -264,8 +295,9 @@
         </div>
       </div>
     </div>
+    <input type="hidden" name="roles" value="hge" id="input-roles"/>
     <div class="text-right mt-3">
-      <button type="submit" class="btn btn-custom">{{ __('settings.submit') }}</button>
+      <button type="button" class="btn btn-custom" id="submitForm">{{ __('settings.submit') }}</button>
       <a href="/dashboard/settings" class="btn btn-secondary">{{ __('settings.cancel') }}</a>
     </div>
   </form>
@@ -334,5 +366,28 @@
       $('#input-templateserver_ip').val($('#input-videoserver_ip').val());
       $('#input-templateserver_port').val($('#input-videoserver_port').val());
     }
+    $("#roleList").on("click", "button", function (event) {
+      $(this).closest('li').remove();
+    });
+    $('#button-add-role').on('click', function (event) {
+      val = $('#input-add-role').val();
+      counter = $('#roleList li').length
+      if (val != ''){
+        $('#roleList').append('<li><div class="input-group mb-3"><input type="text" class="form-control shadow-none" name="role-'+counter+'" value="'+val+'"/><div class="input-group-append"><button class="btn btn-outline-secondary shadow-none" type="button" id="button-addon2"><i class="bi bi-x-circle"></i></button></div></div></li>');
+        $('#input-add-role').val('');
+      }
+    });
+    $('#submitForm').on('click',function(e) {
+      e.preventDefault;
+      var output = [];
+      $('#roleList > li').each(function () {
+        var val = $(this).find('input').val();
+        if (val !=''){
+          output.push(val);
+        }
+      });
+      $('#input-roles').val(JSON.stringify(output));
+      $('#settings-form').submit();
+    });
   </script>
 @endsection

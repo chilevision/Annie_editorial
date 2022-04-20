@@ -18,9 +18,9 @@
                 @csrf
                 <x-forms.input type="text" name="name" wrapClass="col" value="{{old('name', $user->name)}}" label="{{ __('settings.name') }}" inputClass="form-control" />
                 <x-forms.input type="phone" name="phone" wrapClass="col" value="{{old('phone', $user->phone)}}" label="{{ __('settings.phone') }}" inputClass="form-control" />
-                <x-forms.input type="text" name="role" wrapClass="col" value="{{old('role', $user->role)}}" label="{{ __('settings.role') }}" inputClass="form-control">
+                <x-forms.select name="role" wrapClass="col" wire="" selected="{{old('role', $user->role)}}" selectClass="form-control-sm" label="{{ __('settings.role') }}" :options="$roles">
                     <small id="roleHelp" class="form-text text-muted">{{ __('settings.role-help') }}</small>
-                </x-forms.input>
+                </x-forms.select>
 @if (!$user->cas)
                 <x-forms.input type="text" name="username" wrapClass="col" value="{{old('username', $user->username)}}" label="{{ __('settings.username') }}" inputClass="form-control" />
                 <x-forms.input type="text" name="email" wrapClass="col" value="{{old('email', $user->email)}}" label="{{ __('settings.email') }}" inputClass="form-control" />

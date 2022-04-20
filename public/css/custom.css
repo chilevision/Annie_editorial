@@ -123,6 +123,9 @@ tr.rundown-break-row .dropdown-menu{
 #sso-box.saved{
     background-color: #91ffaf;
 }
+#roleList li{
+    list-style: none;
+}
 
 #caspar-content{
     max-height: 500px; overflow-y: scroll;
@@ -236,4 +239,10 @@ tr.rundown-break-row .dropdown-menu{
   
   #gfxDataModal li.over {
     border: 1px dashed grey;
+  }
+  .user-active{
+      color: red;
+      font-size: 6pt!important;
+      position: relative;
+      right: 10px;
   }

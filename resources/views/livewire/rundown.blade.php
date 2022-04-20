@@ -17,7 +17,17 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="teamlist">
 @foreach ($rundown->users as $user)
-                        <li class="dropdown-item-custom">{{ $user->name }}</li>
+                        <li class="dropdown-item-custom d-flex align-items-center">
+                            @if(Cache::has('user-is-online-' . $user->id))
+                                <span class="user-active text-success"><i class="bi bi-circle-fill"></i></span>
+                            @else
+                                <span class="user-active text-secondary"><i class="bi bi-circle-fill"></i></span>
+                            @endif
+                            <span class="box mr-2"> {{ $user->name ? $user->name : $user->username }}</span>
+                            @if($user->role)
+                            <div class="badge badge-info text-wrap" style="max-width: 7rem;">{{ $user->role }}</div>                            
+                            @endif
+                        </li>
 @endforeach
                     </div>
                   </div>
@@ -54,8 +64,8 @@
                     <div class="dropdown">
                         <a class="dropdown-toggle text-white" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">PRE</a>
                         <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
-                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
-                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')"><i class="bi bi-pencil"></i> {{ __('rundown.edit_row') }}</a>
+                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')"><i class="bi bi-trash"></i> {{ __('rundown.delete') }}</a>
                         </div>
                     </div>
                 </td>
@@ -77,8 +87,8 @@
                     <div class="dropdown">
                         <a class="dropdown-toggle text-dark" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">BRK</a>
                         <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
-                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
-                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')"> {{ __('rundown.edit_row') }}</a>
+                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')"> {{ __('rundown.delete') }}</a>
                         </div>
                     </div>
                 </td>
@@ -106,11 +116,11 @@
                     <div class="dropdown">
                         <a class="dropdown-toggle text-dark rundown-dropdown-link" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
                         <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
-                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')">{{ __('rundown.edit_row') }}</a>
-                            <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'script'])">{{ __('rundown.edit_script') }}</a>
-                            <a class="dropdown-item edit-cam-menu @if ($row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'cam_notes'])">{{ __('rundown.edit_camera_notes') }}</a>
-                            <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}','{{ $row->type }}')">{{ __('rundown.new_meta') }}</a>
-                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')">{{ __('rundown.delete') }}</a>
+                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')"><i class="bi bi-pencil"></i> {{ __('rundown.edit_row') }}</a>
+                            <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'script'])"><i class="bi bi-card-heading"></i> {{ __('rundown.edit_script') }}</a>
+                            <a class="dropdown-item edit-cam-menu @if ($row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'cam_notes'])"><i class="bi bi-journal-text"></i> {{ __('rundown.edit_camera_notes') }}</a>
+                            <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}','{{ $row->type }}')"><i class="bi bi-node-plus"></i> {{ __('rundown.new_meta') }}</a>
+                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')"><i class="bi bi-trash"></i> {{ __('rundown.delete') }}</a>
                         </div>
                     </div>
                 </td>
@@ -144,9 +154,9 @@
                                         <div class="dropdown">
                                             <a class="dropdown-toggle text-dark" href="#" role="button" id="meta-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number.'-'.$i }}</a>
                                             <div class="dropdown-menu" aria-labelledby="meta-{{ $meta_row->id }}-link">
-                                                <a class="dropdown-item edit-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')">{{ __('rundown.edit_meta') }}</a>
-                                                <a class="dropdown-item delete-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')">{{ __('rundown.delete') }}</a>
-                                                @if ($meta_row->type == 'MIXER')<a class="dropdown-item edit-cam-menu @if ($meta_row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $meta_row->id }}', 'cam_meta_notes'])">{{ __('rundown.edit_camera_notes') }}</a>@endif
+                                                <a class="dropdown-item edit-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editMeta', '{{ $meta_row->id }}')"><i class="bi bi-pencil"></i> {{ __('rundown.edit_meta') }}</a>
+                                                <a class="dropdown-item delete-meta-menu @if($meta_row->locked_by != NULL) disabled @endif" href="#" wire:click="deleteMeta('{{ $meta_row->id }}')"><i class="bi bi-trash"></i> {{ __('rundown.delete') }}</a>
+                                                @if ($meta_row->type == 'MIXER')<a class="dropdown-item edit-cam-menu @if ($meta_row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $meta_row->id }}', 'cam_meta_notes'])"><i class="bi bi-journal-text"></i> {{ __('rundown.edit_camera_notes') }}</a>@endif
                                             </div>
                                         </div>
                                     </td>

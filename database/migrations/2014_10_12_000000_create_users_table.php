@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('email_token')->nullable();
             $table->timestamp('last_signed_in')->nullable();
             $table->timestamp('notified_at')->nullable();
+            $table->timestamp('last_seen')->nullable();
             $table->timestamps();
         });
     }

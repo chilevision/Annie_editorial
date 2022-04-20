@@ -43,6 +43,7 @@ class CreateSettingsTable extends Migration
             
             $table->boolean('sso')->default(0);
             $table->tinyInteger('user_ttl')->default(0);
+            $table->binary('user_roles')->nullable();
             $table->string('email_address')->nullable();
             $table->string('email_name')->nullable();
             $table->string('email_subject')->nullable();

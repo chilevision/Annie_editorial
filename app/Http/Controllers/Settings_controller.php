@@ -21,7 +21,7 @@ class Settings_controller extends Controller
         if (env('PUSHER_APP_ID') && env('PUSHER_APP_KEY') && env('PUSHER_APP_SECRET') && env('PUSHER_APP_CLUSTER')){
             $settings->pusherEnv = 1;
         }
-
+        $roles = json_decode($settings->user_roles);
         $ttlOptions = [
             ['value' => '0', 'title' => __('settings.never')],
             ['value' => '6', 'title' => '6 '.__('settings.months')],
@@ -39,7 +39,8 @@ class Settings_controller extends Controller
             'colors'    => $colors,
             'inputs'    => $mixer_inputs,
             'keys'      => $mixer_keys,
-            'userTTL'   => $ttlOptions
+            'userTTL'   => $ttlOptions,
+            'roles'     => $roles,
         ]);
     }
 
@@ -88,6 +89,7 @@ class Settings_controller extends Controller
                 'emailBody'     => 'required',
             ]);
         }
+        $request->input('roles') == '[]' ? $roles = null : $roles = $request->input('roles');
         Settings::where('id', 1)->update([
             'name'                      => $request->input('name'),
             'company'                   => $request->input('company'),
@@ -116,6 +118,7 @@ class Settings_controller extends Controller
             'email_name'                => $request->input('senderName'),
             'email_subject'             => $request->input('subject'),
             'removal_email_body'        => $request->input('emailBody'),
+            'user_roles'                => $roles,
         ]);
 
         if($request->file('image')){
