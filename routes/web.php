@@ -53,6 +53,7 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
 	Route::get('/rundown/{id}/generatexml', [Rundowns_controller::class, 'generateXML']);
 	Route::get('/rundown/{id}/teleprompter', [Rundowns_controller::class, 'show_prompter']);
 	Route::post('/rundown/teleprompter', [Rundowns_controller::class, 'rule_prompter']);
+	Route::post('/rundown/users', [Rundowns_controller::class, 'users'])->name('rundown.users');
 	Route::resource('/users', Users_controller::class);
 });
 

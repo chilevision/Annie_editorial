@@ -12,6 +12,7 @@ use App\Events\RundownEvent;
 use App\Models\Mediafiles;
 use Hamcrest\Core\Set;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Mpdf;
 
 class Rundowns_controller extends Controller
@@ -193,6 +194,22 @@ class Rundowns_controller extends Controller
         }
         return redirect(route('rundown.index'))->with('status', __('rundown.message_date_updated'));
 	}
+
+    public function users(Request $request)
+    {
+        if ($request->users){
+            $activeUsers = [];
+            $users = json_decode($request->users);
+            foreach ($users as $user){
+                Cache::has('user-is-online-' . $user) ? $active = 1 : $active = 0;
+                array_push($activeUsers, ['user' => $user, 'active' => $active]);
+            }
+            echo json_encode($activeUsers);
+        }
+        else{
+            return false;
+        }
+    }
 
     /**
      * Show the teleprompter for a specific rundow.

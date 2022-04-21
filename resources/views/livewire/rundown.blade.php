@@ -19,9 +19,9 @@
 @foreach ($rundown->users as $user)
                         <li class="dropdown-item-custom d-flex align-items-center">
                             @if(Cache::has('user-is-online-' . $user->id))
-                                <span class="user-active text-success"><i class="bi bi-circle-fill"></i></span>
+                                <span class="user-active text-success" id="user-active-{{ $user->id }}"><i class="bi bi-circle-fill"></i></span>
                             @else
-                                <span class="user-active text-secondary"><i class="bi bi-circle-fill"></i></span>
+                                <span class="user-active text-secondary" id="user-active-{{ $user->id }}"><i class="bi bi-circle-fill"></i></span>
                             @endif
                             <span class="box mr-2"> {{ $user->name ? $user->name : $user->username }}</span>
                             @if($user->role)

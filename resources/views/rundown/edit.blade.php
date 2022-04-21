@@ -68,7 +68,37 @@
 @endsection
 @section('footer_scripts')
 <script src="{{ asset('js/rundown.js') }}"></script>
+<script>
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
+	$('#teamlist').click(function() {
+		$.post('{{ route('rundown.users') }}', 
+		{
+			users: '{{ json_encode($rundown->users->pluck('id')) }}'
+		},
+		function(data, status){
+    		if (status == 'success'){
+				var users = JSON.parse(data);
+				$(users).each(function(){
+					if (this.active){
+						$('#user-active-'+this.user).removeClass('text-secondary').addClass('text-success');
+					}
+					else{
+						$('#user-active-'+this.user).removeClass('text-success').addClass('text-secondary');
+					}
+				});
+			}
+  		});
+	});
+</script>
 @if (!$rundown->sortable)
-	<script> $( document ).ready(function() { sortable.options.disabled = true; }); </script>
+	<script> 
+		$( document ).ready(function() { 
+			sortable.options.disabled = true;
+		}); 
+	</script>
 @endif
 @endsection
