@@ -26,36 +26,40 @@
 	</div>
 	<div class="card mt-4">
 		<div class="card-header">
-			<h3 class="text-center dashboard">{{ __('dashboard.info') }}</h3>
+			<h3 class="text-center dashboard">{{ __('dashboard.friends') }}</h3>
 		</div>
 		<div class="card-body">
-			<div class="btn-group" role="group" aria-label="Basic outlined example">
-				<a class="btn btn-secondary" data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="false" aria-controls="collapseOne">{{ __('dashboard.btn_info') }}</a>
-				<a class="btn btn-secondary" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo">{{ __('dashboard.btn_using') }}</a>
-				<a class="btn btn-secondary" data-toggle="collapse" href="#collapseThree" role="button" aria-expanded="false" aria-controls="collapseThree">{{ __('dashboard.btn_templates') }}</a>
-			</div>
-			<div class="panel panel-default mt-2">
-				<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-					<div class="panel-body">
-						<p>CasparCG server och CasparCG client tillsammans med den här hemsidan och programmet Caspar Controller är högskolans huvudsakliga system för att spela ut video och grafik vid flerkameraproduktion.</p> 
-						<p>Det har visat sig att en del verktyg inte fungerar fullt ut med Google Chrome. Det är därför rekommenderat att använda Safari eller nyare versioner av internet explorer.
-					</div>
+			<div class="row">
+				<div class="col">
+					<div class="card" style="width: 18rem;">
+						<img src="{{ asset('css/img/casparcg.png') }}" class="card-img-top" alt="...">
+						<div class="card-body">
+						  <h5 class="card-title">Caspar CG</h5>
+						  <p class="card-text">{{ __('dashboard.caspar') }}</p>
+						  <a href="http://casparcg.com" class="btn btn-custom">{{ __('dashboard.read_more') }}</a>
+						</div>
+					  </div>
 				</div>
-
-				<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-					<div class="panel-body">
-						<p>Detta webbverktyg används i förarbetsfasen av en sändning. Här planeras och klockas sändningens olika dela såsom videoinslag, och kameravinklar. För att börja planera en ny sändning gå in på ”Körschema” och välj ”skapa ny”. I Kalendervyn som visas börjar du med att Flytta det blå blocket till det datum då sändningen ska äga rum. Klicka sedan på det valda datumet för att välja sändningens tidpunkt. När du gjort det, klicka på ”gå vidare”.</p>
-						
-					</div>
+				<div class="col">
+					<div class="card" style="width: 18rem;">
+						<img src="{{ asset('css/img/laravel.png') }}" class="card-img-top" alt="...">
+						<div class="card-body">
+						  <h5 class="card-title">Laravel</h5>
+						  <p class="card-text">{{ __('dashboard.laravel') }}</p>
+						  <a href="https://laravel.com" class="btn btn-custom">{{ __('dashboard.read_more') }}</a>
+						</div>
+					  </div>
 				</div>
-
-				<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-					<div class="panel-body">
-						<p>Mallarna används för att göra dynamisk grafik (där texten kan ändras). Enklare mallar går att skapa i photoshop. Mer avancerade mallar går att skapas i Adobe Flash, Adobe Animate eller html5. För flash och animate finns en bra tutorial här nedan. Som standard namnges textfält med f-systemet vilket innebär att ditt första textfält får namnet "f0", nästa får "f1" osv. Namngivningen är viktig för att Caspar ska veta vilket fält som ska ha vilken text. Du kan givetvis använda vilket system du vill för att namnge textfälten.</p>
-					</div>
-				</div>
-
-			</div>
+				<div class="col">
+					<div class="card" style="width: 18rem;">
+						<img src="{{ asset('css/img/pusher.png') }}" class="card-img-top" alt="...">
+						<div class="card-body">
+						  <h5 class="card-title">Pusher</h5>
+						  <p class="card-text">{{ __('dashboard.pusher') }}</p>
+						  <a href="https://pusher.com/" class="btn btn-custom">{{ __('dashboard.read_more') }}</a>
+						</div>
+					  </div>
+			  </div>
 		</div>
 	</div>
 </div>
