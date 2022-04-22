@@ -178,6 +178,7 @@
                         </div>
                         <ul class="list-group" id="roleList">
                           @php $counter=0; @endphp
+                          @if ($roles)
                           @foreach ($roles as $role)
                           <li>
                             <div class="input-group mb-3">
@@ -186,6 +187,7 @@
                             </div>
                           </li>
                           @endforeach
+                          @endif
                         </ul>
                       </div>
                     </div>

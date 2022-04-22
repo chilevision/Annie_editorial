@@ -70,8 +70,10 @@ class Users_controller extends Controller
             $user = User::find($id);
             $roles = json_decode(Settings::where('id', 1)->first()->user_roles);
             $optionRoles = [['value' => null, 'title' => '']];
-            foreach ($roles as $role){
-                array_push($optionRoles, ['value' => $role, 'title' => $role]);
+            if ($roles){
+                foreach ($roles as $role){
+                    array_push($optionRoles, ['value' => $role, 'title' => $role]);
+                }
             }
             return view('users.edit')->with(['user' => $user, 'roles' => $optionRoles]);
         }
