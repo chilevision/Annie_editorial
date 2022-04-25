@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard_controller;
 use App\Http\Controllers\Email_controller;
 use App\Http\Controllers\Rundowns_controller;
 use App\Http\Controllers\Settings_controller;
+use App\http\Controllers\Api_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,10 @@ Route::view('/', 'auth.first')->middleware('first_user')->name('home');
 Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('first_user')->name('users.first');
 Auth::routes(['register' => false]);
 Route::get('/old/api', [Rundowns_controller::class, 'old_api']);
+Route::group(['prefix' => 'api'], function () {
+	Route::get('settings/{key}', [Api_Controller::class, 'settings']);
+	Route::get('prompter/{key}/{id}', [Api_Controller::class, 'prompter']);
+});
 Route::get('/teleprompter', [Rundowns_controller::class, 'show_prompter']);
 
 Route::get('/cas/login', [CasController::class, 'login'])->name('cas.login');

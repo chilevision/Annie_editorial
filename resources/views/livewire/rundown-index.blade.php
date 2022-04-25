@@ -52,12 +52,25 @@
     @elseif ($blocker->id == $rundown->id)
                             <a href="/dashboard/old/load/{{$rundown->id}}" class="btn btn-custom" role="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.run') }}"><i class="bi bi-box-arrow-right"></i></a>
     @endif
-                            <a href="/dashboard/rundown/{{ $rundown->id }}/teleprompter" class="btn btn-custom" role="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.teleprompter') }}"><i class="bi bi-chat-square-text"></i></a>
                             <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-printer"></i></a>
+                                <button id="btnGroupDrop1" type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown" aria-expanded="false" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.teleprompter') }}">
+                                    <i class="bi bi-chat-square-text"></i>
                                 </button>
-                                <div class="dropdown-menu" id="print-menu-{{ $rundown->id }}" aria-labelledby="btnGroupDrop1">
+                                <div class="dropdown-menu" id="prompter-menu-{{ $rundown->id }}" aria-labelledby="btnGroupDrop1">
+                                    <div class="input-group mb-3 pl-2 pr-2">
+                                        <input type="text" class="form-control form-control-sm shadow-none" value="{{ env('API_KEY').'[id='.$rundown->id.']' }}" aria-label="Prompter key" readonly/>
+                                        <div class="input-group-append">
+                                          <button class="btn btn-sm btn-outline-secondary button-copy" type="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.clipboard') }}"><i class="bi bi-clipboard"></i></button>
+                                        </div>
+                                      </div>
+                                    <a href="/dashboard/rundown/{{ $rundown->id }}/teleprompter" class="btn btn-custom ml-2 mt-1" role="button">Open</a>
+                                </div>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop2" type="button" class="btn btn-custom dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-printer"></i>
+                                </button>
+                                <div class="dropdown-menu" id="print-menu-{{ $rundown->id }}" aria-labelledby="btnGroupDrop2">
                                     <x-forms.box name="rundown" label="rundown.rundown" wrapClass="ml-2" checked="checked" />
                                     <x-forms.box name="script" label="rundown.script" wrapClass="ml-2" checked="checked"/>
                                     <x-forms.box name="notes" label="rundown.notes" wrapClass="ml-2" checked="checked"/>
@@ -65,7 +78,7 @@
                                     <x-forms.box name="rundown_meta" label="{{ __('rundown.meta') }}" wrapClass="ml-2 mt-1" checked="checked"/>
                                     <x-forms.box name="rundown_notes" label="{{ __('rundown.notes') }}" wrapClass="ml-2" checked=""/>
                                     <x-forms.box name="rundown_script" label="{{ __('rundown.script') }}" wrapClass="ml-2" checked=""/>
-                                    <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i></button>
+                                    <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i> Print</button>
                                 </div>
                               </div>
     @if(!$shared)
@@ -115,5 +128,11 @@
                 alert("{{ __('rundown.message_error_box') }}");
             }
         }
+        $('.button-copy').click(function(){
+            $(this).tooltip("show");
+            var copyText = $(this).closest('.input-group').find('input');
+            copyText.select();
+            document.execCommand("copy");
+        })
     </script>
 </div>

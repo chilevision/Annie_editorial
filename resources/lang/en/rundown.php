@@ -27,6 +27,7 @@ return [
     'shared'                => 'Shared with me',
     'upload'                => 'Upload',
     'include'               => 'Rundown includes',
+    'clipboard'             => 'Copied to clipboard',
 
     'title'                 => 'Title',
     'date'                  => 'Date',
