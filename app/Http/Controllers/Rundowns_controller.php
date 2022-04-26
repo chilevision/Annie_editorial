@@ -412,7 +412,7 @@ class Rundowns_controller extends Controller
                                 if (!json_last_error()){
                                     foreach ($gfxdata as $key => $val){
                                             $componentdata	= $xml->createElement('componentdata');		$templatedata->appendChild($componentdata);
-                                            $id				= $xml->createElement('id', $key);			$componentdata->appendChild($id);
+                                            $id				= $xml->createElement('id', substr($key, 0, -2));			$componentdata->appendChild($id);
                                             $value			= $xml->createElement('value', $val);		$componentdata->appendChild($value);
                                     }
                                 }
