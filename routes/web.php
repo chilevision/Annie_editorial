@@ -8,7 +8,7 @@ use App\Http\Controllers\Dashboard_controller;
 use App\Http\Controllers\Email_controller;
 use App\Http\Controllers\Rundowns_controller;
 use App\Http\Controllers\Settings_controller;
-use App\http\Controllers\Api_controller;
+use App\Http\Controllers\Api_controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +31,8 @@ Route::post('/createfirst', [Users_controller::class, 'store'])->middleware('fir
 Auth::routes(['register' => false]);
 Route::get('/old/api', [Rundowns_controller::class, 'old_api']);
 Route::group(['prefix' => 'api'], function () {
-	Route::get('settings/{key}', [Api_Controller::class, 'settings']);
-	Route::get('prompter/{key}/{id}', [Api_Controller::class, 'prompter']);
+	Route::get('settings/{key}', [Api_controller::class, 'settings']);
+	Route::get('prompter/{key}/{id}', [Api_controller::class, 'prompter']);
 });
 Route::get('/teleprompter', [Rundowns_controller::class, 'show_prompter']);
 
