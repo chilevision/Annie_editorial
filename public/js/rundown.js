@@ -425,3 +425,25 @@ function isJson(str) {
     }
     return true;
 }
+
+$('.sortable-row').dblclick(function(e){
+    if (e.target.tagName == "DIV" || e.target.tagName == "TD"){
+        if (e.target.className == "overflow-hidden" || e.target.scope == "col"){
+            if($(this).attr('style') == undefined){
+                var id = /[^-]*$/.exec(this.id)[0];
+                livewire.emit('editRow', id)
+            }
+        }
+    }  
+});
+$('.metadata-row').dblclick(function(e){
+    if (e.target.tagName == "DIV" || e.target.tagName == "TD"){
+        if (e.target.className == "overflow-hidden" || e.target.scope == "col"){
+            if($(this).attr('style') == undefined){
+                var id = /[^-]*$/.exec(this.id)[0];
+                livewire.emit('editMeta', id);
+            }
+        }
+    }  
+});
+

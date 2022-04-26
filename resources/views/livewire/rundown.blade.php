@@ -149,7 +149,7 @@
                             <x-table.table class="table-striped table-bordered table-sm" id="" headClass="" headId="" headRowClass="table-active" :th="$meta_cells" bodyClass="" bodyId="">
                 @php $i = 1; @endphp
                 @foreach ($row->Rundown_meta_rows as $meta_row )
-                                <tr id="rundown-meta-row-{{ $meta_row->id }}" @if($meta_row->locked_by != NULL) style="color: #cccccc" @endif>
+                                <tr id="rundown-meta-row-{{ $meta_row->id }}" class="metadata-row" @if($meta_row->locked_by != NULL) style="color: #cccccc" @endif>
                                     <td>
                                         <div class="dropdown">
                                             <a class="dropdown-toggle text-dark" href="#" role="button" id="meta-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number.'-'.$i }}</a>
