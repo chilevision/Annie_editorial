@@ -60,7 +60,7 @@
                                     <div class="input-group mb-3 pl-2 pr-2">
                                         <input type="text" class="form-control form-control-sm shadow-none" value="{{ env('API_KEY').'[id='.$rundown->id.']' }}" aria-label="Prompter key" readonly/>
                                         <div class="input-group-append">
-                                          <button class="btn btn-sm btn-outline-secondary button-copy" type="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.clipboard') }}"><i class="bi bi-clipboard"></i></button>
+                                          <button class="btn btn-sm btn-outline-secondary button-copy" type="button" data-trigger="manual" data-placement="bottom" title="{{ __('rundown.clipboard') }}"><i class="bi bi-clipboard"></i></button>
                                         </div>
                                       </div>
                                     <a href="/dashboard/rundown/{{ $rundown->id }}/teleprompter" class="btn btn-custom ml-2 mt-1" role="button">Open</a>
@@ -129,10 +129,25 @@
             }
         }
         $('.button-copy').click(function(){
-            $(this).tooltip("show");
+            var el = $(this)
+            el.tooltip('show');
+            setTimeout(function(){
+                el.tooltip('hide');
+            }, 1000);
             var copyText = $(this).closest('.input-group').find('input');
             copyText.select();
             document.execCommand("copy");
-        })
+        });
+        $('[data-toggle="tooltip"]').mouseenter(function(){
+            var el = $(this)
+            el.tooltip('show');
+            setTimeout(function(){
+                el.tooltip('hide');
+            }, 1000);
+        });
+
+        $('[data-toggle="tooltip"]').mouseleave(function(){
+            $(this).tooltip('hide');
+        });
     </script>
 </div>

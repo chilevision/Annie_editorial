@@ -29,7 +29,7 @@ class Caspar extends Component
     public $hide_spinner    = false;
 
     public $first_load              = true;
-    protected $update_frequency     = 1;
+    protected $update_frequency     = 60;
     protected $listeners            = ['mediabrowser'];
     protected $paginationTheme      = 'bootstrap';
     
