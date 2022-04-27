@@ -98,9 +98,9 @@ return [
 
     'message_date_updated'  => 'Your rundown date/title has been updated.',
     'message_ccgfile'       => 'Download CasparCG client-file here.',
-    'message_error_date1'   => 'The rundown date contains an error: Your rundown cannot start before it begins.',
-    'message_error_date2'   => 'The rundown date contains an error: Your rundown cannot start where it begins.',
-    'message_error_date3'   => 'The rundown date contains an error: There is allready a planned show during the selected date and time.',
+    'message_error_date1'   => 'The rundown date contains an error: Your rundown cannot stop before it begins.',
+    'message_error_date2'   => 'The rundown date contains an error: Your rundown cannot stop where it begins.',
+    'message_error_date3'   => 'The rundown date contains an error: There are allready a planned show during the selected date and time.',
     'message_error_box'     => 'No boxes have been checked.',
     'message_warning1'      => 'Are you sure you want to delete this rundown?',
     'caspar_error_1'        => 'Could not connect to CasparCG server.',
