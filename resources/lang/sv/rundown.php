@@ -10,8 +10,8 @@ return [
     |
     */
     'rundown'               => 'Körschema',
-    'scripts'               => 'Manus',
-    'script'                => 'manus',
+    'scripts'               => 'Körscheman',
+    'script'                => 'körschema',
     'new'                   => 'Nytt Körschema',
     'edit'                  => 'Redigera',
     'editor'                => 'Redigerare',
@@ -80,8 +80,8 @@ return [
     'under'                 => 'Körschemat är kort med:',
     'over'                  => 'Körschemat är långt med:',
     'in_sync'               => 'Körschemat är i synk',
-    'schedule'              => 'Rundown schedule',
-    'view-schedule'         => 'Körschema schedule',
+    'schedule'              => 'Planering',
+    'view-schedule'         => 'Visa kalender',
     'teleprompter'          => 'Teleprompter',
 
     'mediafiles'            => 'Media Filer',
