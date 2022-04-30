@@ -31,7 +31,7 @@
 @endforeach
                     </div>
                   </div>
-@if ($rundown->owner == Auth::user()->id)
+@if ($rundown->owner == Auth::user()->id || Auth::user()->admin)
                 <a class="btn btn-custom shadow-none float-right" href="/dashboard/rundown/{{ $rundown->id }}/editcal"><i class="bi bi-pencil"></i> {{ __('rundown.edit')}}</a>
 @endif
                 <h2>{{ $rundown->title }}</h2>
@@ -127,7 +127,7 @@
                 <td style="background: #{{ $row->color }}"><a href="#" class="text-white accordianOpenBtn" data-toggle="collapse" data-target="#rundown-meta-{{ $row->id }}" aria-expanded="false" aria-controls="rundown-meta-{{ $row->id }}"><i class="bi bi-list-nested"></i></a></td>
                 <td scope="col"><div class="overflow-hidden" style="width: 420px">{{ $row->story }}</div></td>
                 <td scope="col">{{ $row->type }}</td>
-                <td scope="col"><div class="overflow-hidden" style="width: 130px">{{ $row->talent }}</div></td>
+                <td scope="col"><div class="d-inline" style="width: 100px;">{{ substr($row->talent, 0, 15) }}</div>@if($row->script != null)<div class="d-inline float-right"><i class="text-success bi bi-card-heading"></i></div>@endif</td>
                 <td scope="col"><div class="overflow-hidden" style="width: 200px">{{ $row->cue }}</div></td>
                 <td scope="col">
             @if ($row->type == 'MIXER') 

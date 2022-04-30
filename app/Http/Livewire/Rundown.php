@@ -59,7 +59,7 @@ class Rundown extends Component
     {
         $rundown_id            = $this->rundown->id;
         $this->rundown         = Rundowns::find($rundown_id);
-        if ($this->rundown->users->firstWhere('id', Auth::user()->id) == null){
+        if ($this->rundown->users->firstWhere('id', Auth::user()->id || Auth::user()->admin) == null){
             return view('livewire.rundown')->with('error',  __('rundown.permission_removed'));
         }
         else{
@@ -151,6 +151,7 @@ class Rundown extends Component
     public function saveText($data){
         $type = $data[0];
         $text = $data[1];
+        if (preg_match("#^(<[^>]*>)+$#", $text)){ $text = null; }
         if ($type == 'meta_row'){
             Rundown_meta_rows::where('id', $this->row)->update([
                 'data' => $text

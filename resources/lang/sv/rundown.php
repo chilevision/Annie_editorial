@@ -23,6 +23,7 @@ return [
     'delete'                => 'Radera',
     'isLoaded'              => 'är laddad.',
     'my'                    => 'Mina körscheman',
+    'all'                   => 'Alla körscheman',
     'presets'               => 'Mallar',
     'shared'                => 'Delade med mig',
     'upload'                => 'Ladda upp',

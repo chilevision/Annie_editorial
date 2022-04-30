@@ -23,6 +23,7 @@ return [
     'delete'                => 'Delete',
     'isLoaded'              => 'is loaded.',
     'my'                    => 'My rundowns',
+    'all'                   => 'All rundowns',
     'presets'               => 'Presets',
     'shared'                => 'Shared with me',
     'upload'                => 'Upload',

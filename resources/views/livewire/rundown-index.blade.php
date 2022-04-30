@@ -1,5 +1,5 @@
 <div>
-    <div class="input-group mb-3 col-3 float-right mt-n5">
+    <div class="input-group mb-3 col-6 col-lg-3 float-right mt-n5">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
         </div>
@@ -7,11 +7,16 @@
     </div>
     <ul class="nav nav-tabs" id="rundown-navs">
         <li class="nav-item">
-          <a class="nav-link @if(!$shared)active @endif" wire:click="changeRundowns('my')" href="#">{{ __('rundown.my') }}</a>
+          <a class="nav-link @if($filter == 'my')active @endif" wire:click="$set('filter', 'my')" href="#">{{ __('rundown.my') }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link @if($shared)active @endif" wire:click="changeRundowns('shared')" href="#">{{ __('rundown.shared') }}</a>
+          <a class="nav-link @if($filter == 'shared')active @endif" wire:click="$set('filter', 'shared')" href="#">{{ __('rundown.shared') }}</a>
         </li>
+        @if (Auth::user()->admin)
+        <li class="nav-item">
+            <a class="nav-link @if($filter == 'all')active @endif" wire:click="$set('filter', 'all')" href="#">{{ __('rundown.all') }}</a>
+        </li>
+        @endif
       </ul>
     <table class="table table-striped table-hover">
         <thead class="thead-custom">
@@ -19,8 +24,8 @@
                 <th><a href="#" wire:click="changeOrder('title')" class="text-light">{{ __('rundown.title') }}@if ($orderBy == 'title') {!! $arrow !!} @endif</a></th>
                 <th><a href="#" wire:click="changeOrder('starttime')" class="text-light">{{ __('rundown.air_date') }}@if ($orderBy == 'starttime') {!! $arrow !!} @endif</a></th>
                 <th>{{ __('rundown.length') }}</th>
-                @if($shared)<th>{{ __('rundown.owner') }}</th>@endif
-                <th>{{ __('rundown.manage') }}
+                @if($filter != 'my')<th>{{ __('rundown.owner') }}</th>@endif
+                <th class="text-center d-sm-none d-lg-block">{{ __('rundown.manage') }}
                     <select wire:model="perPage" class="float-right">
 @foreach ( $per_page as $value )
                         <option value="{{ $value }}">{{ $value }}</option>
@@ -30,20 +35,19 @@
             </tr>
         </thead>
         <tbody>
-    @php $shared ? $width = '400' : $width = '500'; @endphp
     @foreach ($rundowns as $rundown)
             <tr>
-                <td><div class="overflow-hidden" style="width: {{ $width }}px">{{$rundown->title}}</td>
-                <td><div class="overflow-hidden" style="width: 130px">{{ date('Y-m-d H:i',strtotime($rundown->starttime)) }}</td>
+                <td><div class="overflow-hidden">{{$rundown->title}}</td>
+                <td><div class="overflow-hidden" style="max-width: 130px">{{ date('Y-m-d H:i',strtotime($rundown->starttime)) }}</td>
                 <td>{{ gmdate("H:i", $rundown->duration) }}</td>
-                @if($shared)<td><div class="overflow-hidden" style="width: 130px">{{ $rundown->users->where('id', $rundown->owner)->first()->name ? $rundown->users->where('id', $rundown->owner)->first()->name : $rundown->users->where('id', $rundown->owner)->first()->username }}</div></td>@endif
-                <td>
+                @if($filter != 'my')<td><div class="overflow-hidden" style="max-width: 130px">{{ $rundown->users->where('id', $rundown->owner)->first()->name ? $rundown->users->where('id', $rundown->owner)->first()->name : $rundown->users->where('id', $rundown->owner)->first()->username }}</div></td>@endif
+                <td align="right" class="d-sm-none d-lg-block">
                     <form name="delete-rundown-form" onsubmit="return confirm('{{ __('rundown.message_warning1') }}');" method="POST" action="rundown/{{ $rundown->id }}">
                         @csrf
                         @method('DELETE')
                         <div class="btn-group btn-group">
                             <a  href="/dashboard/rundown/{{ $rundown->id }}/edit" class="btn btn-custom" role="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.edit') }}"><i class="bi bi-pencil"></i></a>
-    @if(!$shared)
+    @if($filter != 'shared' || Auth::user()->admin)
                             <a href="/dashboard/rundown/{{ $rundown->id }}/editcal" class="btn btn-custom" role="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.edit_calendar') }}"><i class="bi bi-calendar-week"></i></a>
     @endif											
                             <a href="/dashboard/rundown/{{ $rundown->id }}/generatexml" class="btn btn-custom" role="button" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.save') }}"><i class="bi bi-save"></i></a>
@@ -81,7 +85,7 @@
                                     <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i> Print</button>
                                 </div>
                               </div>
-    @if(!$shared)
+    @if($filter != 'shared' || Auth::user()->admin)
                             <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.delete') }}"><i class="bi bi-trash"></i></button>
     @endif
                         </div>

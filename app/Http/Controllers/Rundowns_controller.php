@@ -91,7 +91,7 @@ class Rundowns_controller extends Controller
     {
         $rundown = Rundowns::find($id);
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
-        if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
+        if ($rundown->users->firstWhere('id', Auth::user()->id) == null && !Auth::user()->admin) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         
         $pusher_channel = Settings::where('id', 1)->value('pusher_channel');
         $errors = collect([]);
@@ -123,7 +123,7 @@ class Rundowns_controller extends Controller
     public function edit_calendar($id)
     {
         $rundown = Rundowns::findOrFail($id);
-        if (Auth::user()->id == $rundown->owner){
+        if (Auth::user()->id == $rundown->owner || Auth::user()->admin){
             $startdate  = date('Y-m-d',strtotime($rundown->starttime));
             $stopdate   = date('Y-m-d',strtotime($rundown->stoptime));
             $starttime  = date('H:i',strtotime($rundown->starttime));
@@ -247,7 +247,7 @@ class Rundowns_controller extends Controller
         $rundown    = Rundowns::find($request->input('id'));
         $settings   = Settings::where('id', 1)->first();
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
-        if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
+        if ($rundown->users->firstWhere('id', Auth::user()->id) == null && !Auth::user()->admin) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         $rows           = Rundown_rows::where('rundown_id', $request->input('id'))->get();
         $rundownrows    = sort_rows($rows)[0];
         $timer          = strtotime($rundown->starttime);
@@ -327,7 +327,7 @@ class Rundowns_controller extends Controller
         $settings   = Settings::where('id', 1)->first();
         $rundown    = Rundowns::find($id);
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
-        if ($rundown->users->firstWhere('id', Auth::user()->id) == null) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
+        if ($rundown->users->firstWhere('id', Auth::user()->id) == null && !Auth::user()->admin) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         $rows           = Rundown_rows::where('rundown_id', $id)->get();
         $filename 	    = 'HDA_Rundown'.sprintf("%06d", $id);
         $rundownrows    = sort_rows($rows)[0];
