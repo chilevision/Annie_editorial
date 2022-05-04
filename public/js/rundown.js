@@ -426,6 +426,7 @@ function isJson(str) {
     return true;
 }
 
+//Dubble click to edit
 $('.sortable-row').dblclick(function(e){
     if (e.target.tagName == "DIV" || e.target.tagName == "TD"){
         if (e.target.className == "overflow-hidden" || e.target.scope == "col"){
@@ -434,7 +435,8 @@ $('.sortable-row').dblclick(function(e){
                 livewire.emit('editRow', id)
             }
         }
-    }  
+    }
+    $('input[name="story"]').focus();
 });
 $('.metadata-row').dblclick(function(e){
     if (e.target.tagName == "DIV" || e.target.tagName == "TD"){
@@ -444,10 +446,52 @@ $('.metadata-row').dblclick(function(e){
                 livewire.emit('editMeta', id);
             }
         }
+    }
+});
+
+//Print pdf on edit page
+$(document).on('keydown', function(e) {
+    if((e.ctrlKey || e.metaKey) && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80) ){
+        e.cancelBubble = true;
+        e.preventDefault();
+
+        e.stopImmediatePropagation();
+        $('#printModal').modal('show');
     }  
 });
+function printRundown(id){
+    $('#printModal').modal('hide');
+    $('#print-rundown-form-values').empty();
+    var boxCount = 0;
+    $('#printModal input').each(function(index){
+        if( $(this).is(':checked')){
+            boxCount ++;
+            var name = $(this).attr('name');
+            $('#print-rundown-form-values').append('<input type="hidden" name="'+name+'" value="1"/>');
+        }
+    })
+    if(boxCount>0){
+        $('#print-rundown-form-values').append('<input type="hidden" name="id" value="'+id+'"/>');
+        $('#print-rundown-form').submit();
+    }
+    else{
+        alert("{{ __('rundown.message_error_box') }}");
+    }
+}
 
-$(document).on('click', '.card-body .dropdown .colorPickButton', function (e) {
-  e.stopPropagation();
+if (document.addEventListener) {
+    document.addEventListener('contextmenu', function(e) {
+        var id = $(e.target).closest('.rundown-row').attr('id');
+        if (id){
+            console.log($('#'+id).find('.rundown-dropdown-link'));
+            $('#'+id).find('.rundown-dropdown-link').trigger('click');
+        }
+        e.preventDefault();
+    }, false);
+}
+
+$('body').keypress(function(e) {
+    if(e.key === "Escape" && in_edit_mode) {
+        Livewire.emit('cancel_edit');
+    }
 });
-

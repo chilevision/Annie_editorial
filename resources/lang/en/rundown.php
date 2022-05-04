@@ -19,7 +19,7 @@ return [
     'run'                   => 'Run',
     'save'                  => 'Save file',
     'select'                => 'Select',
-    'print'                 => 'Print script',
+    'print'                 => 'Print',
     'delete'                => 'Delete',
     'isLoaded'              => 'is loaded.',
     'my'                    => 'My rundowns',

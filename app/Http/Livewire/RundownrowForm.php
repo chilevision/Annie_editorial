@@ -206,7 +206,11 @@ class RundownrowForm extends Component
         $this->emit('in_edit_mode', false);
     }
 
-    public function cancel_edit(){    
+    public function cancel_edit(){
+        if ($this->edit_mode == 'meta'){
+            $this->cancel_meta();
+            return;
+        }
         $this->emit('lock', 'row', $this->rundown_row_id);    
         $this->emit('in_edit_mode', false);
         $this->resetForm();

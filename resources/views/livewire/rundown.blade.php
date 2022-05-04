@@ -131,22 +131,6 @@
                             <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')"><i class="bi bi-trash"></i> {{ __('rundown.delete') }}</a>                          
                         </div>
                     </div>
-
-
-
-
-
-
-                    {{-- <div class="dropdown">
-                        <a class="dropdown-toggle text-dark rundown-dropdown-link" href="#" role="button" id="row-{{ $row->id }}-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $page.$page_number }}</a>
-                        <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
-                            <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')"><i class="bi bi-pencil"></i> {{ __('rundown.edit_row') }}</a>
-                            <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'script'])"><i class="bi bi-card-heading"></i> {{ __('rundown.edit_script') }}</a>
-                            <a class="dropdown-item edit-cam-menu @if ($row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'cam_notes'])"><i class="bi bi-journal-text"></i> {{ __('rundown.edit_camera_notes') }}</a>
-                            <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}','{{ $row->type }}')"><i class="bi bi-node-plus"></i> {{ __('rundown.new_meta') }}</a>
-                            <a class="dropdown-item delete-row-menu @if($row->locked_by != NULL || $row->script_locked_by != NULL) disabled @endif" href="#" wire:click="deleteRow('{{ $row->id }}')"><i class="bi bi-trash"></i> {{ __('rundown.delete') }}</a>
-                        </div>
-                    </div> --}}
                 </td>
                 <td style="background: #{{ $row->color }}"><a href="#" class="text-white accordianOpenBtn" data-toggle="collapse" data-target="#rundown-meta-{{ $row->id }}" aria-expanded="false" aria-controls="rundown-meta-{{ $row->id }}"><i class="bi bi-list-nested"></i></a></td>
                 <td scope="col"><div class="overflow-hidden" style="width: 420px">{{ $row->story }}</div></td>

@@ -82,7 +82,7 @@
                                     <x-forms.box name="rundown_meta" label="{{ __('rundown.meta') }}" wrapClass="ml-2 mt-1" checked="checked"/>
                                     <x-forms.box name="rundown_notes" label="{{ __('rundown.notes') }}" wrapClass="ml-2" checked=""/>
                                     <x-forms.box name="rundown_script" label="{{ __('rundown.script') }}" wrapClass="ml-2" checked=""/>
-                                    <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i> Print</button>
+                                    <button type="button" class="btn btn-custom ml-2 mt-1" onclick="printRundown({{ $rundown->id }})"><i class="bi bi-printer"></i> {{ __('rundown.print') }}</button>
                                 </div>
                               </div>
     @if($filter != 'shared' || Auth::user()->admin)

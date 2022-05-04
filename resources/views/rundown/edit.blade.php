@@ -64,7 +64,22 @@
         </ul>
     </div>
 </x-Bootstrap.modal>
+<x-Bootstrap.modal id="printModal" size="sm" saveBtn="{{ __('rundown.print') }}" saveClick="printRundown({{ $rundown->id }})" title="{{ __('rundown.print') }}">
+	<x-forms.box name="rundown" label="rundown.rundown" wrapClass="ml-2" checked="checked" />
+	<x-forms.box name="script" label="rundown.script" wrapClass="ml-2" checked="checked"/>
+	<x-forms.box name="notes" label="rundown.notes" wrapClass="ml-2" checked="checked"/>
+	<h6 class="ml-2 mt-2 mb-n1 text-secondary"><u>{{ __('rundown.include') }}:</u></h6>
+	<x-forms.box name="rundown_meta" label="{{ __('rundown.meta') }}" wrapClass="ml-2 mt-1" checked="checked"/>
+	<x-forms.box name="rundown_notes" label="{{ __('rundown.notes') }}" wrapClass="ml-2" checked=""/>
+	<x-forms.box name="rundown_script" label="{{ __('rundown.script') }}" wrapClass="ml-2" checked=""/>
+</x-Bootstrap.modal>
+
 <!-- /Modals -->
+<form name="print-rundown-form" id="print-rundown-form" method="POST" action="{{ route('rundown.print') }}" target='_blank'>
+	@csrf
+	<div id="print-rundown-form-values">
+	</div>
+</form>
 @endsection
 @section('footer_scripts')
 <script src="{{ asset('js/rundown.js') }}"></script>
