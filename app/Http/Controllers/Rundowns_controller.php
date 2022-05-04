@@ -10,7 +10,7 @@ use App\Models\Settings;
 use App\Models\User;
 use App\Events\RundownEvent;
 use App\Models\Mediafiles;
-use Hamcrest\Core\Set;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Mpdf;
@@ -331,111 +331,21 @@ class Rundowns_controller extends Controller
         if ($rundown == null) return redirect(route('rundown.index'))->withErrors(__('rundown.not_exist'));
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null && !Auth::user()->admin) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         $rows           = Rundown_rows::where('rundown_id', $id)->get();
-        $filename 	    = 'HDA_Rundown'.sprintf("%06d", $id);
+        $filename 	    = 'HDA_Rundown'.sprintf("%06d", $id).'.xml';
         $rundownrows    = sort_rows($rows)[0];
-        $xml            = new \DOMDocument('1.0','UTF-8');
 
-		$xml->formatOutput = true;
-		$items = $xml->createElement('items');
-		$xml->appendChild($items);
-		$triggering = $xml->createElement('allowremotetriggering', 'false');
-		$items->appendChild($triggering);
-        if (!$rundownrows->isEmpty()){
-            foreach ($rundownrows as $row){
-                list($r, $g, $b) = sscanf($row->color, "%02x%02x%02x");
-                $item 						= $xml->createElement('item');
-                $grouptype 					= $xml->createElement('type', 'GROUP');						        $item->appendChild($grouptype);
-                $grouplabel 				= $xml->createElement('label', $row->story);		                $item->appendChild($grouplabel);
-                $expanded 					= $xml->createElement('expanded', 'false');					        $item->appendChild($expanded);
-                $groupchannel				= $xml->createElement('channel', 1);						        $item->appendChild($groupchannel);
-                $groupvideolayer			= $xml->createElement('videolayer', 10);					        $item->appendChild($groupvideolayer);
-                $groupdelay					= $xml->createElement('delay', 0);							        $item->appendChild($groupdelay);
-                $groupduration				= $xml->createElement('duration', 0);						        $item->appendChild($groupduration);
-                $groupallowgpi				= $xml->createElement('allowgpi', 'false');					        $item->appendChild($groupallowgpi);
-                $groupallowremotetriggering	= $xml->createElement('allowremotetriggering', 'false');	        $item->appendChild($groupallowremotetriggering);
-                $groupremotetriggerid		= $xml->createElement('remotetriggerid');					        $item->appendChild($groupremotetriggerid);
-                $groupstoryid				= $xml->createElement('storyid');							        $item->appendChild($groupstoryid);
-                $groupnotes					= $xml->createElement('notes');								        $item->appendChild($groupnotes);
-                $groupautostep				= $xml->createElement('autostep', 'false');					        $item->appendChild($groupautostep);
-                $groupautoplay				= $xml->createElement('autoplay', 'false');					        $item->appendChild($groupautoplay);
-                $groupcolor					= $xml->createElement('color', 'rgba('.$r.','.$g.','.$b.',128)');	$item->appendChild($groupcolor);
-                $groupitems					= $xml->createElement('items');								        $item->appendChild($groupitems);
-
-                $items->appendChild($item);
-
-                if (!$row->Rundown_meta_rows->isEmpty()){
-                    foreach ($row->Rundown_meta_rows as $meta_row ){
-                        if ($meta_row->type == 'GFX' || $meta_row->type == 'BG'){
-                            if ($meta_row->type == 'BG'){
-                                if (!$settings->include_background || $settings->backgroundserver_channel == null){
-                                    continue;
-                                }
-                                $server_name    = $settings->videoserver_name;
-                                $server_channel = $settings->backgroundserver_channel;
-                                $layer          = 10;
-                                $type           = 'MOVIE';
-                                $file           = Mediafiles::where('name', $meta_row->source)->first();
-                                if ($file != null){
-                                    $type = $file->type;
-                                }
-                                $title = 'BG '.$meta_row->title;
-                            }
-                            else{
-                                $server_name    = $settings->templateserver_name;
-                                $server_channel = $settings->templateserver_channel;
-                                $layer          = 20;
-                                $type           = 'TEMPLATE';
-                                $title          = $meta_row->title;
-                            }
-                            $groupitem = $xml->createElement('item');
-							$groupitems->appendChild($groupitem);
-                            $type 					= $xml->createElement('type', $type);   					    $groupitem->appendChild($type);
-                            $devicename             = $xml->createElement('devicename', $server_name);              $groupitem->appendChild($devicename);
-                            $label 					= $xml->createElement('label', $title);			                $groupitem->appendChild($label);
-                            $name 					= $xml->createElement('name', $meta_row->source);			    $groupitem->appendChild($name);
-                            $channel                = $xml->createElement('channel', $server_channel);			    $groupitem->appendChild($channel);
-                            $videolayer				= $xml->createElement('videolayer', $layer);			        $groupitem->appendChild($videolayer);
-                            $delay					= $xml->createElement('delay', 0);							    $groupitem->appendChild($delay);
-                            $duration				= $xml->createElement('duration', $meta_row->duration*1000);    $groupitem->appendChild($duration);
-                            $allowgpi				= $xml->createElement('allowgpi', 'false');					    $groupitem->appendChild($allowgpi);
-                            $allowremotetriggering	= $xml->createElement('allowremotetriggering', 'false');	    $groupitem->appendChild($allowremotetriggering);
-                            $remotetriggerid		= $xml->createElement('remotetriggerid');					    $groupitem->appendChild($remotetriggerid);
-                            $storyid				= $xml->createElement('storyid', $meta_row->rundown_rows_id);	$groupitem->appendChild($storyid);
-                            $flashlayer				= $xml->createElement('flashlayer', 1);						    $groupitem->appendChild($flashlayer);
-                            $invoke					= $xml->createElement('invoke');							    $groupitem->appendChild($invoke);
-                            $usestoreddata			= $xml->createElement('usestoreddata', 'false');			    $groupitem->appendChild($usestoreddata);
-                            $useuppercasedata		= $xml->createElement('useuppercasedata', 'false');			    $groupitem->appendChild($useuppercasedata);
-                            $triggeronnext 			= $xml->createElement('triggeronnext', 'false');			    $groupitem->appendChild($triggeronnext);
-                            $sendasjson				= $xml->createElement('sendasjson', 'false');				    $groupitem->appendChild($sendasjson);
-
-                            if ($meta_row->type == 'GFX'){
-                                $templatedata			= $xml->createElement('templatedata');						    $groupitem->appendChild($templatedata);
-                                $gfxdata = json_decode($meta_row->data);
-                                if (!json_last_error()){
-                                    foreach ($gfxdata as $key => $val){
-                                            $componentdata	= $xml->createElement('componentdata');		$templatedata->appendChild($componentdata);
-                                            $id				= $xml->createElement('id', substr($key, 0, -2));			$componentdata->appendChild($id);
-                                            $value			= $xml->createElement('value', $val);		$componentdata->appendChild($value);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $temp_file = tempnam(sys_get_temp_dir(), 'hda');
-		$xml->save($temp_file) or die('XML Create Error');
-			header('Content-Description: File Transfer');
-			header('Content-Type: application/xml');
-			header('Content-Disposition: attachment; filename="'.basename($filename).'"');
-			header('Expires: 0');
-			header('Cache-Control: must-revalidate');
-			header('Pragma: public');
-			header('Content-Length: ' . filesize($temp_file));
-			readfile($temp_file);
-			unlink($temp_file);
-			exit;
+        $output = View::make('rundown.xml')->with([
+            'rundown'           => $rundown,
+             'rundownrows'      => $rundownrows,
+             'settings'         => $settings,
+        ])->render();
+        $output = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" . $output;
+        return response($output)
+        ->header('Content-Type', 'text/xml')
+        ->header('Cache-Control', 'public')
+        ->header('Content-Description', 'File Transfer')
+        ->header('Content-Disposition', 'attachment; filename=' . $filename . '')
+        ->header('Content-Transfer-Encoding', 'binary');
     }
 
     //Validates timestamps
