@@ -43,7 +43,7 @@
 		</div>	
 		<div class="card-body">
 			@livewire('rundownrow-form', ['rundown' => $rundown])
-			@livewire('rundown', ['rundown' => $rundown])
+			@livewire('rundown', ['rundown' => $rundown, 'colors' => $colors])
 		</div>
 	</div>
 </div>

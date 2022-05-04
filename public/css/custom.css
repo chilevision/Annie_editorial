@@ -251,3 +251,44 @@ tr.rundown-break-row .dropdown-menu{
       position: relative;
       right: 10px;
   }
+
+
+  @media (min-width: 992px){
+	.dropdown-menu .dropdown-toggle:after{
+		border-top: .3em solid transparent;
+	    border-right: 0;
+	    border-bottom: .3em solid transparent;
+	    border-left: .3em solid;
+	}
+	.dropdown-menu .dropdown-menu{
+		margin-left:0; margin-right: 0;
+	}
+	.dropdown-menu li{
+		position: relative;
+	}
+	.nav-item .submenu{ 
+		display: none;
+		position: absolute;
+		left:100%; top:-7px;
+	}
+	.nav-item .submenu-left{ 
+		right:100%; left:auto;
+	}
+	.dropdown-menu > li:hover{ background-color: #f1f1f1 }
+	.dropdown-menu > li:hover > .submenu{
+		display: block;
+	}
+}
+.colorPickButton {
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    margin: 0px 3px;
+    cursor: pointer;
+    display: inline-block;
+    border: thin solid #eee;
+  }
+  
+  .colorPickButton:hover {
+    transform: scale(1.1);
+  }

@@ -447,3 +447,7 @@ $('.metadata-row').dblclick(function(e){
     }  
 });
 
+$(document).on('click', '.card-body .dropdown .colorPickButton', function (e) {
+  e.stopPropagation();
+});
+

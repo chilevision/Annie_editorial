@@ -14,6 +14,7 @@ use Mockery\Undefined;
 class Rundown extends Component
 {
     public $rundown;
+    public $colors;
     public $rundownrows;
     public $page            = 'A';
     public $page_number     = 1;
@@ -27,7 +28,8 @@ class Rundown extends Component
         'textEditor'        => 'init_textEditor',
         'saveText'          => 'saveText',
         'lock'              => 'lock',
-        'update_lock'       => 'update_lock'
+        'update_lock'       => 'update_lock',
+        'setRowColor'       => 'setRowColor'
     ];
 
     public $cells = [
@@ -68,9 +70,10 @@ class Rundown extends Component
             $this->page_number     = 1;
             $this->add_rows();
             return view('livewire.rundown')->with([
-                'rundownrows' => $this->rundownrows,
-                'rundown' => $this->rundown,
-                'timer' => $timer
+                'rundownrows'   => $this->rundownrows,
+                'rundown'       => $this->rundown,
+                'timer'         => $timer,
+                'colors'        => $this->colors
             ]);
         }
     }
@@ -204,6 +207,15 @@ class Rundown extends Component
         }
 
         if ($type == 'meta_row' && $id != null) $this->show_meta = Rundown_meta_rows::where('id', $id)->first()->rundown_rows_id;
+    }
+
+    /*~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~
+                    UPDATING ROW COLOR
+    ~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~^~*/
+    public function setRowColor($id, $color)
+    {
+        Rundown_rows::where('id', $id)->update(['color' => $color]);
+        event(new RundownEvent(['type' => 'render', 'id' => $id], $this->rundown->id));
     }
 
     protected function get_fields($type)

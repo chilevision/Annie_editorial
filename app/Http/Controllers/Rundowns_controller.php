@@ -94,11 +94,13 @@ class Rundowns_controller extends Controller
         if ($rundown->users->firstWhere('id', Auth::user()->id) == null && !Auth::user()->admin) return redirect(route('rundown.index'))->withErrors(__('rundown.permission_denied'));
         
         $pusher_channel = Settings::where('id', 1)->value('pusher_channel');
+        $colors = unserialize(Settings::where('id', 1)->value('colors'));
         $errors = collect([]);
 		return view('rundown.edit')->with([
             'rundown'           => $rundown,
              'errors'           => $errors,
-             'pusher_channel'   => $pusher_channel
+             'pusher_channel'   => $pusher_channel,
+             'colors'           => $colors
         ]);
     }
 
