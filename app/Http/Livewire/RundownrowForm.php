@@ -8,9 +8,12 @@ use App\Models\Rundowns;
 use App\Models\Settings;
 use App\Events\RundownEvent;
 use App\Models\Rundown_meta_rows;
+use Livewire\WithFileUploads;
 
 class RundownrowForm extends Component
 {
+    use WithFileUploads;
+
     public $rundown;
     public $rundown_row_id;
     public $rundown_meta_row_id;
@@ -36,6 +39,9 @@ class RundownrowForm extends Component
     public $sourceOptions;
     public $mixerKeys;
     public $dataBtn;
+
+    public $xml;
+    public $pane = 'editor';
 
     protected $typeOptions = [
         ['value' => 'MIXER', 'title' => 'MIXER'],
@@ -402,5 +408,18 @@ class RundownrowForm extends Component
         if($duration != null){
             $this->duration = $duration;
         }
+    }
+
+    public function changePane($pane)
+    {
+        $this->pane = $pane;
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'xml' => 'mimes:application/xml,xml|max:10000'
+        ]);
+        $this->xml->store('presets');
     }
 }

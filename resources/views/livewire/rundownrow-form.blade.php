@@ -2,18 +2,18 @@
     <div class="card-header">
         <ul class="nav nav-pills" id="editor-menu">
             <li class="nav-item">
-                <a class="nav-link btn-custom active" data-toggle="list" href="#editor">{{ __('rundown.editor') }}</a>
+                <a class="nav-link btn-custom @if($pane == 'editor')active @endif" data-toggle="list" wire:click="changePane('editor')" href="#editor">{{ __('rundown.editor') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn-custom" data-toggle="list" href="#presets">{{ __('rundown.presets') }}</a>
+                <a class="nav-link btn-custom @if($pane == 'presets')active @endif" data-toggle="list" wire:click="changePane('presets')" href="#presets">{{ __('rundown.presets') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn-custom" data-toggle="list" href="#upload">{{ __('rundown.upload') }}</a>
+                <a class="nav-link btn-custom @if($pane == 'upload')active @endif" data-toggle="list" wire:click="changePane('upload')" href="#upload">{{ __('rundown.upload') }}</a>
             </li>
         </ul>
     </div>
     <div class="card-body tab-content" id="rundown-editor">
-        <div class="tab-pane fade active show" id="editor">
+        <div class="tab-pane fade @if($pane == 'editor')active show @endif" id="editor">
         @if ($formType == 'standard')
             <form method="POST" wire:submit.prevent="{{ $formAction }}">
                 <div class="form-row">
@@ -85,11 +85,22 @@
         @endif
         </div> <!-- EDITOR -->
 
-        <div class="tab-pane fade" id="presets">
+        <div class="tab-pane fade @if($pane == 'presets')active show @endif" id="presets">
             presets
         </div> <!-- PRESETS -->
-        <div class="tab-pane fade" id="upload">
-            Upload
+        <div class="tab-pane fade @if($pane == 'upload')active show @endif" id="upload">
+            <form wire:submit.prevent="save">
+                <div class="input-group w-25">
+                    <div class="custom-file">
+                      <input type="file" wire:model.lazy="xml" name="xml" class="shadow-none custom-file-input" id="input-xml" />
+                      <label class="custom-file-label" for="input-xml">{{ __('rundown.xml-file') }}</label>
+                    </div>
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit" id="inputGroupFileAddon04">{{ __('rundown.upload') }}</button>
+                    </div>
+                    @error('xml') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+            </form>
         </div> <!-- UPLOAD -->
     </div>
 </div>

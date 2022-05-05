@@ -40,7 +40,7 @@
                 <td><div class="overflow-hidden">{{$rundown->title}}</td>
                 <td><div class="overflow-hidden" style="max-width: 130px">{{ date('Y-m-d H:i',strtotime($rundown->starttime)) }}</td>
                 <td>{{ gmdate("H:i", $rundown->duration) }}</td>
-                @if($filter != 'my')<td><div class="overflow-hidden" style="max-width: 130px">{{ $rundown->users->where('id', $rundown->owner)->first()->name ? $rundown->users->where('id', $rundown->owner)->first()->name : $rundown->users->where('id', $rundown->owner)->first()->username }}</div></td>@endif
+                @if($filter != 'my')<td><div class="overflow-hidden" style="max-width: 130px"></div></td>@endif
                 <td align="right" class="d-sm-none d-lg-block">
                     <form name="delete-rundown-form" onsubmit="return confirm('{{ __('rundown.message_warning1') }}');" method="POST" action="rundown/{{ $rundown->id }}">
                         @csrf
