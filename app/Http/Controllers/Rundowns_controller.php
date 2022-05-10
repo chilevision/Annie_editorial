@@ -162,39 +162,42 @@ class Rundowns_controller extends Controller
      */
     public function update_calendar(Request $request)
     {
-        $user_ids = [Auth::user()->id];
-        if ($request->input('users') != null){
-            $users = explode (",", $request->input('users'));
-            foreach ($users as $user){
-                $user_id = User::where('username', $user)->first();
-                if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
-                else{
-                    array_push($user_ids, $user_id->id);
+        $owner = Rundowns::where('id', $request->input('id'))->value('owner');
+        if ($owner){
+            $user_ids = [$owner];
+            if ($request->input('users') != null){
+                $users = explode (",", $request->input('users'));
+                foreach ($users as $user){
+                    $user_id = User::where('username', $user)->first();
+                    if ($user_id == null) return redirect('dashboard/rundown/create')->withErrors('User '.$user.' does not exist.')->withInput();
+                    else{
+                        array_push($user_ids, $user_id->id);
+                    }
                 }
             }
-        }
 
-        $validator = $this->validateTimestamps($request);
-        if ($validator){ 
-            return back()->withErrors($validator)->withInput();
-        }
-        $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
-        $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
-        $duration   = strtotime($stoptime) - strtotime($starttime);
+            $validator = $this->validateTimestamps($request);
+            if ($validator){ 
+                return back()->withErrors($validator)->withInput();
+            }
+            $starttime  = $request->input('start-date') . ' ' . $request->input('start-time');
+            $stoptime   = $request->input('stop-date') . ' ' . $request->input('stop-time');
+            $duration   = strtotime($stoptime) - strtotime($starttime);
 
-        Rundowns::findOrFail($request->input('id'))->update([
-            'title'         => $request->input('rundown-title'),
-            'starttime'		=> $starttime,
-            'stoptime'		=> $stoptime,
-            'duration'      => $duration,
-        ]);
+            Rundowns::findOrFail($request->input('id'))->update([
+                'title'         => $request->input('rundown-title'),
+                'starttime'		=> $starttime,
+                'stoptime'		=> $stoptime,
+                'duration'      => $duration,
+            ]);
 
-        Rundowns::findOrFail($request->input('id'))->users()->sync($user_ids);
-        event(new RundownEvent(['type' => 'render', 'id' => '', 'title' => $request->input('rundown-title')], $request->input('id')));
-        if ($request->input('redirect')){
-            return redirect($request->input('redirect'));
+            Rundowns::findOrFail($request->input('id'))->users()->sync($user_ids);
+            event(new RundownEvent(['type' => 'render', 'id' => '', 'title' => $request->input('rundown-title')], $request->input('id')));
+            if ($request->input('redirect')){
+                return redirect($request->input('redirect'));
+            }
+            return redirect(route('rundown.index'))->with('status', __('rundown.message_date_updated'));
         }
-        return redirect(route('rundown.index'))->with('status', __('rundown.message_date_updated'));
 	}
 
     public function users(Request $request)
