@@ -85,7 +85,9 @@ return [
     'view-schedule'         => 'View schedule',
     'teleprompter'          => 'Teleprompter',
 
+    'media'                 => 'Media',
     'mediafiles'            => 'Media Files',
+    'template'              => 'Template',
     'templatefiles'         => 'Template Files',
     'filename'              => 'Filename',
     'filetype'              => 'Type',
@@ -93,6 +95,7 @@ return [
     'filemodified'          => 'Last modified',
     'fileduration'          => 'Duration',
     'filefps'               => 'Fps',
+    'file_missing'          => 'File is missing',
     'autoduration'          => 'Automatically add duration to rundown',
     'add_gfx'               => 'Add template data',
     'add_new_gfx'           => 'Add new data row',

@@ -37,6 +37,7 @@ class CreateSettingsTable extends Migration
             $table->smallInteger('templateserver_channel')->unsigned()->default(1);
             $table->smallInteger('backgroundserver_channel')->unsigned()->nullable();
             $table->boolean('include_background')->default(0);
+            $table->boolean('include_delay')->default(1);
 
             $table->binary('mixer_inputs')->nullable();
             $table->binary('mixer_keys')->nullable();

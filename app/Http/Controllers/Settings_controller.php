@@ -75,6 +75,7 @@ class Settings_controller extends Controller
         $mixer_keys     = [];
         $request->input('sso') ? $sso = 1 : $sso = 0;
         $request->input('include_background') ? $bg = 1 : $bg = 0;
+        $request->input('include_delay') ? $delay = 1 : $delay = 0;
         foreach ($request->input() as $key=>$input){
             if (strpos($key, 'color') === 0)        array_push($colors, substr($input, -6));
             if (strpos($key, 'mixer_input') === 0)  array_push($mixer_inputs, $input);
@@ -108,6 +109,7 @@ class Settings_controller extends Controller
             'templateserver_channel'    => $request->input('templateserver_channel'),
             'backgroundserver_channel'  => $request->input('backgroundserver_channel'),
             'include_background'        => $bg,
+            'include_background'        => $delay,
             'pusher_channel'            => $request->input('pusher_channel'),
             'colors'                    => serialize($colors),
             'sso'                       => $sso,

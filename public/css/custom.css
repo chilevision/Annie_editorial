@@ -71,6 +71,9 @@ tr.rundown-break-row .dropdown-menu{
     background-color: #257696!important;
     color: #fff;
 }
+.input-group-custom label{
+    display: block !important; width: 100% !important;
+}
 #editor-menu .active{
     background-color: #257696!important;
 }

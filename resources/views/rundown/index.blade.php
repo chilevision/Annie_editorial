@@ -20,7 +20,7 @@
 		<div class="card-header">
 			{{ __('rundown.scripts') }}
 		</div>
-		<div class="card-body">
+		<div class="card-body" id="rundown-list-table">
 			<a href="rundown/create" class="btn btn-custom mb-3">{{ __('rundown.new') }}</a>
 			<livewire:rundown-index>
 		</div>

@@ -25,7 +25,11 @@
 @endforeach
                 </select>
               </div>
-    
+@if ($content_type == 'templates')
+              <div class="col">
+                <button type="button" wire:click="mediabrowser('BG')" class="btn btn-secondary">GFX is media</button>
+              </div>
+@endif    
               <div class="input-group mb-3 col-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
@@ -53,7 +57,7 @@
               <tr @if ($file->name == $selected) class="selected" @endif>
                 <td><input type="radio" name="file" value="{{ $file->name }}" @if ($file->name == $selected) checked="checked" @endif/></td>
                 <td>{{ $file->name }}</td>
-                <td>{{ $file->type }}</td>
+                <td class="file_type">{{ $file->type }}</td>
                 <td>{!! formatBytes($file->size) !!}</td>
                 <td>{{ $file->modified_at }}</td>
                 <td class="duration">{{ gmdate('H:i:s', $file->duration) }}</td>

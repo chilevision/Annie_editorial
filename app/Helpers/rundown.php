@@ -1,15 +1,14 @@
 <?php
 
-/* 
-| Helper functuions to handle rundowns
-|
-|
-| Changeing order in collection by property "before_in_table
-| Param: $rundownRows = collection, from DB-table rows
-| Returns array [collection of rows, int of last row id]
-*/
 if (!function_exists('sort_rows'))
 {
+    /**
+    * Helper functuions to handle rundowns
+    * Changing order in collection by property "before_in_table
+    * Returns array [collection of rows, int of last row id]
+    * @param object $rows collection from DB-table rows
+    * @return array [0]sorted rows, [1]last row
+    */
     function sort_rows($rows)
     {
         $rundownrows    = collect();
@@ -32,35 +31,44 @@ if (!function_exists('sort_rows'))
     }
 }
 
-/*
-|
-| converts input time value to seconds
-| Prams $time = string, from input type time 
-| Returns int, as seconds
-*/
 if (!function_exists('to_seconds'))
 {
+    /**
+    *
+    * converts input time value to seconds
+    * @param string $time timestring
+    * @return int time as seconds
+    */
     function to_seconds($time)
     {
-        if (strlen($time) == 5){
-            $time = $time.':00';
+        if (strpos($time, ':') !== false) {
+        // String is timestring
+            if (strlen($time) == 5){
+                $time = $time.':00';
+            }
+            $duration = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $time);
+            sscanf($duration, "%d:%d:%d", $hours, $minutes, $seconds);
+            $duration = $hours * 3600 + $minutes * 60 + $seconds;
         }
-        $duration = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $time);
-        sscanf($duration, "%d:%d:%d", $hours, $minutes, $seconds);
-        $duration = $hours * 3600 + $minutes * 60 + $seconds;
+        else{
+        // String is miliseconds
+            $duration = $time/1000;
+        }
     
         return $duration;
     }
     
 }
-/*
-|
-| Formats bytes to b/kb/mb/gb 
-| Prams $bytes = int, bytes to format, $precision = int, specifys 
-| Returns formated bytes as string
-*/
+
 if (!function_exists('formatBytes'))
 {
+    /**
+    *
+    * Formats bytes to b/kb/mb/gb 
+    * Returns formated bytes as string
+    * @param int $bytes bytes to format
+    * @param int $precision Optional specifys
+    */
     function formatBytes($bytes, $precision = 2) { 
         $units  = array('B', 'KB', 'MB', 'GB', 'TB'); 
         $bytes  = max($bytes, 0); 
@@ -70,13 +78,14 @@ if (!function_exists('formatBytes'))
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }
-/*
-|
-| Checks if site_logo folder is empty if not returns first file
-|
-*/
+
 if (!function_exists('get_custom_logo'))
 {
+    /**
+    *
+    * Checks if site_logo folder is empty if not returns first file
+    * @return string returns folder path /OR false
+    */
     function get_custom_logo()
     {
         $dir = public_path('site_logo');
@@ -91,13 +100,16 @@ if (!function_exists('get_custom_logo'))
         }
     }
 }
-/*
-|
-| Replaces font style unit from px to em
-|
-*/
+
 if (!function_exists('font_size_replace'))
 {
+    /**
+    *
+    * Replaces font style unit from px to em
+    * @param string $string html string
+    * @param int $reference Optional reference font size
+    * @return string html string with replaced size units
+    */
     function font_size_replace($string, $reference = 14)
     {
         preg_match_all('/style="font-size: *(200|[1-9]?[0-9])*px;"/', $string, $fontstyles);
@@ -108,13 +120,16 @@ if (!function_exists('font_size_replace'))
         return $string;
     }
 }
-/*
-|
-| Dekodes meta row data and returns string
-*/
+
 if (!function_exists('metaDataToString'))
 {
-    function metaDataToString($data, $length = ''){
+    /**
+    *
+    * Dekodes meta row data and returns string
+    * @param string $data JSON encoded string
+    * @return string decoded 
+    */
+    function metaDataToString($data){
         json_decode($data);
         if (json_last_error()){
             $output = strip_tags($data);
@@ -132,5 +147,32 @@ if (!function_exists('metaDataToString'))
             }
         }
         return $output;
+    }
+}
+
+if (!function_exists('getFileType'))
+{
+    /**
+    *
+    * Returns a valid file type if input is correct
+    * @param string $type file type M = MOVIE, S = STILL, A = AUDIO
+    * @return string full length file type
+    */
+    function getFileType($type){ 
+        switch ($type){
+            case 'M': 
+                $mediatype = 'MOVIE';
+                break;
+            case 'S':
+                $mediatype = 'STILL';
+                break;
+            case 'A':
+                $mediatype = 'AUDIO';
+                break;
+            default :
+                return false;
+                break;
+        }
+        return $mediatype;
     }
 }

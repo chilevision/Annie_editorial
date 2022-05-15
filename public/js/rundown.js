@@ -41,6 +41,7 @@ $( document ).ready(function() {
             }
         }
     });
+    $('[data-toggle="tooltip"]').tooltip()
 });
 
 /*Sets duration value on rundown form duration input
@@ -104,14 +105,6 @@ function makeCode(length) {
    return result;
 }
 
-/*Adds a bootstrap tooltip to display filename on rundown VB files in rundown table
-|
-|
-*/
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-});
-
 
 /*Sends source input value to backend on media browser open 
 |
@@ -131,10 +124,11 @@ function selectFile(){
     if (selected != undefined){
         var duration = null;
         var fps = $('#caspar-content-table .selected').find('.file_fps').text();
+        var type = $('#caspar-content-table .selected').find('.file_type').text();
         if($('#autoDuration').prop("checked") == true){
             var duration = $('#caspar-content-table .selected').find('.duration').text();
         }
-        Livewire.emit('updateSource', selected, duration, fps);
+        Livewire.emit('updateSource', selected, duration, fps, type);
     }
 }
 
@@ -369,6 +363,12 @@ $('#toggle').on('click', function(){
     $('#add-todo').slideToggle(400);
 });
 
+function toggle_delay(){
+    var unit = $('#button-delay-toggle').text();
+    $('#input-delay').attr('type', 'number');
+    alert(unit);
+}
+
 // recount f numbers
 
 function recountF(){
@@ -427,7 +427,7 @@ function isJson(str) {
 }
 
 //Dubble click to edit
-$('.sortable-row').dblclick(function(e){
+$(document).on('dblclick','.sortable-row', function(e){
     if (e.target.tagName == "DIV" || e.target.tagName == "TD"){
         if (e.target.className == "overflow-hidden" || e.target.scope == "col"){
             if($(this).attr('style') == undefined){
@@ -438,7 +438,7 @@ $('.sortable-row').dblclick(function(e){
     }
     $('input[name="story"]').focus();
 });
-$('.metadata-row').dblclick(function(e){
+$(document).on('dblclick','.metadata-row', function(e){
     if (e.target.tagName == "DIV" || e.target.tagName == "TD"){
         if (e.target.className == "overflow-hidden" || e.target.scope == "col"){
             if($(this).attr('style') == undefined){
@@ -447,6 +447,9 @@ $('.metadata-row').dblclick(function(e){
             }
         }
     }
+    setTimeout(function(){
+        $('#input-title').focus();
+    }, 200)
 });
 
 //Print pdf on edit page

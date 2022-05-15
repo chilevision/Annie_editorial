@@ -132,7 +132,7 @@
                 alert("{{ __('rundown.message_error_box') }}");
             }
         }
-        $('.button-copy').click(function(){
+        $('#rundown-list-table').on("click", ".button-copy", function(){
             var el = $(this)
             el.tooltip('show');
             setTimeout(function(){

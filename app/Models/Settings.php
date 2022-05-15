@@ -33,6 +33,7 @@ class Settings extends Model
         'templateserver_channel',
         'backgroundserver_channel',
         'include_background',
+        'include_delay',
         'pusher_channel',
         'logo_path',
         'colors',

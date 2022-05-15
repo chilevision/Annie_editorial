@@ -29,7 +29,7 @@ class Caspar extends Component
     public $hide_spinner    = false;
 
     public $first_load              = true;
-    protected $update_frequency     = 60;
+    protected $update_frequency     = 120;
     protected $listeners            = ['mediabrowser'];
     protected $paginationTheme      = 'bootstrap';
     
@@ -56,18 +56,20 @@ class Caspar extends Component
     }
     protected function my_error_handler($errno, $errstr, $errfile, $errline) {}
 
-    public function mediabrowser($query, $input)
+    public function mediabrowser($query, $input = null)
     {
         $this->first_load   = false;
-        $this->selected     = $input;
+        if ($input) $this->selected = $input;
         $this->type         = [$query];
         $this->orderBy      = 'name';
         $this->orderAsc     = true;
         $this->reset('caspar_error');
         if ($query == 'BG') $this->type = ['MOVIE', 'STILL'];
+        if ($query == 'MEDIA') $this->type = ['MOVIE', 'STILL', 'AUDIO'];
 
         $current_date_time = Carbon::now()->timestamp;
         if ($query == 'TEMPLATE'){
+            $this->title = 'rundown.templatefiles';
             $this->content_type = 'templates';
             $last_updated = Settings::where('id', 1)->first()->templates_updated;
             if ($last_updated == NULL || strtotime($last_updated)+$this->update_frequency < $current_date_time){
@@ -82,6 +84,7 @@ class Caspar extends Component
             }
         }
         else {
+            $this->title = 'rundown.mediafiles';
             $this->content_type = 'media';
             $last_updated = Settings::where('id', 1)->first()->media_updated;
             if ($last_updated == NULL || strtotime($last_updated)+$this->update_frequency < $current_date_time){

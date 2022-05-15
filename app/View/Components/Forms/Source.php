@@ -17,13 +17,14 @@ class Source extends Component
     public $template;
     public $sourceQuery;
     public $modalTarget;
+    public $source;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($type, $name, $value, $wrapClass, $wire, $label, $inputClass, $sourceQuery, $modalTarget)
+    public function __construct($type, $name, $value, $wrapClass, $wire, $label, $inputClass, $sourceQuery, $modalTarget, $source = '')
     {
         $this->type         = $type;
         $this->name         = $name;
@@ -33,6 +34,7 @@ class Source extends Component
         $this->label        = $label;
         $this->sourceQuery  = $sourceQuery;
         $this->modalTarget  = $modalTarget;
+        $this->source       = $source;
 
         if ($wire != '') $this->wires = $wire;
     }

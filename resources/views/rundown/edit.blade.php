@@ -41,7 +41,7 @@
 		<div class="card-header">
 			<a href="/dashboard/rundown">{{ __('rundown.scripts') }}</a><i class="bi bi-caret-right"></i>{{ __('rundown.edit') }}: <cite id="navTitle" title="Source Title"> {{ $rundown->title }} </cite>
 		</div>	
-		<div class="card-body">
+		<div class="card-body" id="rundown-form-wrapper">
 			@livewire('rundownrow-form', ['rundown' => $rundown])
 			@livewire('rundown', ['rundown' => $rundown, 'colors' => $colors])
 		</div>

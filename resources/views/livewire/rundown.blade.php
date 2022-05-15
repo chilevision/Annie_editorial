@@ -119,7 +119,9 @@
                         <div class="dropdown-menu" aria-labelledby="row-{{ $row->id }}-link">
                             <a class="dropdown-item edit-row-menu @if($row->locked_by != NULL) disabled @endif" href="#" wire:click="$emit('editRow', '{{ $row->id }}')"><i class="bi bi-pencil"></i> {{ __('rundown.edit_row') }}</a>
                             <a class="dropdown-item edit-script-menu @if($row->script_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'script'])"><i class="bi bi-card-heading"></i> {{ __('rundown.edit_script') }}</a>
+                            @if (substr($row->type, 0, 3) != 'GFX')
                             <a class="dropdown-item edit-cam-menu @if ($row->notes_locked_by != NULL) disabled @endif" href="#" data-toggle="modal" data-target="#textEditorModal" wire:click="$emit('textEditor', ['{{ $row->id }}', 'cam_notes'])"><i class="bi bi-journal-text"></i> {{ __('rundown.edit_camera_notes') }}</a>
+                            @endif
                             <a class="dropdown-item" href="#" wire:click="$emit('createMetaRow', '{{ $row->id }}','{{ $row->type }}')"><i class="bi bi-node-plus"></i> {{ __('rundown.new_meta') }}</a>
                             <li><a class="dropdown-item" href="#">Color<i class="bi bi-caret-right-fill float-right"></i></a>
                                 <div class="submenu dropdown-menu">
@@ -141,7 +143,7 @@
             @if ($row->type == 'MIXER') 
                     {{ $row->source }} 
             @else 
-                    <p class="rundown-p" data-toggle="tooltip" data-placement="bottom" title="{{ $row->source }}">CCG <i class="bi bi-info-circle"></i></p>
+                    <p class="rundown-p">@if($row->source)CCG <i class="bi bi-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{ $row->source }}"></i>@else<i class="bi bi-exclamation-triangle-fill text-danger" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.file_missing') }}"></i>@endif</p>
             @endif
                 </td>
                 <td scope="col"><div class="overflow-hidden" style="width: 80px">{{ $row->audio }}</div></td>
@@ -171,9 +173,22 @@
                                     <td scope="col" style="background: #{{ $row->color }}"></td>
                                     <td scope="col"><div class="overflow-hidden" style="width: 300px">{{ $meta_row->title }}</div></td>
                                     <td scope="col">{{  $meta_row->type }}</td>
-                                    <td scope="col"><div class="overflow-hidden" style="width: 250px">{{  $meta_row->source }}</div></td>
+                                    <td scope="col">
+                                        <div class="overflow-hidden" style="width: 250px">
+@if ($meta_row->type != 'MIXER' || $meta_row->type != 'PRE' || $meta_row->type != 'BREAK')
+                                            <p class="rundown-p">@if($meta_row->source)CCG <i class="bi bi-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{ $meta_row->source }}"></i>@else<i class="bi bi-exclamation-triangle-fill text-danger" data-toggle="tooltip" data-placement="bottom" title="{{ __('rundown.file_missing') }}"></i>@endif</p>
+@else                                       {{  $meta_row->source }}
+@endif
+                                        </div>
+                                    </td>
                                     <td scope="col"><div class="overflow-hidden" style="width: 400px">{{ metaDataToString($meta_row->data) }}</div></td>
-                                    <td scope="col">{{  gmdate('H:i:s', $meta_row->delay) }}</td>
+                                    <td scope="col">
+@if (strpos($meta_row->delay, '.') !== false)
+                                        {{ $meta_row->delay*1000 }}ms
+@else
+                                        {{  gmdate('H:i:s', $meta_row->delay) }}
+@endif
+                                    </td>
                                     <td scope="col">{{  gmdate('H:i:s', $meta_row->duration) }}</td>
                                 </tr>
                     @php $i++; @endphp

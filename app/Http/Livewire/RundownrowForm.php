@@ -21,6 +21,7 @@ class RundownrowForm extends Component
     public $talent;
     public $cue;
     public $type = 'MIXER';
+    public $file_type; 
     public $source = 'CAM1';
     public $audio;
     public $duration = '00:00:00';
@@ -42,10 +43,12 @@ class RundownrowForm extends Component
 
     public $xml;
     public $pane = 'editor';
+    public $unit = 'time';
 
     protected $typeOptions = [
         ['value' => 'MIXER', 'title' => 'MIXER'],
         ['value' => 'VB', 'title' => 'VB'],
+        ['value' => 'GFX', 'title' => 'GFX'],
         ['value' => 'PRE', 'title' => 'PRE'],
         ['value' => 'BREAK', 'title' => 'BREAK']
     ];
@@ -54,7 +57,7 @@ class RundownrowForm extends Component
         ['value' => 'MIXER', 'title' => 'MIXER'],
         ['value' => 'KEY', 'title' => 'KEY'],
         ['value' => 'BG', 'title' => 'BG'],
-        ['value' => 'AUDIO', 'title' => 'AUDIO']
+        ['value' => 'MEDIA', 'title' => 'MEDIA']
     ];
     protected $rules = [
         'name' => 'required|min:6',
@@ -97,6 +100,7 @@ class RundownrowForm extends Component
             'sourceOptions'     => $this->sourceOptions,
             'mixerKeys'         => $this->mixerKeys,
         ]);
+        $this->emit('contentUpdated');
     }
 
     /* Function to create a new rundown row.
@@ -112,9 +116,6 @@ class RundownrowForm extends Component
             'cue'           => 'nullable|max:40',
             'audio'         => 'nullable|max:30'
         ];
-        if ($this->type == 'VB'){
-            $rules['source'] = 'required';
-        }
         $this->validate($rules);
         $duration = to_seconds($this->duration);
         $rows = Rundown_rows::where('rundown_id', $this->rundown->id)->get();
@@ -128,10 +129,18 @@ class RundownrowForm extends Component
             $color              = array_search( $rows->where('id', $before_in_table)->first()->color, $colors ) + 1;
             $color              = $colors[$color%count($colors)];
         }
-        //$this->validate();
-
-        // Execution doesn't reach here if validation fails.
-
+        $notes = '';
+        if ($this->type == 'GFX'){
+            if ($this->metaData){
+                $notes = $this->metaData;
+            }
+            switch ($this->file_type){
+                case 'MOVIE' : $this->type .= '/M'; 
+                break;
+                case 'STILL' : $this->type .= '/S';
+                break;
+            }
+        }
         $row = Rundown_rows::create([
             'rundown_id'        => $this->rundown->id,
             'before_in_table'   => $before_in_table,
@@ -144,7 +153,8 @@ class RundownrowForm extends Component
             'audio'             => $this->audio,
             'duration'          => $duration,
             'file_fps'          => $this->file_fps,
-            'autotrigg'         => $this->autotrigg
+            'autotrigg'         => $this->autotrigg,
+            'cam_notes'         => $notes
         ]);
         $this->resetForm();
         event(new RundownEvent(['type'=> 'render', 'id' => $row->id], $this->rundown->id));
@@ -163,7 +173,6 @@ class RundownrowForm extends Component
             $this->story            = $row->story;
             $this->talent           = $row->talent;
             $this->cue              = $row->cue;
-            $this->type             = $row->type;
             $this->source           = $row->source;
             $this->audio            = $row->audio;
             $this->duration         = gmdate('H:i:s', $row->duration);
@@ -174,7 +183,15 @@ class RundownrowForm extends Component
             $this->submit_btn_label = 'rundown.update';
             $this->formAction       = 'update';
             $this->type_disabled    = 'disabled';
-        
+
+            if(strpos($row->type, "/")){
+                $type = preg_split("#/#", $row->type);
+                $this->type = $type[0];
+                $this->file_type = getFileType($type[1]);
+            }else{
+                $this->type = $row->type;
+            }
+            if ($this->type == 'GFX') $this->mediabowser = 'TEMPLATE';
             $this->edit_mode = 'row';
             $this->emit('lock', 'row', $id, 1);
             $this->emit('in_edit_mode', true);
@@ -189,13 +206,19 @@ class RundownrowForm extends Component
             'cue'           => 'nullable|max:40',
             'audio'         => 'nullable|max:30'
         ];
-        if ($this->type == 'VB'){
-            $rules['source'] = 'required';
-        }
         $this->validate($rules);
+        if ($this->type == 'GFX'){
+            switch ($this->file_type){
+                case 'MOVIE' : $this->type .= '/M'; 
+                break;
+                case 'STILL' : $this->type .= '/S';
+                break;
+            }
+        }
         $row = Rundown_rows::find($this->rundown_row_id);
         if($row !== NULL){
             $row->story            = $this->story;
+            $row->type             = $this->type;
             $row->talent           = $this->talent;
             $row->cue              = $this->cue;
             $row->source           = $this->source;
@@ -251,13 +274,24 @@ class RundownrowForm extends Component
     {
         $rules = [
             'story'         => 'required|min:3|max:40',
-            'source'        => 'required',
             'duration'      => 'nullable|date_format:H:i:s',
-            'delay'         => 'nullable|date_format:H:i:s',
         ];
         $this->validate($rules);
         $duration   = to_seconds($this->duration);
         $delay      = to_seconds($this->delay);
+        if ($this->type == 'GFX' || $this->type == 'MEDIA' || $this->type == 'BG'){
+            switch ($this->file_type){
+                case 'MOVIE' : 
+                    $this->type .= '/M'; 
+                    break;
+                case 'STILL' : 
+                    $this->type .= '/S';
+                    break;
+                case 'AUDIO' :
+                    $this->type .= '/A';
+                    break;
+            }
+        }
         Rundown_meta_rows::create([
             'rundown_rows_id'   => $this->rundown_row_id,
             'title'             => $this->story,
@@ -280,11 +314,24 @@ class RundownrowForm extends Component
             if ($this->edit_mode == 'meta') $this->cancel_meta();
             $this->rundown_meta_row_id  = $id;
             $this->story                = $row->title;
-            $this->type                 = $row->type;
+            if(strpos($row->type, "/")){
+                $type = preg_split("#/#", $row->type);
+                $this->type = $type[0];
+                $this->file_type = getFileType($type[1]);
+            }else{
+                $this->type = $row->type;
+            }
             $this->typeChange();
             $this->source               = $row->source;
             $this->duration             = gmdate('H:i:s', $row->duration);
-            $this->delay                = gmdate('H:i:s', $row->delay);
+            if (strpos($row->delay, '.') !== false){
+                $this->delay            = $row->delay*1000;
+                $this->unit             = 'number';
+            }
+            else{
+                $this->delay            = gmdate('H:i:s', $row->delay);
+                $this->unit             = 'time';
+            }
             $this->metaData             = $row->data;
 
             $this->formType             = 'meta';
@@ -306,14 +353,26 @@ class RundownrowForm extends Component
     {
         $rules = [
             'story'         => 'required|min:3|max:40',
-            'source'        => 'required',
             'duration'      => 'nullable|date_format:H:i:s',
-            'delay'         => 'nullable|date_format:H:i:s',
         ];
         $this->validate($rules);
         $row = Rundown_meta_rows::find($this->rundown_meta_row_id);
         if($row !== NULL){
+            if ($this->type == 'GFX' || $this->type == 'MEDIA' || $this->type == 'BG'){
+                switch ($this->file_type){
+                    case 'MOVIE' : 
+                        $this->type .= '/M'; 
+                        break;
+                    case 'STILL' : 
+                        $this->type .= '/S';
+                        break;
+                    case 'AUDIO' :
+                        $this->type .= '/A';
+                        break;
+                }
+            }
             $row->title            = $this->story;
+            $row->type             = $this->type;
             $row->source           = $this->source;
             $row->duration         = to_seconds($this->duration);
             $row->delay            = to_seconds($this->delay);
@@ -354,6 +413,8 @@ class RundownrowForm extends Component
         $this->mediabowser              = 'MOVIE';
         $this->edit_mode                = NULL;
         $this->dataBtn                  = 'gfx';
+        $this->unit                     = 'time';
+        $this->file_type                = '';
 
         $this->dispatchBrowserEvent('set_duration_input', ['newTime' => '']);
         $this->resetErrorBag();
@@ -381,9 +442,10 @@ class RundownrowForm extends Component
             case 'VB':
                 $this->source = '';
                 $this->dataBtn = null;
+                $this->mediabowser = 'MOVIE';
                 break;
-            case 'AUDIO': 
-                $this->mediabowser = 'AUDIO';
+            case 'MEDIA': 
+                $this->mediabowser = 'MEDIA';
                 $this->dataBtn = null;
                 break;
             case 'BG':
@@ -401,10 +463,11 @@ class RundownrowForm extends Component
     }
 
     /* Updates source value when a file is selected in form*/
-    public function updateSource($value, $duration, $fps)
+    public function updateSource($value, $duration, $fps, $type)
     {
         $this->source       = $value;
         $this->file_fps     = $fps;
+        $this->file_type    = $type;
         if($duration != null){
             $this->duration = $duration;
         }
@@ -421,5 +484,10 @@ class RundownrowForm extends Component
             'xml' => 'mimes:application/xml,xml|max:10000'
         ]);
         $this->xml->store('presets');
+    }
+
+    public function unit($unit)
+    {
+        $this->unit = $unit;
     }
 }
