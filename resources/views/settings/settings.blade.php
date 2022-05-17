@@ -96,8 +96,8 @@
             <a class="list-group-item list-group-item-action active" data-toggle="list" href="#settings-general">{{ __('settings.general') }}</a>
             <a class="list-group-item list-group-item-action" id="a-settings-user" data-toggle="list" href="#settings-users">{{ __('settings.users') }}</a>
             <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-mixer">{{ __('settings.mixer') }}</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-vserver">{{ __('settings.vserver') }}</a>
-            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-gfxserver">{{ __('settings.gfxserver') }}</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-vserver">{{ __('settings.playout') }}</a>
+            <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings-gfxserver">{{ __('settings.gfx') }}</a>
           </div>
         </div>
         <div class="col-md-9 pl-5">
